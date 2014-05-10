@@ -5,13 +5,14 @@
 
 #import <Mantle/Mantle.h>
 
+@class TCSUserObject;
+
 #pragma mark -
 
 @interface TCSPostObject : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSNumber *postId;
-@property (nonatomic, copy, readonly) NSNumber *userId;
-@property (nonatomic, copy, readonly) NSString *userName;
+@property (nonatomic, copy, readonly) TCSUserObject *user;
 @property (nonatomic, copy, readonly) NSString *type; // video, status, link, photo
 @property (nonatomic, copy, readonly) NSString *message;
 @property (nonatomic, copy, readonly) NSURL *pictureURL;
@@ -23,7 +24,7 @@
 @property (nonatomic, copy, readonly) NSString *description;
 @property (nonatomic, copy, readonly) NSDate *createdAt;
 @property (nonatomic, copy, readonly) NSDate *updatedAt;
-@property (nonatomic, copy, readonly) NSArray *likes; // TCSLikeObject
+@property (nonatomic, copy, readonly) NSArray *likes; // TCSUserObject
 @property (nonatomic, copy, readonly) NSArray *comments; // TCSCommentObject
 
 @end

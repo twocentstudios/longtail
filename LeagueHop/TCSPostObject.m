@@ -5,7 +5,7 @@
 
 #import "TCSPostObject.h"
 
-#import "TCSLikeObject.h"
+#import "TCSUserObject.h"
 #import "TCSCommentObject.h"
 
 #pragma mark -
@@ -15,8 +15,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{
              @"postId": @"id",
-             @"userId": @"from.id",
-             @"userName": @"from.name",
+             @"user": @"from",
              @"type": @"type",
              @"message": @"message",
              @"pictureURL": @"picture",
@@ -28,8 +27,8 @@
              @"description": @"description",
              @"createdAt": @"created_time",
              @"updatedAt": @"updated_time",
-             @"likes": @"likes",
-             @"comments": @"comments",
+             @"likes": @"likes.data",
+             @"comments": @"comments.data",
              };
 }
 
@@ -65,8 +64,12 @@
     }];
 }
 
++ (NSValueTransformer *)userJSONTransformer {
+    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[TCSUserObject class]];
+}
+
 + (NSValueTransformer *)likesJSONTransformer {
-    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[TCSLikeObject class]];
+    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[TCSUserObject class]];
 }
 
 + (NSValueTransformer *)commentsJSONTransformer {

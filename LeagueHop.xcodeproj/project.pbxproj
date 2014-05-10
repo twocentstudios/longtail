@@ -21,6 +21,9 @@
 		83151283191DEF8400331535 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83151281191DEF8400331535 /* InfoPlist.strings */; };
 		83151285191DEF8400331535 /* LeagueHopTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83151284191DEF8400331535 /* LeagueHopTests.m */; };
 		8315128F191DF06D00331535 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8315128E191DF06D00331535 /* Podfile */; };
+		83151296191DF0E400331535 /* TCSPostObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83151295191DF0E400331535 /* TCSPostObject.m */; };
+		83151299191DF8E900331535 /* TCSCommentObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83151298191DF8E900331535 /* TCSCommentObject.m */; };
+		8315129C191DF90800331535 /* TCSLikeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315129B191DF90800331535 /* TCSLikeObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,12 @@
 		83151282191DEF8400331535 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		83151284191DEF8400331535 /* LeagueHopTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LeagueHopTests.m; sourceTree = "<group>"; };
 		8315128E191DF06D00331535 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		83151294191DF0E400331535 /* TCSPostObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostObject.h; sourceTree = "<group>"; };
+		83151295191DF0E400331535 /* TCSPostObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostObject.m; sourceTree = "<group>"; };
+		83151297191DF8E900331535 /* TCSCommentObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSCommentObject.h; sourceTree = "<group>"; };
+		83151298191DF8E900331535 /* TCSCommentObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSCommentObject.m; sourceTree = "<group>"; };
+		8315129A191DF90800331535 /* TCSLikeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSLikeObject.h; sourceTree = "<group>"; };
+		8315129B191DF90800331535 /* TCSLikeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSLikeObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +190,12 @@
 		83151293191DF09600331535 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				83151294191DF0E400331535 /* TCSPostObject.h */,
+				83151295191DF0E400331535 /* TCSPostObject.m */,
+				83151297191DF8E900331535 /* TCSCommentObject.h */,
+				83151298191DF8E900331535 /* TCSCommentObject.m */,
+				8315129A191DF90800331535 /* TCSLikeObject.h */,
+				8315129B191DF90800331535 /* TCSLikeObject.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -318,6 +333,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8315126C191DEF8400331535 /* main.m in Sources */,
+				83151299191DF8E900331535 /* TCSCommentObject.m in Sources */,
+				83151296191DF0E400331535 /* TCSPostObject.m in Sources */,
+				8315129C191DF90800331535 /* TCSLikeObject.m in Sources */,
 				83151270191DEF8400331535 /* TCSAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

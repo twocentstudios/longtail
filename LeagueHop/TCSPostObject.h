@@ -24,6 +24,8 @@
 @property (nonatomic, copy, readonly) NSString *description;
 @property (nonatomic, copy, readonly) NSDate *createdAt;
 @property (nonatomic, copy, readonly) NSDate *updatedAt;
+@property (nonatomic, copy, readonly) NSString *monthDayKey; // 0411
+@property (nonatomic, copy, readonly) NSString *yearMonthDayKey; // 20120411
 @property (nonatomic, copy, readonly) NSArray *likes; // TCSUserObject
 @property (nonatomic, copy, readonly) NSArray *comments; // TCSCommentObject
 

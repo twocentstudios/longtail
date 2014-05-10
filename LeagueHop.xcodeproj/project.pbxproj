@@ -24,6 +24,7 @@
 		83151296191DF0E400331535 /* TCSPostObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83151295191DF0E400331535 /* TCSPostObject.m */; };
 		83151299191DF8E900331535 /* TCSCommentObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83151298191DF8E900331535 /* TCSCommentObject.m */; };
 		8315129F191DFB2500331535 /* TCSUserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315129E191DFB2500331535 /* TCSUserObject.m */; };
+		831512A2191E01E000331535 /* TCSPostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512A1191E01E000331535 /* TCSPostController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		83151298191DF8E900331535 /* TCSCommentObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSCommentObject.m; sourceTree = "<group>"; };
 		8315129D191DFB2500331535 /* TCSUserObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSUserObject.h; sourceTree = "<group>"; };
 		8315129E191DFB2500331535 /* TCSUserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSUserObject.m; sourceTree = "<group>"; };
+		831512A0191E01E000331535 /* TCSPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostController.h; sourceTree = "<group>"; };
+		831512A1191E01E000331535 /* TCSPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +186,8 @@
 		83151292191DF08C00331535 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				831512A0191E01E000331535 /* TCSPostController.h */,
+				831512A1191E01E000331535 /* TCSPostController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -336,6 +341,7 @@
 				83151299191DF8E900331535 /* TCSCommentObject.m in Sources */,
 				83151296191DF0E400331535 /* TCSPostObject.m in Sources */,
 				8315129F191DFB2500331535 /* TCSUserObject.m in Sources */,
+				831512A2191E01E000331535 /* TCSPostController.m in Sources */,
 				83151270191DEF8400331535 /* TCSAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

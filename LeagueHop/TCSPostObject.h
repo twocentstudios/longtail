@@ -11,7 +11,7 @@
 
 @interface TCSPostObject : MTLModel <MTLJSONSerializing>
 
-@property (nonatomic, copy, readonly) NSNumber *postId;
+@property (nonatomic, copy, readonly) NSString *postId;
 @property (nonatomic, copy, readonly) TCSUserObject *user;
 @property (nonatomic, copy, readonly) NSString *type; // video, status, link, photo
 @property (nonatomic, copy, readonly) NSString *message;

@@ -27,6 +27,8 @@
              @"description": @"description",
              @"createdAt": @"created_time",
              @"updatedAt": @"updated_time",
+             @"monthDayKey": @"created_time",
+             @"yearMonthDayKey": @"created_time",
              @"likes": @"likes.data",
              @"comments": @"comments.data",
              };
@@ -61,6 +63,22 @@
         return [[self dateFormatter] dateFromString:rawDateString];
     } reverseBlock:^(NSDate *date) {
         return [[self dateFormatter] stringFromDate:date];
+    }];
+}
+
++ (NSValueTransformer *)monthDayKeyJSONTransformer {
+    return [MTLValueTransformer transformerWithBlock:^id(NSString *rawDateString) {
+        NSDate *date = [[self dateFormatter] dateFromString:rawDateString];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+        return [NSString stringWithFormat:@"%@%@", @(components.month), @(components.day)];
+    }];
+}
+
++ (NSValueTransformer *)yearMonthDayKeyJSONTransformer {
+    return [MTLValueTransformer transformerWithBlock:^id(NSString *rawDateString) {
+        NSDate *date = [[self dateFormatter] dateFromString:rawDateString];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+        return [NSString stringWithFormat:@"%@%@%@", @(components.year), @(components.month), @(components.day)];
     }];
 }
 

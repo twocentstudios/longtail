@@ -5,7 +5,8 @@ inhibit_all_warnings!
 pod 'ReactiveCocoa', '2.3'
 pod 'ReactiveCocoaLayout', '0.4'
 pod 'SVProgressHUD', '1.0.0'
-pod 'Mantle', '1.4.1'
+pod 'Mantle', '~> 1.4.1'
+pod 'YapDatabase', '~> 2.4'
 pod 'Facebook-iOS-SDK', '~> 3.14'
 
 pod 'TestFlightSDK', '~>2.1'

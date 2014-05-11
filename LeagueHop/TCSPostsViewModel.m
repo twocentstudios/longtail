@@ -59,15 +59,20 @@
             }];
 
         RAC(self, postViewModels) =
-            [[[self.loadPostsCommand executionSignals]
+            [[[[self.loadPostsCommand executionSignals]
                 switchToLatest]
                 map:^id(NSArray *posts) {
-                    return [posts.rac_sequence.signal map:^id(TCSPostObject *post) {
-                        return [[TCSPostViewModel alloc] initWithPost:post];
-                    }];
-                }];
+                    return [[posts.rac_sequence.signal
+                                map:^id(TCSPostObject *post) {
+                                    return [[TCSPostViewModel alloc] initWithPost:post];
+                                }]
+                                toArray];
+                }]
+                deliverOn:[RACScheduler mainThreadScheduler]];
 
-        [[self.loadPostsCommand errors] subscribe:_errors];
+        [[[self.loadPostsCommand errors]
+            deliverOn:[RACScheduler mainThreadScheduler]]
+            subscribe:_errors];
 
         [self.didBecomeActiveSignal subscribeNext:^(TCSPostsViewModel *viewModel) {
             [viewModel.loadPostsCommand execute:nil];

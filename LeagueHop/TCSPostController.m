@@ -91,8 +91,8 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 return array;
             }]
             tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
-                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
-                    TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:dictionary error:errorPtr];
+                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
+                    TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:postDictionary error:errorPtr];
                     return post;
                 }] toArray];
             }];

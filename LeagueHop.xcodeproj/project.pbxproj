@@ -29,6 +29,8 @@
 		831512A8191EE81A00331535 /* TCSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512A7191EE81A00331535 /* TCSViewController.m */; };
 		831512AB191EE97A00331535 /* TCSViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512AA191EE97A00331535 /* TCSViewModel.m */; };
 		831512AF191F1B5F00331535 /* TCSPostsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512AE191F1B5F00331535 /* TCSPostsViewModel.m */; };
+		831512B3191F1E7100331535 /* NSDate+TCSDateKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512B2191F1E7100331535 /* NSDate+TCSDateKey.m */; };
+		831512B6191F23FE00331535 /* TCSPostViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512B5191F23FE00331535 /* TCSPostViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,10 @@
 		831512AC191EEA7100331535 /* TCSViewModel+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TCSViewModel+Protected.h"; sourceTree = "<group>"; };
 		831512AD191F1B5F00331535 /* TCSPostsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostsViewModel.h; sourceTree = "<group>"; };
 		831512AE191F1B5F00331535 /* TCSPostsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostsViewModel.m; sourceTree = "<group>"; };
+		831512B1191F1E7100331535 /* NSDate+TCSDateKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+TCSDateKey.h"; sourceTree = "<group>"; };
+		831512B2191F1E7100331535 /* NSDate+TCSDateKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+TCSDateKey.m"; sourceTree = "<group>"; };
+		831512B4191F23FE00331535 /* TCSPostViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostViewModel.h; sourceTree = "<group>"; };
+		831512B5191F23FE00331535 /* TCSPostViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +153,7 @@
 				83151291191DF08200331535 /* View Models */,
 				83151292191DF08C00331535 /* Controllers */,
 				83151293191DF09600331535 /* Models */,
+				831512B0191F1E2B00331535 /* Helpers */,
 				83151271191DEF8400331535 /* Images.xcassets */,
 				83151266191DEF8400331535 /* Supporting Files */,
 			);
@@ -201,6 +208,8 @@
 				831512AA191EE97A00331535 /* TCSViewModel.m */,
 				831512AD191F1B5F00331535 /* TCSPostsViewModel.h */,
 				831512AE191F1B5F00331535 /* TCSPostsViewModel.m */,
+				831512B4191F23FE00331535 /* TCSPostViewModel.h */,
+				831512B5191F23FE00331535 /* TCSPostViewModel.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -225,6 +234,15 @@
 				8315129E191DFB2500331535 /* TCSUserObject.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		831512B0191F1E2B00331535 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				831512B1191F1E7100331535 /* NSDate+TCSDateKey.h */,
+				831512B2191F1E7100331535 /* NSDate+TCSDateKey.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -359,10 +377,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				831512B3191F1E7100331535 /* NSDate+TCSDateKey.m in Sources */,
 				8315126C191DEF8400331535 /* main.m in Sources */,
 				831512AF191F1B5F00331535 /* TCSPostsViewModel.m in Sources */,
 				83151299191DF8E900331535 /* TCSCommentObject.m in Sources */,
 				83151296191DF0E400331535 /* TCSPostObject.m in Sources */,
+				831512B6191F23FE00331535 /* TCSPostViewModel.m in Sources */,
 				8315129F191DFB2500331535 /* TCSUserObject.m in Sources */,
 				831512A2191E01E000331535 /* TCSPostController.m in Sources */,
 				831512AB191EE97A00331535 /* TCSViewModel.m in Sources */,

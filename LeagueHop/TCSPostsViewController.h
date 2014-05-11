@@ -8,6 +8,10 @@
 
 #import "TCSViewController.h"
 
+#import "TCSPostsViewModel.h"
+
 @interface TCSPostsViewController : TCSViewController
+
+@property (nonatomic, readonly) TCSPostsViewModel *viewModel;
 
 @end

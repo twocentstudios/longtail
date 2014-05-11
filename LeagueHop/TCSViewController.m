@@ -24,25 +24,28 @@
 
 	_viewModel = viewModel;
 
-	RACSignal *presented = [[RACSignal
-                             merge:@[
-                                     [[self rac_signalForSelector:@selector(viewDidAppear:)] mapReplace:@YES],
-                                     [[self rac_signalForSelector:@selector(viewWillDisappear:)] mapReplace:@NO]
-                                     ]]
-                            setNameWithFormat:@"%@ presented", self];
+	RACSignal *presented =
+        [[RACSignal
+            merge:@[
+                    [[self rac_signalForSelector:@selector(viewDidAppear:)] mapReplace:@YES],
+                    [[self rac_signalForSelector:@selector(viewWillDisappear:)] mapReplace:@NO]
+                    ]]
+            setNameWithFormat:@"%@ presented", self];
 
-	RACSignal *appActive = [[[RACSignal
-                              merge:@[
-                                      [[NSNotificationCenter.defaultCenter rac_addObserverForName:UIApplicationDidBecomeActiveNotification object:nil] mapReplace:@YES],
-                                      [[NSNotificationCenter.defaultCenter rac_addObserverForName:UIApplicationWillResignActiveNotification object:nil] mapReplace:@NO]
-                                      ]]
-                             startWith:@YES]
-                            setNameWithFormat:@"%@ appActive", self];
+	RACSignal *appActive =
+        [[[RACSignal
+            merge:@[
+                    [[NSNotificationCenter.defaultCenter rac_addObserverForName:UIApplicationDidBecomeActiveNotification object:nil] mapReplace:@YES],
+                    [[NSNotificationCenter.defaultCenter rac_addObserverForName:UIApplicationWillResignActiveNotification object:nil] mapReplace:@NO]
+                    ]]
+            startWith:@YES]
+            setNameWithFormat:@"%@ appActive", self];
 
-	RAC(self, viewModel.active) = [[[RACSignal
-                                     combineLatest:@[ presented, appActive ]]
-                                    and]
-                                   setNameWithFormat:@"%@ active", self];
+	RAC(self, viewModel.active) =
+        [[[RACSignal
+            combineLatest:@[ presented, appActive ]]
+            and]
+            setNameWithFormat:@"%@ active", self];
 
 	[self rac_liftSelector:@selector(presentError:) withSignals:self.viewModel.errors, nil];
 	return self;
@@ -64,13 +67,14 @@
                               rcl_center: overlayView.rcl_boundsSignal.center
                               };
 
-	RAC(overlayView, alpha) = [[[[RACObserve(self, loading)
-                                  distinctUntilChanged]
-                                 map:^(NSNumber *loading) {
-                                     return loading.boolValue ? @1 : @0;
-                                 }]
-                                animateWithDuration:0.35 curve:RCLAnimationCurveLinear]
-                               startWith:@0];
+	RAC(overlayView, alpha) =
+        [[[[RACObserve(self, loading)
+            distinctUntilChanged]
+            map:^(NSNumber *loading) {
+                return loading.boolValue ? @1 : @0;
+            }]
+            animateWithDuration:0.35 curve:RCLAnimationCurveLinear]
+            startWith:@0];
 }
 
 #pragma mark Error handling

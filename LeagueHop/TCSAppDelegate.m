@@ -10,6 +10,7 @@
 
 #import "TCSPostsViewController.h"
 #import "TCSPostsViewModel.h"
+#import "TCSPostController.h"
 
 #import <FacebookSDK/Facebook.h>
 
@@ -17,7 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    TCSPostsViewModel *postsViewModel = [[TCSPostsViewModel alloc] init];
+    TCSPostController *postController = [[TCSPostController alloc] init];
+    TCSPostsViewModel *postsViewModel = [[TCSPostsViewModel alloc] initWithController:postController];
     TCSPostsViewController *postsController = [[TCSPostsViewController alloc] initWithViewModel:postsViewModel];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postsController];
 

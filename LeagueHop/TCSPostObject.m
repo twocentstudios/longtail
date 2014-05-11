@@ -8,6 +8,8 @@
 #import "TCSUserObject.h"
 #import "TCSCommentObject.h"
 
+#import "NSDate+TCSDateKey.h"
+
 #pragma mark -
 
 @implementation TCSPostObject
@@ -69,16 +71,14 @@
 + (NSValueTransformer *)monthDayKeyJSONTransformer {
     return [MTLValueTransformer transformerWithBlock:^id(NSString *rawDateString) {
         NSDate *date = [[self dateFormatter] dateFromString:rawDateString];
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-        return [NSString stringWithFormat:@"%@%@", @(components.month), @(components.day)];
+        return [date monthDayDateKey];
     }];
 }
 
 + (NSValueTransformer *)yearMonthDayKeyJSONTransformer {
     return [MTLValueTransformer transformerWithBlock:^id(NSString *rawDateString) {
         NSDate *date = [[self dateFormatter] dateFromString:rawDateString];
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-        return [NSString stringWithFormat:@"%@%@%@", @(components.year), @(components.month), @(components.day)];
+        return [date yearMonthDayDateKey];
     }];
 }
 

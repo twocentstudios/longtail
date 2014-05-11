@@ -13,10 +13,9 @@
 
 - (id)init {
 	self = [super init];
-	if (self == nil) return nil;
-
-	_errors = [[RACSubject subject] setNameWithFormat:@"%@ -errors", self];
-
+	if (self) {
+        _errors = [[RACSubject subject] setNameWithFormat:@"%@ -errors", self];
+    }
 	return self;
 }
 

@@ -5,7 +5,6 @@
 
 #import "TCSPostsViewController.h"
 
-
 #pragma mark -
 
 @interface TCSPostsViewController ()
@@ -15,11 +14,14 @@
 
 @implementation TCSPostsViewController
 
+@dynamic viewModel;
+
 #pragma mark UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    RAC(self, title) = RACObserve(self, viewModel.title);
 }
 
 @end

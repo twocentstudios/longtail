@@ -14,5 +14,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <ReactiveCocoa/ReactiveCocoa.h>
+    #import <ReactiveCocoa/RACEXTScope.h>
+    #import <ReactiveCocoa/RACEXTKeyPathCoding.h>
     #import <ReactiveCocoaLayout/ReactiveCocoaLayout.h>
 #endif

@@ -25,6 +25,10 @@
 		83151299191DF8E900331535 /* TCSCommentObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83151298191DF8E900331535 /* TCSCommentObject.m */; };
 		8315129F191DFB2500331535 /* TCSUserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8315129E191DFB2500331535 /* TCSUserObject.m */; };
 		831512A2191E01E000331535 /* TCSPostController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512A1191E01E000331535 /* TCSPostController.m */; };
+		831512A5191EE74B00331535 /* TCSPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512A4191EE74B00331535 /* TCSPostsViewController.m */; };
+		831512A8191EE81A00331535 /* TCSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512A7191EE81A00331535 /* TCSViewController.m */; };
+		831512AB191EE97A00331535 /* TCSViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512AA191EE97A00331535 /* TCSViewModel.m */; };
+		831512AF191F1B5F00331535 /* TCSPostsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512AE191F1B5F00331535 /* TCSPostsViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +69,15 @@
 		8315129E191DFB2500331535 /* TCSUserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSUserObject.m; sourceTree = "<group>"; };
 		831512A0191E01E000331535 /* TCSPostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostController.h; sourceTree = "<group>"; };
 		831512A1191E01E000331535 /* TCSPostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostController.m; sourceTree = "<group>"; };
+		831512A3191EE74B00331535 /* TCSPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostsViewController.h; sourceTree = "<group>"; };
+		831512A4191EE74B00331535 /* TCSPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostsViewController.m; sourceTree = "<group>"; };
+		831512A6191EE81A00331535 /* TCSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSViewController.h; sourceTree = "<group>"; };
+		831512A7191EE81A00331535 /* TCSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSViewController.m; sourceTree = "<group>"; };
+		831512A9191EE97A00331535 /* TCSViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSViewModel.h; sourceTree = "<group>"; };
+		831512AA191EE97A00331535 /* TCSViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSViewModel.m; sourceTree = "<group>"; };
+		831512AC191EEA7100331535 /* TCSViewModel+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TCSViewModel+Protected.h"; sourceTree = "<group>"; };
+		831512AD191F1B5F00331535 /* TCSPostsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostsViewModel.h; sourceTree = "<group>"; };
+		831512AE191F1B5F00331535 /* TCSPostsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostsViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +185,10 @@
 		83151290191DF07A00331535 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				831512A6191EE81A00331535 /* TCSViewController.h */,
+				831512A7191EE81A00331535 /* TCSViewController.m */,
+				831512A3191EE74B00331535 /* TCSPostsViewController.h */,
+				831512A4191EE74B00331535 /* TCSPostsViewController.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -179,6 +196,11 @@
 		83151291191DF08200331535 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				831512A9191EE97A00331535 /* TCSViewModel.h */,
+				831512AC191EEA7100331535 /* TCSViewModel+Protected.h */,
+				831512AA191EE97A00331535 /* TCSViewModel.m */,
+				831512AD191F1B5F00331535 /* TCSPostsViewModel.h */,
+				831512AE191F1B5F00331535 /* TCSPostsViewModel.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -338,11 +360,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8315126C191DEF8400331535 /* main.m in Sources */,
+				831512AF191F1B5F00331535 /* TCSPostsViewModel.m in Sources */,
 				83151299191DF8E900331535 /* TCSCommentObject.m in Sources */,
 				83151296191DF0E400331535 /* TCSPostObject.m in Sources */,
 				8315129F191DFB2500331535 /* TCSUserObject.m in Sources */,
 				831512A2191E01E000331535 /* TCSPostController.m in Sources */,
+				831512AB191EE97A00331535 /* TCSViewModel.m in Sources */,
 				83151270191DEF8400331535 /* TCSAppDelegate.m in Sources */,
+				831512A5191EE74B00331535 /* TCSPostsViewController.m in Sources */,
+				831512A8191EE81A00331535 /* TCSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -83,17 +83,19 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 + (RACSignal *)getPostsForSourceID:(NSNumber *)sourceID {
     NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceID];
-    RACSignal *signal = [[self class] requestGraphPath:graphPath parameters:nil HTTPMethod:nil];
-    signal =
-        [[signal tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
-            NSArray *array = dictionary[@"data"];
-            return array;
-        }] tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
-            return [[array.rac_sequence.signal tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
-                TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:dictionary error:errorPtr];
-                return post;
-            }] toArray];
-        }];
+
+    RACSignal *signal =
+        [[[[self class] requestGraphPath:graphPath parameters:nil HTTPMethod:nil]
+            tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
+                NSArray *array = dictionary[@"data"];
+                return array;
+            }]
+            tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
+                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
+                    TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:dictionary error:errorPtr];
+                    return post;
+                }] toArray];
+            }];
 
     return signal;
 }

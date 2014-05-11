@@ -8,13 +8,21 @@
 
 #import "TCSAppDelegate.h"
 
+#import "TCSPostsViewController.h"
+#import "TCSPostsViewModel.h"
+
 #import <FacebookSDK/Facebook.h>
 
 @implementation TCSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    TCSPostsViewModel *postsViewModel = [[TCSPostsViewModel alloc] init];
+    TCSPostsViewController *postsController = [[TCSPostsViewController alloc] initWithViewModel:postsViewModel];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postsController];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    self.window.rootViewController = navigationController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

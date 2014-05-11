@@ -33,6 +33,10 @@
     if ([[FBSession activeSession] state] == FBSessionStateCreated) {
         TCSLoginViewController *viewController = [[TCSLoginViewController alloc] init];
         [self.window.rootViewController presentViewController:viewController animated:NO completion:^{}];
+    } else if ([[FBSession activeSession] state] == FBSessionStateCreatedTokenLoaded) {
+        [[FBSession activeSession] openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+            NSLog(@"Opened session");
+        }];
     }
 
     return YES;

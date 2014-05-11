@@ -32,6 +32,7 @@
 		831512B6191F23FE00331535 /* TCSPostViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512B5191F23FE00331535 /* TCSPostViewModel.m */; };
 		831512B9191F352B00331535 /* TCSPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512B8191F352B00331535 /* TCSPostCell.m */; };
 		831512BB191F3B6300331535 /* TCSExampleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512BA191F3B6300331535 /* TCSExampleTest.m */; };
+		831512BE191F418100331535 /* TCSLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512BD191F418100331535 /* TCSLoginViewController.m */; };
 		DCD951E56BE64564BD1CA933 /* libPods-LeagueHopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47AA04267C264DBF8086AFE9 /* libPods-LeagueHopTests.a */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,8 @@
 		831512B7191F352B00331535 /* TCSPostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostCell.h; sourceTree = "<group>"; };
 		831512B8191F352B00331535 /* TCSPostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostCell.m; sourceTree = "<group>"; };
 		831512BA191F3B6300331535 /* TCSExampleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSExampleTest.m; sourceTree = "<group>"; };
+		831512BC191F418100331535 /* TCSLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSLoginViewController.h; sourceTree = "<group>"; };
+		831512BD191F418100331535 /* TCSLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSLoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +206,8 @@
 			children = (
 				831512A6191EE81A00331535 /* TCSViewController.h */,
 				831512A7191EE81A00331535 /* TCSViewController.m */,
+				831512BC191F418100331535 /* TCSLoginViewController.h */,
+				831512BD191F418100331535 /* TCSLoginViewController.m */,
 				831512A3191EE74B00331535 /* TCSPostsViewController.h */,
 				831512A4191EE74B00331535 /* TCSPostsViewController.m */,
 				831512B7191F352B00331535 /* TCSPostCell.h */,
@@ -431,6 +436,7 @@
 				831512AB191EE97A00331535 /* TCSViewModel.m in Sources */,
 				83151270191DEF8400331535 /* TCSAppDelegate.m in Sources */,
 				831512A5191EE74B00331535 /* TCSPostsViewController.m in Sources */,
+				831512BE191F418100331535 /* TCSLoginViewController.m in Sources */,
 				831512B9191F352B00331535 /* TCSPostCell.m in Sources */,
 				831512A8191EE81A00331535 /* TCSViewController.m in Sources */,
 			);

@@ -12,6 +12,8 @@
 #import "TCSPostsViewModel.h"
 #import "TCSPostController.h"
 
+#import "TCSLoginViewController.h"
+
 #import <FacebookSDK/Facebook.h>
 
 @implementation TCSAppDelegate
@@ -27,6 +29,12 @@
     self.window.rootViewController = navigationController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+
+    if ([[FBSession activeSession] state] == FBSessionStateCreated) {
+        TCSLoginViewController *viewController = [[TCSLoginViewController alloc] init];
+        [self.window.rootViewController presentViewController:viewController animated:NO completion:^{}];
+    }
+
     return YES;
 }
 
@@ -51,6 +59,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[FBSession activeSession] close];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

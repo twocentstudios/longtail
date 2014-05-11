@@ -13,3 +13,7 @@ pod 'Facebook-iOS-SDK', '~> 3.14'
 pod 'TestFlightSDK', '~>2.1'
 pod 'FlurrySDK', '~>4.3'
 pod 'PonyDebugger'
+
+target :LeagueHopTests, :exclusive => true do
+  pod 'Kiwi/XCTest'
+end

@@ -25,7 +25,7 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.loginView = [[FBLoginView alloc] initWithReadPermissions:@[@"email, public_profile"]];
+    self.loginView = [[FBLoginView alloc] initWithReadPermissions:@[@"email, public_profile, user_groups, user_status"]];
     self.loginView.delegate = self;
     [self.view addSubview:self.loginView];
 

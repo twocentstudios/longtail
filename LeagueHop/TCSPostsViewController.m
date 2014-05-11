@@ -33,12 +33,20 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:TCSPostCell.class forCellReuseIdentifier:NSStringFromClass(TCSPostCell.class)];
+    [self.view addSubview:self.tableView];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
+    self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.loadPostsCommand;
 
     [[RACObserve(self, viewModel.postViewModels)
         mapReplace:self.tableView]
         subscribeNext:^(UITableView *tableView) {
             [tableView reloadData];
         }];
+}
+
+- (void)viewWillLayoutSubviews {
+    self.tableView.frame = self.view.bounds;
 }
 
 #pragma mark UITableViewDataSource

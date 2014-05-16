@@ -84,22 +84,56 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 + (RACSignal *)getPostsForSourceID:(NSNumber *)sourceID {
     NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceID];
 
-    RACSignal *signal =
-        [[[[self class] requestGraphPath:graphPath parameters:nil HTTPMethod:nil]
-            tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
-                NSArray *array = dictionary[@"data"];
-                return array;
-            }]
-            tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
-                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
-                    TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:postDictionary error:errorPtr];
-                    return post;
-                }] toArray];
-            }];
+    RACSignal *signal = [self recursivelyGetDataForGraphPath:graphPath parameters:@{@"limit": @"5000"} startArray:@[]];
 
-    return signal;
+    RACSignal *postsSignal =
+        [signal tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
+            return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
+                TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:postDictionary error:errorPtr];
+                return post;
+            }]
+            toArray];
+        }];
+
+    return postsSignal;
 }
 
+// Recursively pages the graphPath for objects.
+// graphPath should be a Facebook graphPath (e.g. /23423423/feed) when called outside this method.
+// parameters should not include the authToken when called outside this method.
+// startArray should be an empty array when called from outside this method.
+// Sends an array of all objects from all pages.
++ (RACSignal *)recursivelyGetDataForGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters startArray:(NSArray *)startArray {
+    NSParameterAssert(startArray);
+
+    if (!graphPath) {
+        return [RACSignal return:startArray];
+    }
+
+    RACSignal *requestSignal;
+    if ([graphPath hasPrefix:@"http"]) {
+        requestSignal = [self requestURLString:graphPath HTTPMethod:nil];
+    } else {
+        requestSignal = [self requestGraphPath:graphPath parameters:parameters HTTPMethod:nil];
+    }
+
+    return [[requestSignal
+                tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
+                    NSArray *array = dictionary[@"data"];
+                    NSArray *combinedArray = [startArray arrayByAddingObjectsFromArray:array];
+                    NSString *nextURLString = dictionary[@"paging"][@"next"];
+                    if (!array || [array count] == 0) {
+                        nextURLString = nil; // break recursion if array is empty
+                    }
+                    return RACTuplePack(combinedArray, nextURLString);
+                }]
+                flattenMap:^RACStream *(RACTuple *t) {
+                    RACTupleUnpack(NSArray *array, NSString *nextURLString) = t;
+                    return [self recursivelyGetDataForGraphPath:nextURLString parameters:nil startArray:array];
+                }];
+}
+
+// graphPath should be the path component not including host or parameters. Parameters should not include authToken.
 + (RACSignal *)requestGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters HTTPMethod:(NSString *)HTTPMethod {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         FBRequestConnection *connection =
@@ -115,6 +149,38 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                          [subscriber sendError:error];
                      }
              }];
+        return [RACDisposable disposableWithBlock:^{
+            [connection cancel];
+        }];
+    }];
+}
+
+// URLString should be a fully formed Facebook URL including host, path, and parameters, including auth token and paging tokens.
+// This method is a hack for requesting data using Facebook supplied paging URLs.
++ (RACSignal *)requestURLString:(NSString *)URLString HTTPMethod:(NSString *)HTTPMethod {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
+                                                      graphPath:nil
+                                                     parameters:nil
+                                                     HTTPMethod:HTTPMethod];
+        FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+        [connection addRequest:request
+             completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                 if (!error) {
+                     [subscriber sendNext:result];
+                     [subscriber sendCompleted];
+                 } else {
+                     [subscriber sendError:error];
+                 }
+             }];
+
+        NSURL *URL = [NSURL URLWithString:URLString];
+        NSMutableURLRequest* URLRequest = [NSMutableURLRequest requestWithURL:URL];
+        URLRequest.HTTPMethod = HTTPMethod ?: @"GET";
+        connection.urlRequest = URLRequest;
+
+        [connection start];
+
         return [RACDisposable disposableWithBlock:^{
             [connection cancel];
         }];

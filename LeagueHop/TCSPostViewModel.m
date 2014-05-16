@@ -15,6 +15,7 @@
 
 @property (nonatomic) NSString *userName;
 @property (nonatomic) NSString *message;
+@property (nonatomic) NSString *createdAt;
 @property (nonatomic) NSString *likesSummary;
 @property (nonatomic) NSAttributedString *commentsSummary;
 
@@ -31,6 +32,16 @@
 
         RAC(self, userName) = RACObserve(self, post.user.userName);
         RAC(self, message) = RACObserve(self, post.message);
+        RAC(self, createdAt) =
+            [RACObserve(self, post.createdAt) map:^NSString *(NSDate *date) {
+                static NSDateFormatter *dateFormatter;
+                static dispatch_once_t onceToken;
+                dispatch_once(&onceToken, ^{
+                    dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.dateStyle = NSDateFormatterShortStyle;
+                });
+                return [dateFormatter stringFromDate:date];
+            }];
         RAC(self, likesSummary) =
             [RACObserve(self, post.likes) map:^id(NSArray *likes) {
                 NSArray *likeNamesArray = [likes valueForKey:@"userName"];

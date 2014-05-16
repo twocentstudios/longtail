@@ -24,6 +24,7 @@
     TCSPostsViewModel *postsViewModel = [[TCSPostsViewModel alloc] initWithController:postController];
     TCSPostsViewController *postsController = [[TCSPostsViewController alloc] initWithViewModel:postsViewModel];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postsController];
+    navigationController.navigationBar.translucent = NO;
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = navigationController;

@@ -13,6 +13,7 @@
 
 @property (nonatomic, readonly) NSString *userName;
 @property (nonatomic, readonly) NSString *message;
+@property (nonatomic, readonly) NSString *createdAt;
 @property (nonatomic, readonly) NSString *likesSummary;
 @property (nonatomic, readonly) NSAttributedString *commentsSummary;
 

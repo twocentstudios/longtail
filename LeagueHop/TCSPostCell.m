@@ -14,9 +14,10 @@
 #pragma mark Creation
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self != nil) {
         RAC(self.textLabel, text) = RACObserve(self, viewModel.message);
+        RAC(self.detailTextLabel, text) = RACObserve(self, viewModel.createdAt);
     }
     return self;
 }

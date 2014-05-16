@@ -12,6 +12,8 @@
 
 #pragma mark -
 
+NSString * const kDatabaseFilename = @"league_hop.sqlite";
+
 NSString * const kDatabaseCollectionPosts = @"posts";
 NSString * const kDatabaseCollectionPreferences = @"preferences";
 
@@ -28,9 +30,15 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 @implementation TCSPostController
 
 - (RACSignal *)fetchPostsForMonthDayKey:(NSString *)monthDayKey {
+    return [RACSignal concat:@[ [[self importPostsForSourceID:@(205493909486743)] ignoreValues],
+                                [self queryPostsForMonthDayKey:monthDayKey]]];
+}
+
+- (RACSignal *)queryPostsForMonthDayKey:(NSString *)monthDayKey {
     return [[[RACSignal return:[[[self class] database] newConnection]]
                 subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]]
                 map:^id(YapDatabaseConnection *connection) {
+                    NSLog(@"Starting read posts from database for %@...", monthDayKey);
                     NSMutableArray *array = [NSMutableArray array];
                     [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
                         [transaction enumerateKeysAndObjectsInCollection:kDatabaseCollectionPosts usingBlock:^(NSString *key, id object, BOOL *stop) {
@@ -40,40 +48,49 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                             return [proposedMonthDayKey isEqualToString:monthDayKey];
                         }];
                     }];
+                    NSLog(@"Read %li posts from database", [array count]);
                     return [array copy];
                 }];
 }
 
 - (RACSignal *)importPostsForSourceID:(NSNumber *)sourceID {
-    return [[[[[[[RACSignal return:[[[self class] database] newConnection]]
+    YapDatabaseConnection *connection = [[[self class] database] newConnection];
+    return [[[[[[[RACSignal return:connection]
                 subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]]
                 tryMap:^id(YapDatabaseConnection *connection, NSError *__autoreleasing *errorPtr) {
+                    NSLog(@"Starting last import check...");
                     __block NSDate *lastPostImportDate;
                     [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
                         lastPostImportDate = [transaction objectForKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
                     }];
-                    if (lastPostImportDate && [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:60*60*24*365]] == NSOrderedDescending) {
+                    if (lastPostImportDate && [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:60*60*24*365]] == NSOrderedAscending) {
+                        NSLog(@"Import not required at this time");
                         return nil;
                     }
+                    NSLog(@"Import will commence");
                     return connection;
                 }]
                 combineLatestWith:[[self class] getPostsForSourceID:sourceID]]
                 map:^id(RACTuple *t) {
                     RACTupleUnpack(YapDatabaseConnection *connection, NSArray *posts) = t;
+                    NSLog(@"Writing %li posts to database...", [posts count]);
                     [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                         for(TCSPostObject *post in posts) {
                             NSString *formattedKey = [@[post.monthDayKey, post.yearMonthDayKey, post.postId] componentsJoinedByString:kDatabaseKeySeparator];
                             [transaction setObject:post forKey:formattedKey inCollection:kDatabaseCollectionPosts];
                         }
                     }];
+                    NSLog(@"Writing posts to database complete");
                     return RACTuplePack(connection, @([posts count]));
                 }]
                 map:^id(RACTuple *t) {
                     RACTupleUnpack(YapDatabaseConnection *connection, NSNumber *totalImportedPosts) = t;
+                    NSDate *lastImportDate = [NSDate date];
                     [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                         [transaction setObject:totalImportedPosts forKey:kDatabaseKeyTotalImportedPosts inCollection:kDatabaseCollectionPreferences];
-                        [transaction setObject:[NSDate date] forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
+                        [transaction setObject:lastImportDate forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
                     }];
+                    NSLog(@"Last import date set to %@", lastImportDate);
                     return [RACSignal empty];
                 }]
                 catchTo:[RACSignal empty]];
@@ -193,7 +210,11 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
     static YapDatabase *database;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        database = [[YapDatabase alloc] initWithPath:@"leaguehop"];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *baseDir = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
+        NSString *databasePath = [baseDir stringByAppendingPathComponent:kDatabaseFilename];
+        database = [[YapDatabase alloc] initWithPath:databasePath];
+        NSAssert(database != nil, @"Database was not created at path %@", databasePath);
     });
     return database;
 }

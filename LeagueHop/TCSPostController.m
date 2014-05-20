@@ -89,7 +89,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 - (RACSignal *)importPostsForMyGroups {
     RACSignal *signal =
-        [[[self class] getGroups]
+        [[self getGroups]
             flattenMap:^RACStream *(NSArray *groups) {
                 return [self importPostsForGroups:groups];
             }];
@@ -99,11 +99,13 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 - (RACSignal *)importPostsForGroups:(NSArray *)groups {
     RACSignal *signal =
-        [[[groups.rac_sequence.signal map:^RACSignal *(TCSGroupObject *group) {
-            return [self importPostsForSourceID:group.groupId];
-        }]
-        flatten:1]
-        ignoreValues];
+        [[[[groups.rac_sequence
+            signalWithScheduler:[RACScheduler mainThreadScheduler]]
+            map:^RACSignal *(TCSGroupObject *group) {
+                return [self importPostsForSourceID:group.groupId];
+            }]
+            flatten:1]
+            ignoreValues];
 
     return signal;
 }

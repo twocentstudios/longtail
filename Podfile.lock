@@ -1,0 +1,77 @@
+PODS:
+  - Archimedes (1.1)
+  - Bolts (1.1.0)
+  - CocoaLumberjack (1.6.5.1):
+    - CocoaLumberjack/Core
+    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/Core (1.6.5.1)
+  - CocoaLumberjack/Extensions (1.6.5.1):
+    - CocoaLumberjack/Core
+  - Facebook-iOS-SDK (3.14.0):
+    - Bolts
+  - FlurrySDK (4.4.0):
+    - FlurrySDK/FlurrySDK
+  - FlurrySDK/FlurrySDK (4.4.0)
+  - Kiwi/ARC (2.2.4)
+  - Kiwi/NonARC (2.2.4)
+  - Kiwi/XCTest (2.2.4):
+    - Kiwi/ARC
+    - Kiwi/NonARC
+  - Mantle (1.4.1):
+    - Mantle/extobjc
+  - Mantle/extobjc (1.4.1)
+  - PonyDebugger (0.3.1):
+    - SocketRocket
+  - ReactiveCocoa (2.3):
+    - ReactiveCocoa/UI
+  - ReactiveCocoa/Core (2.3):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.3)
+  - ReactiveCocoa/UI (2.3):
+    - ReactiveCocoa/Core
+  - ReactiveCocoaLayout (0.4):
+    - Archimedes
+    - ReactiveCocoa (~> 2.0)
+  - ReactiveViewModel (0.2):
+    - ReactiveCocoa (~> 2.1)
+  - SocketRocket (0.3.1-beta2)
+  - SVProgressHUD (1.0)
+  - TestFlightSDK (2.2.3-beta)
+  - YapDatabase (2.4.2):
+    - YapDatabase/standard
+  - YapDatabase/common (2.4.2):
+    - CocoaLumberjack (~> 1.6.3)
+  - YapDatabase/standard (2.4.2):
+    - YapDatabase/common
+
+DEPENDENCIES:
+  - Facebook-iOS-SDK (~> 3.14)
+  - FlurrySDK (~> 4.3)
+  - Kiwi/XCTest
+  - Mantle (~> 1.4.1)
+  - PonyDebugger
+  - ReactiveCocoa (= 2.3)
+  - ReactiveCocoaLayout (= 0.4)
+  - ReactiveViewModel (= 0.2)
+  - SVProgressHUD (= 1.0.0)
+  - TestFlightSDK (~> 2.1)
+  - YapDatabase (~> 2.4)
+
+SPEC CHECKSUMS:
+  Archimedes: 1d1093ecde61c160ac046369bf4fe5175789b663
+  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
+  CocoaLumberjack: 17803afbade3126a377d32b8d23367264b44ced6
+  Facebook-iOS-SDK: 63e19ff8d275d63b765819f492a4e71e445f9822
+  FlurrySDK: 2cd8f2ce2383ca152c5d96fa34cb9ef29706feda
+  Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
+  Mantle: 0714cdb2b8559d9e6c2410d6a8529e3307bff189
+  PonyDebugger: d31607145d785b2315cd6f6a4ebaa378eb0c1340
+  ReactiveCocoa: dde7b11a14954edf789e7343b2c32e595caabd01
+  ReactiveCocoaLayout: 9e20c9574801c5b146ad11a01e19ca47e2dfb3ff
+  ReactiveViewModel: f636ab3e06b5e69664b69c883fcdb457ab5cb0cb
+  SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
+  SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
+  TestFlightSDK: 79a20263b43de6f094271655c023d5581762cf8a
+  YapDatabase: 051a7930e3b92097470fe7bcf58d4b715d79997e
+
+COCOAPODS: 0.32.1

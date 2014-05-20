@@ -59,7 +59,7 @@
             }];
 
         RAC(self, postViewModels) =
-            [[[[self.loadPostsCommand executionSignals]
+            [[[[[self.loadPostsCommand executionSignals]
                 switchToLatest]
                 map:^id(NSArray *posts) {
                     return [[posts.rac_sequence.signal
@@ -67,6 +67,9 @@
                                     return [[TCSPostViewModel alloc] initWithPost:post];
                                 }]
                                 toArray];
+                }]
+                map:^id(NSArray *posts) {
+                    return [posts sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@keypath(TCSPostObject.new, createdAt) ascending:NO]]];
                 }]
                 deliverOn:[RACScheduler mainThreadScheduler]];
 

@@ -19,7 +19,6 @@ NSString * const kDatabaseCollectionPosts = @"posts";
 NSString * const kDatabaseCollectionPreferences = @"preferences";
 
 NSString * const kDatabaseKeyLastPostImportDate = @"lastPostImportDate";
-NSString * const kDatabaseKeyTotalImportedPosts = @"totalImportedPosts";
 
 NSString * const kDatabaseKeySeparator = @":";
 
@@ -29,11 +28,6 @@ NSUInteger const kDatabasePostKeyYearMonthDayIndex = 1;
 NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 @implementation TCSPostController
-
-- (RACSignal *)fetchPostsForMonthDayKey:(NSString *)monthDayKey {
-    return [RACSignal concat:@[ [self conditionallyImportPostsForMyGroups],
-                                [self queryPostsForMonthDayKey:monthDayKey]]];
-}
 
 - (RACSignal *)queryPostsForMonthDayKey:(NSString *)monthDayKey {
     return [[[RACSignal return:[[[self class] database] newConnection]]
@@ -54,47 +48,36 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 }];
 }
 
-- (RACSignal *)conditionallyImportPostsForMyGroups {
-    RACSignal *isImportNeeded =
-        [[RACSignal return:[[[self class] database] newConnection]]
-            map:^id(YapDatabaseConnection *connection) {
-                NSLog(@"Starting last import check...");
-                __block NSDate *lastPostImportDate;
-                [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-                    lastPostImportDate = [transaction objectForKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
-                }];
-                if (!lastPostImportDate || [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*365]] == NSOrderedAscending) {
-                    NSLog(@"Import will commence");
-                    return @YES;
-                }
-                NSLog(@"Import not required at this time");
-                return @NO;
-            }];
-
-    RACSignal *markImported =
-        [[RACSignal return:[[[self class] database] newConnection]]
-            map:^id(YapDatabaseConnection *connection) {
-                NSDate *lastImportDate = [NSDate date];
-                [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                    [transaction setObject:lastImportDate forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
-                }];
-                NSLog(@"Last import date set to %@", lastImportDate);
-                return [RACSignal empty];
-            }];
-
-    RACSignal *import = [[self importPostsForMyGroups] concat:markImported];
-
-    return [RACSignal if:isImportNeeded then:import else:[RACSignal empty]];
+- (RACSignal *)isImportNeeded {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        YapDatabaseConnection *connection = [[[self class] database] newConnection];
+        NSLog(@"Starting last import check...");
+        __block NSDate *lastPostImportDate;
+        [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+            lastPostImportDate = [transaction objectForKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
+        }];
+        if (!lastPostImportDate || [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*365]] == NSOrderedAscending) {
+            NSLog(@"Import will commence");
+            [subscriber sendNext:@YES];
+        }
+        NSLog(@"Import not required at this time");
+        [subscriber sendNext:@NO];
+        [subscriber sendCompleted];
+        return nil;
+    }];
 }
 
-- (RACSignal *)importPostsForMyGroups {
-    RACSignal *signal =
-        [[self getGroups]
-            flattenMap:^RACStream *(NSArray *groups) {
-                return [self importPostsForGroups:groups];
-            }];
-
-    return signal;
+- (RACSignal *)markImportedDate:(NSDate *)importedDate {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        YapDatabaseConnection *connection = [[[self class] database] newConnection];
+        [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [transaction setObject:importedDate forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
+        }];
+        NSLog(@"Last import date set to %@", importedDate);
+        [subscriber sendNext:importedDate];
+        [subscriber sendCompleted];
+        return nil;
+    }];
 }
 
 - (RACSignal *)importPostsForGroups:(NSArray *)groups {
@@ -105,10 +88,51 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 return [self importPostsForSourceID:group.groupId];
             }]
             flatten:1]
-            ignoreValues];
+            concat:[self markImportedDate:[NSDate date]]];
 
     return signal;
 }
+
+// Sends an array of TCSGroupObjects up to one page.
+- (RACSignal *)getGroups {
+    NSString *graphPath = [NSString stringWithFormat:@"/me"];
+    NSDictionary *parameters = @{ @"fields": @"groups",
+                                  @"limit": @"5000" };
+
+    RACSignal *signal = [self requestGraphPath:graphPath parameters:parameters HTTPMethod:nil];
+
+    RACSignal *groupsSignal =
+        [[signal
+            tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
+                return dictionary[@"groups"][@"data"];
+            }]
+            tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
+                return [[[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
+                            TCSGroupObject *group = [MTLJSONAdapter modelOfClass:[TCSGroupObject class] fromJSONDictionary:postDictionary error:errorPtr];
+                                return group;
+                        }]
+                        filter:^BOOL(TCSGroupObject *group) {  // TEST: remove janelle's list manually
+                            return ![group.groupId isEqualToString:@"58936949405"];
+                        }]
+                        toArray];
+            }];
+
+    return groupsSignal;
+}
+
+- (RACSignal *)removeAllObjects {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        YapDatabaseConnection *connection = [[[self class] database] newConnection];
+        [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+            [transaction removeAllObjectsInAllCollections];
+        }];
+        NSLog(@"All objects removed");
+        [subscriber sendCompleted];
+        return nil;
+    }];
+}
+
+# pragma mark Private
 
 // Fetches all the posts for the given sourceID then writes them to the database.
 // Sends an NSNumber of the number of posts fetched and written.
@@ -130,8 +154,6 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 }];
 }
 
-# pragma mark FBClient
-
 // Sends an array of all posts objects from all pages.
 - (RACSignal *)getPostsForSourceID:(NSString *)sourceID {
     NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceID];
@@ -148,30 +170,6 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         }];
 
     return postsSignal;
-}
-
-// Sends an array of TCSGroupObjects up to one page.
-- (RACSignal *)getGroups {
-    NSString *graphPath = [NSString stringWithFormat:@"/me"];
-    NSDictionary *parameters = @{ @"fields": @"groups",
-                                  @"limit": @"5000" };
-
-    RACSignal *signal = [self requestGraphPath:graphPath parameters:parameters HTTPMethod:nil];
-
-    RACSignal *groupsSignal =
-        [[signal
-            tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
-                return dictionary[@"groups"][@"data"];
-            }]
-            tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
-                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
-                            TCSGroupObject *group = [MTLJSONAdapter modelOfClass:[TCSGroupObject class] fromJSONDictionary:postDictionary error:errorPtr];
-                                return group;
-                        }]
-                        toArray];
-            }];
-
-    return groupsSignal;
 }
 
 // Recursively pages the graphPath for objects.

@@ -55,7 +55,7 @@
         self.loadPostsCommand =
             [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
                 @strongify(self);
-                return [self.controller fetchPostsForMonthDayKey:self.monthDayKey];
+                return [self.controller queryPostsForMonthDayKey:self.monthDayKey];
             }];
 
         RAC(self, postViewModels) =

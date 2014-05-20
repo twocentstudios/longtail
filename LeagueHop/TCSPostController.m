@@ -63,12 +63,12 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
                     lastPostImportDate = [transaction objectForKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
                 }];
-                if (lastPostImportDate && [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:60*60*24*365]] == NSOrderedAscending) {
-                    NSLog(@"Import not required at this time");
-                    return @NO;
+                if (!lastPostImportDate || [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*365]] == NSOrderedAscending) {
+                    NSLog(@"Import will commence");
+                    return @YES;
                 }
-                NSLog(@"Import will commence");
-                return @YES;
+                NSLog(@"Import not required at this time");
+                return @NO;
             }];
 
     RACSignal *markImported =

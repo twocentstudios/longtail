@@ -15,6 +15,6 @@
 // Sends complete when all posts have been imported.
 // sourceID is the ID of the group whose feed will be imported.
 // Note: this signal performs all work on a background thread.
-- (RACSignal *)importPostsForSourceID:(NSNumber *)sourceID;
+- (RACSignal *)importPostsForSourceID:(NSString *)sourceID;
 
 @end

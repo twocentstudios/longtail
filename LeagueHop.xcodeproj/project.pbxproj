@@ -33,6 +33,7 @@
 		831512B9191F352B00331535 /* TCSPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512B8191F352B00331535 /* TCSPostCell.m */; };
 		831512BB191F3B6300331535 /* TCSExampleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512BA191F3B6300331535 /* TCSExampleTest.m */; };
 		831512BE191F418100331535 /* TCSLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512BD191F418100331535 /* TCSLoginViewController.m */; };
+		83C453F21925D647006779BB /* TCSGroupObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83C453F11925D647006779BB /* TCSGroupObject.m */; };
 		DCD951E56BE64564BD1CA933 /* libPods-LeagueHopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47AA04267C264DBF8086AFE9 /* libPods-LeagueHopTests.a */; };
 /* End PBXBuildFile section */
 
@@ -66,7 +67,7 @@
 		83151278191DEF8400331535 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		83151280191DEF8400331535 /* LeagueHopTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LeagueHopTests-Info.plist"; sourceTree = "<group>"; };
 		83151282191DEF8400331535 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		8315128E191DF06D00331535 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		8315128E191DF06D00331535 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		83151294191DF0E400331535 /* TCSPostObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostObject.h; sourceTree = "<group>"; };
 		83151295191DF0E400331535 /* TCSPostObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostObject.m; sourceTree = "<group>"; };
 		83151297191DF8E900331535 /* TCSCommentObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSCommentObject.h; sourceTree = "<group>"; };
@@ -93,6 +94,8 @@
 		831512BA191F3B6300331535 /* TCSExampleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSExampleTest.m; sourceTree = "<group>"; };
 		831512BC191F418100331535 /* TCSLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSLoginViewController.h; sourceTree = "<group>"; };
 		831512BD191F418100331535 /* TCSLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSLoginViewController.m; sourceTree = "<group>"; };
+		83C453F01925D647006779BB /* TCSGroupObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSGroupObject.h; sourceTree = "<group>"; };
+		83C453F11925D647006779BB /* TCSGroupObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSGroupObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +251,8 @@
 				83151298191DF8E900331535 /* TCSCommentObject.m */,
 				8315129D191DFB2500331535 /* TCSUserObject.h */,
 				8315129E191DFB2500331535 /* TCSUserObject.m */,
+				83C453F01925D647006779BB /* TCSGroupObject.h */,
+				83C453F11925D647006779BB /* TCSGroupObject.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 				8315126C191DEF8400331535 /* main.m in Sources */,
 				831512AF191F1B5F00331535 /* TCSPostsViewModel.m in Sources */,
 				83151299191DF8E900331535 /* TCSCommentObject.m in Sources */,
+				83C453F21925D647006779BB /* TCSGroupObject.m in Sources */,
 				83151296191DF0E400331535 /* TCSPostObject.m in Sources */,
 				831512B6191F23FE00331535 /* TCSPostViewModel.m in Sources */,
 				8315129F191DFB2500331535 /* TCSUserObject.m in Sources */,

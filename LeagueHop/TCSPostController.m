@@ -6,6 +6,7 @@
 #import "TCSPostController.h"
 
 #import "TCSPostObject.h"
+#import "TCSGroupObject.h"
 
 #import <FacebookSDK/Facebook.h>
 #import <YapDatabase/YapDatabase.h>
@@ -30,7 +31,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 @implementation TCSPostController
 
 - (RACSignal *)fetchPostsForMonthDayKey:(NSString *)monthDayKey {
-    return [RACSignal concat:@[ [[self importPostsForSourceID:@(205493909486743)] ignoreValues],
+    return [RACSignal concat:@[ [self conditionallyImportPostsForMyGroups],
                                 [self queryPostsForMonthDayKey:monthDayKey]]];
 }
 
@@ -53,24 +54,66 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 }];
 }
 
-- (RACSignal *)importPostsForSourceID:(NSNumber *)sourceID {
-    YapDatabaseConnection *connection = [[[self class] database] newConnection];
-    return [[[[[[[RACSignal return:connection]
+- (RACSignal *)conditionallyImportPostsForMyGroups {
+    RACSignal *isImportNeeded =
+        [[RACSignal return:[[[self class] database] newConnection]]
+            map:^id(YapDatabaseConnection *connection) {
+                NSLog(@"Starting last import check...");
+                __block NSDate *lastPostImportDate;
+                [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
+                    lastPostImportDate = [transaction objectForKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
+                }];
+                if (lastPostImportDate && [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:60*60*24*365]] == NSOrderedAscending) {
+                    NSLog(@"Import not required at this time");
+                    return @NO;
+                }
+                NSLog(@"Import will commence");
+                return @YES;
+            }];
+
+    RACSignal *markImported =
+        [[RACSignal return:[[[self class] database] newConnection]]
+            map:^id(YapDatabaseConnection *connection) {
+                NSDate *lastImportDate = [NSDate date];
+                [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    [transaction setObject:lastImportDate forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
+                }];
+                NSLog(@"Last import date set to %@", lastImportDate);
+                return [RACSignal empty];
+            }];
+
+    RACSignal *import = [[self importPostsForMyGroups] concat:markImported];
+
+    return [RACSignal if:isImportNeeded then:import else:[RACSignal empty]];
+}
+
+- (RACSignal *)importPostsForMyGroups {
+    RACSignal *signal =
+        [[[self class] getGroups]
+            flattenMap:^RACStream *(NSArray *groups) {
+                return [self importPostsForGroups:groups];
+            }];
+
+    return signal;
+}
+
+- (RACSignal *)importPostsForGroups:(NSArray *)groups {
+    RACSignal *signal =
+        [[[groups.rac_sequence.signal map:^RACSignal *(TCSGroupObject *group) {
+            return [self importPostsForSourceID:group.groupId];
+        }]
+        flatten:1]
+        ignoreValues];
+
+    return signal;
+}
+
+// Fetches all the posts for the given sourceID then writes them to the database.
+// Sends an NSNumber of the number of posts fetched and written.
+- (RACSignal *)importPostsForSourceID:(NSString *)sourceID {
+    return [[[[RACSignal return:[[[self class] database] newConnection]]
                 subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]]
-                tryMap:^id(YapDatabaseConnection *connection, NSError *__autoreleasing *errorPtr) {
-                    NSLog(@"Starting last import check...");
-                    __block NSDate *lastPostImportDate;
-                    [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
-                        lastPostImportDate = [transaction objectForKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
-                    }];
-                    if (lastPostImportDate && [lastPostImportDate compare:[NSDate dateWithTimeIntervalSinceNow:60*60*24*365]] == NSOrderedAscending) {
-                        NSLog(@"Import not required at this time");
-                        return nil;
-                    }
-                    NSLog(@"Import will commence");
-                    return connection;
-                }]
-                combineLatestWith:[[self class] getPostsForSourceID:sourceID]]
+                combineLatestWith:[self getPostsForSourceID:sourceID]]
                 map:^id(RACTuple *t) {
                     RACTupleUnpack(YapDatabaseConnection *connection, NSArray *posts) = t;
                     NSLog(@"Writing %li posts to database...", [posts count]);
@@ -81,24 +124,14 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                         }
                     }];
                     NSLog(@"Writing posts to database complete");
-                    return RACTuplePack(connection, @([posts count]));
-                }]
-                map:^id(RACTuple *t) {
-                    RACTupleUnpack(YapDatabaseConnection *connection, NSNumber *totalImportedPosts) = t;
-                    NSDate *lastImportDate = [NSDate date];
-                    [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                        [transaction setObject:totalImportedPosts forKey:kDatabaseKeyTotalImportedPosts inCollection:kDatabaseCollectionPreferences];
-                        [transaction setObject:lastImportDate forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
-                    }];
-                    NSLog(@"Last import date set to %@", lastImportDate);
-                    return [RACSignal empty];
-                }]
-                catchTo:[RACSignal empty]];
+                    return @([posts count]);
+                }];
 }
 
 # pragma mark FBClient
 
-+ (RACSignal *)getPostsForSourceID:(NSNumber *)sourceID {
+// Sends an array of all posts objects from all pages.
+- (RACSignal *)getPostsForSourceID:(NSString *)sourceID {
     NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceID];
 
     RACSignal *signal = [self recursivelyGetDataForGraphPath:graphPath parameters:@{@"limit": @"5000"} startArray:@[]];
@@ -115,12 +148,36 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
     return postsSignal;
 }
 
+// Sends an array of TCSGroupObjects up to one page.
+- (RACSignal *)getGroups {
+    NSString *graphPath = [NSString stringWithFormat:@"/me"];
+    NSDictionary *parameters = @{ @"fields": @"groups",
+                                  @"limit": @"5000" };
+
+    RACSignal *signal = [self requestGraphPath:graphPath parameters:parameters HTTPMethod:nil];
+
+    RACSignal *groupsSignal =
+        [[signal
+            tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
+                return dictionary[@"groups"][@"data"];
+            }]
+            tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
+                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
+                            TCSGroupObject *group = [MTLJSONAdapter modelOfClass:[TCSGroupObject class] fromJSONDictionary:postDictionary error:errorPtr];
+                                return group;
+                        }]
+                        toArray];
+            }];
+
+    return groupsSignal;
+}
+
 // Recursively pages the graphPath for objects.
 // graphPath should be a Facebook graphPath (e.g. /23423423/feed) when called outside this method.
 // parameters should not include the authToken when called outside this method.
 // startArray should be an empty array when called from outside this method.
-// Sends an array of all objects from all pages.
-+ (RACSignal *)recursivelyGetDataForGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters startArray:(NSArray *)startArray {
+// Sends an array of all objects from all pages in raw dictionary form.
+- (RACSignal *)recursivelyGetDataForGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters startArray:(NSArray *)startArray {
     NSParameterAssert(startArray);
 
     if (!graphPath) {
@@ -134,8 +191,9 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         requestSignal = [self requestGraphPath:graphPath parameters:parameters HTTPMethod:nil];
     }
 
+    @weakify(self);
     return [[requestSignal
-                tryMap:^id(NSDictionary *dictionary, NSError *__autoreleasing *errorPtr) {
+                map:^id(NSDictionary *dictionary) {
                     NSArray *array = dictionary[@"data"];
                     NSArray *combinedArray = [startArray arrayByAddingObjectsFromArray:array];
                     NSString *nextURLString = dictionary[@"paging"][@"next"];
@@ -145,15 +203,16 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                     return RACTuplePack(combinedArray, nextURLString);
                 }]
                 flattenMap:^RACStream *(RACTuple *t) {
+                    @strongify(self);
                     RACTupleUnpack(NSArray *array, NSString *nextURLString) = t;
                     return [self recursivelyGetDataForGraphPath:nextURLString parameters:nil startArray:array];
                 }];
 }
 
 // graphPath should be the path component not including host or parameters. Parameters should not include authToken.
-+ (RACSignal *)requestGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters HTTPMethod:(NSString *)HTTPMethod {
+- (RACSignal *)requestGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters HTTPMethod:(NSString *)HTTPMethod {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        FBRequestConnection *connection =
+        FBRequestConnection *requestConnection =
             [FBRequestConnection
                  startWithGraphPath:graphPath
                  parameters:parameters
@@ -167,21 +226,21 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                      }
              }];
         return [RACDisposable disposableWithBlock:^{
-            [connection cancel];
+            [requestConnection cancel];
         }];
     }];
 }
 
 // URLString should be a fully formed Facebook URL including host, path, and parameters, including auth token and paging tokens.
 // This method is a hack for requesting data using Facebook supplied paging URLs.
-+ (RACSignal *)requestURLString:(NSString *)URLString HTTPMethod:(NSString *)HTTPMethod {
+- (RACSignal *)requestURLString:(NSString *)URLString HTTPMethod:(NSString *)HTTPMethod {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
                                                       graphPath:nil
                                                      parameters:nil
                                                      HTTPMethod:HTTPMethod];
-        FBRequestConnection *connection = [[FBRequestConnection alloc] init];
-        [connection addRequest:request
+        FBRequestConnection *requestConnection = [[FBRequestConnection alloc] init];
+        [requestConnection addRequest:request
              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                  if (!error) {
                      [subscriber sendNext:result];
@@ -194,12 +253,12 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         NSURL *URL = [NSURL URLWithString:URLString];
         NSMutableURLRequest* URLRequest = [NSMutableURLRequest requestWithURL:URL];
         URLRequest.HTTPMethod = HTTPMethod ?: @"GET";
-        connection.urlRequest = URLRequest;
+        requestConnection.urlRequest = URLRequest;
 
-        [connection start];
+        [requestConnection start];
 
         return [RACDisposable disposableWithBlock:^{
-            [connection cancel];
+            [requestConnection cancel];
         }];
     }];
 }

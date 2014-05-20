@@ -83,6 +83,8 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 - (RACSignal *)importPostsForGroups:(NSArray *)groups {
     RACSignal *signal =
         [[[[groups.rac_sequence
+            // This sequence must be signalified on the main thread or the FBRequestConnections
+            // will never return.
             signalWithScheduler:[RACScheduler mainThreadScheduler]]
             map:^RACSignal *(TCSGroupObject *group) {
                 return [self importPostsForSourceID:group.groupId];

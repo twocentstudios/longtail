@@ -11,8 +11,10 @@
 
 @interface TCSGroupViewModel : TCSViewModel
 
+@property (nonatomic, readonly) TCSGroupObject *group;
+
 @property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSNumber *selected;
+@property (nonatomic, getter = isSelected) BOOL selected;
 
 - (instancetype)initWithGroup:(TCSGroupObject *)group;
 

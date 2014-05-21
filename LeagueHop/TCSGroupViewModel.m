@@ -15,7 +15,6 @@
 @property (nonatomic) TCSGroupObject *group;
 
 @property (nonatomic) NSString *name;
-@property (nonatomic) NSNumber *selected;
 
 @end
 
@@ -27,6 +26,7 @@
         _group = group;
 
         RAC(self, name) = RACObserve(self.group, name);
+        _selected = NO;
     }
     return self;
 }

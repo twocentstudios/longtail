@@ -62,14 +62,14 @@
             [[[[[self.loadPostsCommand executionSignals]
                 switchToLatest]
                 map:^id(NSArray *posts) {
+                    return [posts sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@keypath(TCSPostObject.new, createdAt) ascending:NO]]];
+                }]
+                map:^id(NSArray *posts) {
                     return [[posts.rac_sequence.signal
                                 map:^id(TCSPostObject *post) {
                                     return [[TCSPostViewModel alloc] initWithPost:post];
                                 }]
                                 toArray];
-                }]
-                map:^id(NSArray *posts) {
-                    return [posts sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@keypath(TCSPostObject.new, createdAt) ascending:NO]]];
                 }]
                 deliverOn:[RACScheduler mainThreadScheduler]];
 

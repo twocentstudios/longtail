@@ -16,6 +16,7 @@
 @property (nonatomic, readonly) NSArray *groupViewModels; // TCSGroupViewModels
 
 @property (nonatomic, readonly) RACCommand *loadGroupsCommand;
+@property (nonatomic, readonly) RACCommand *confirmSelectionCommand;
 
 - (instancetype)initWithController:(TCSPostController *)controller;
 

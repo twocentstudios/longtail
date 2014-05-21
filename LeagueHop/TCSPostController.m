@@ -109,12 +109,9 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 return dictionary[@"groups"][@"data"];
             }]
             tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
-                return [[[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
+                return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
                             TCSGroupObject *group = [MTLJSONAdapter modelOfClass:[TCSGroupObject class] fromJSONDictionary:postDictionary error:errorPtr];
                                 return group;
-                        }]
-                        filter:^BOOL(TCSGroupObject *group) {  // TEST: remove janelle's list manually
-                            return ![group.groupId isEqualToString:@"58936949405"];
                         }]
                         toArray];
             }];

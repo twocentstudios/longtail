@@ -46,8 +46,11 @@
             }
         }];
 
-    [[RACObserve(self, viewModel.importedPostsCountsSignal) logAll]
-        subscribeCompleted:^{
+    [self.viewModel.importedPostsCountsSignal
+        subscribeNext:^(NSString *countString) {
+            @strongify(self);
+            // TODO: add new label
+        } completed:^{
             @strongify(self);
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }];

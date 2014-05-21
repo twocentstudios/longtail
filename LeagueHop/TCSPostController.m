@@ -90,7 +90,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                 return [self importPostsForSourceID:group.groupId];
             }]
             flatten:1]
-            concat:[self markImportedDate:[NSDate date]]];
+            concat:[[self markImportedDate:[NSDate date]] ignoreValues]];
 
     return signal;
 }

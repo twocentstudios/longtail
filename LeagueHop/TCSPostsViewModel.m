@@ -10,6 +10,8 @@
 #import "TCSPostViewModel.h"
 #import "TCSPostObject.h"
 
+#import "TCSGroupsViewModel.h"
+
 #import "NSDate+TCSDateKey.h"
 
 @interface TCSPostsViewModel ()
@@ -23,6 +25,7 @@
 @property (nonatomic) NSString *monthDayKey;
 
 @property (nonatomic) RACCommand *loadPostsCommand;
+@property (nonatomic) RACSignal *presentGroupImportSignal;
 
 @end
 
@@ -80,6 +83,21 @@
         [self.didBecomeActiveSignal subscribeNext:^(TCSPostsViewModel *viewModel) {
             [viewModel.loadPostsCommand execute:nil];
         }];
+
+        _presentGroupImportSignal =
+            [[[[self.didBecomeActiveSignal
+                flattenMap:^RACSignal *(TCSPostsViewModel *viewModel) {
+                    return [viewModel.controller isImportNeeded];
+                }]
+                filter:^BOOL(NSNumber *isImportNeeded) {
+                    return [isImportNeeded boolValue];
+                }]
+                mapReplace:self.controller]
+                map:^id(TCSPostController *controller) {
+                    TCSGroupsViewModel *groupsViewModel = [[TCSGroupsViewModel alloc] initWithController:controller];
+                    return groupsViewModel;
+                }];
+
     }
     return self;
 }

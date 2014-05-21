@@ -44,14 +44,12 @@
         }];
 
         _importedPostsCountsSignal =
-            [[[[[[_importCommand executionSignals]
+            [[[[_importCommand executionSignals]
                 take:1]
                 flatten]
                 map:^NSString *(NSNumber *postsCount) {
                     return [postsCount stringValue];
-                }]
-                multicast:[RACReplaySubject replaySubjectWithCapacity:RACReplaySubjectUnlimitedCapacity]]
-                autoconnect];
+                }];
 
         [self.didBecomeActiveSignal subscribeNext:^(TCSGroupImportViewModel *viewModel) {
             [viewModel.importCommand execute:nil];

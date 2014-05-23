@@ -10,7 +10,7 @@
 #import "TCSPostViewModel.h"
 #import "TCSPostObject.h"
 
-#import "TCSGroupsViewModel.h"
+#import "TCSLoginViewModel.h"
 
 #import "NSDate+TCSDateKey.h"
 
@@ -25,7 +25,7 @@
 @property (nonatomic) NSString *monthDayKey;
 
 @property (nonatomic) RACCommand *loadPostsCommand;
-@property (nonatomic) RACSignal *presentGroupImportSignal;
+@property (nonatomic) RACSignal *presentLoginSignal;
 
 @end
 
@@ -84,7 +84,7 @@
             [viewModel.loadPostsCommand execute:nil];
         }];
 
-        _presentGroupImportSignal =
+        _presentLoginSignal =
             [[[[self.didBecomeActiveSignal
                 flattenMap:^RACSignal *(TCSPostsViewModel *viewModel) {
                     return [viewModel.controller isImportNeeded];
@@ -94,8 +94,8 @@
                 }]
                 mapReplace:self.controller]
                 map:^id(TCSPostController *controller) {
-                    TCSGroupsViewModel *groupsViewModel = [[TCSGroupsViewModel alloc] initWithController:controller];
-                    return groupsViewModel;
+                    TCSLoginViewModel *loginViewModel = [[TCSLoginViewModel alloc] initWithController:controller];
+                    return loginViewModel;
                 }];
 
     }

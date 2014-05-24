@@ -230,18 +230,8 @@
 			children = (
 				831512A6191EE81A00331535 /* TCSViewController.h */,
 				831512A7191EE81A00331535 /* TCSViewController.m */,
-				831512BC191F418100331535 /* TCSLoginViewController.h */,
-				831512BD191F418100331535 /* TCSLoginViewController.m */,
-				8386AD9C192B222800BBC28D /* TCSGroupSelectViewController.h */,
-				8386AD9D192B222800BBC28D /* TCSGroupSelectViewController.m */,
-				83868453192C4C210069E123 /* TCSGroupImportViewController.h */,
-				83868454192C4C210069E123 /* TCSGroupImportViewController.m */,
-				8386ADA5192B240900BBC28D /* TCSGroupCell.h */,
-				8386ADA6192B240900BBC28D /* TCSGroupCell.m */,
-				831512A3191EE74B00331535 /* TCSPostsViewController.h */,
-				831512A4191EE74B00331535 /* TCSPostsViewController.m */,
-				831512B7191F352B00331535 /* TCSPostCell.h */,
-				831512B8191F352B00331535 /* TCSPostCell.m */,
+				836048FA192F12CC002E48B8 /* Onboarding Flow */,
+				836048F9192F12C2002E48B8 /* Posts */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -252,18 +242,8 @@
 				831512A9191EE97A00331535 /* TCSViewModel.h */,
 				831512AC191EEA7100331535 /* TCSViewModel+Protected.h */,
 				831512AA191EE97A00331535 /* TCSViewModel.m */,
-				8386AD9F192B237B00BBC28D /* TCSGroupsViewModel.h */,
-				8386ADA0192B237B00BBC28D /* TCSGroupsViewModel.m */,
-				8386ADA2192B238900BBC28D /* TCSGroupViewModel.h */,
-				8386ADA3192B238900BBC28D /* TCSGroupViewModel.m */,
-				83868450192C435E0069E123 /* TCSGroupImportViewModel.h */,
-				83868451192C435E0069E123 /* TCSGroupImportViewModel.m */,
-				831512AD191F1B5F00331535 /* TCSPostsViewModel.h */,
-				831512AE191F1B5F00331535 /* TCSPostsViewModel.m */,
-				831512B4191F23FE00331535 /* TCSPostViewModel.h */,
-				831512B5191F23FE00331535 /* TCSPostViewModel.m */,
-				836048F6192EF836002E48B8 /* TCSLoginViewModel.h */,
-				836048F7192EF836002E48B8 /* TCSLoginViewModel.m */,
+				836048FB192F12E5002E48B8 /* Onboarding Flow */,
+				836048FC192F12EB002E48B8 /* Posts */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -299,6 +279,58 @@
 				831512B2191F1E7100331535 /* NSDate+TCSDateKey.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		836048F9192F12C2002E48B8 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				831512A3191EE74B00331535 /* TCSPostsViewController.h */,
+				831512A4191EE74B00331535 /* TCSPostsViewController.m */,
+				831512B7191F352B00331535 /* TCSPostCell.h */,
+				831512B8191F352B00331535 /* TCSPostCell.m */,
+			);
+			name = Posts;
+			sourceTree = "<group>";
+		};
+		836048FA192F12CC002E48B8 /* Onboarding Flow */ = {
+			isa = PBXGroup;
+			children = (
+				831512BC191F418100331535 /* TCSLoginViewController.h */,
+				831512BD191F418100331535 /* TCSLoginViewController.m */,
+				8386AD9C192B222800BBC28D /* TCSGroupSelectViewController.h */,
+				8386AD9D192B222800BBC28D /* TCSGroupSelectViewController.m */,
+				83868453192C4C210069E123 /* TCSGroupImportViewController.h */,
+				83868454192C4C210069E123 /* TCSGroupImportViewController.m */,
+				8386ADA5192B240900BBC28D /* TCSGroupCell.h */,
+				8386ADA6192B240900BBC28D /* TCSGroupCell.m */,
+			);
+			name = "Onboarding Flow";
+			sourceTree = "<group>";
+		};
+		836048FB192F12E5002E48B8 /* Onboarding Flow */ = {
+			isa = PBXGroup;
+			children = (
+				836048F6192EF836002E48B8 /* TCSLoginViewModel.h */,
+				836048F7192EF836002E48B8 /* TCSLoginViewModel.m */,
+				8386AD9F192B237B00BBC28D /* TCSGroupsViewModel.h */,
+				8386ADA0192B237B00BBC28D /* TCSGroupsViewModel.m */,
+				8386ADA2192B238900BBC28D /* TCSGroupViewModel.h */,
+				8386ADA3192B238900BBC28D /* TCSGroupViewModel.m */,
+				83868450192C435E0069E123 /* TCSGroupImportViewModel.h */,
+				83868451192C435E0069E123 /* TCSGroupImportViewModel.m */,
+			);
+			name = "Onboarding Flow";
+			sourceTree = "<group>";
+		};
+		836048FC192F12EB002E48B8 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				831512AD191F1B5F00331535 /* TCSPostsViewModel.h */,
+				831512AE191F1B5F00331535 /* TCSPostsViewModel.m */,
+				831512B4191F23FE00331535 /* TCSPostViewModel.h */,
+				831512B5191F23FE00331535 /* TCSPostViewModel.m */,
+			);
+			name = Posts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

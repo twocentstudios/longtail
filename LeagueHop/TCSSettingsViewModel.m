@@ -45,7 +45,7 @@
 
         @weakify(self);
 
-        RAC(self, title) = [RACSignal return:NSLocalizedString(@"Settings", nil)];
+        self.title = NSLocalizedString(@"Settings", nil);
 
         RAC(self, logInOutButtonText) =
             [[self.sessionController facebookSession]

@@ -269,19 +269,18 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
     static RACSignal *facebookSession;
     dispatch_once(&onceToken, ^{
         facebookSession =
-            [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-                [subscriber sendNext:[FBSession activeSession]];
-                [[FBSession activeSession] setStateChangeHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                    if (error) {
-                        [subscriber sendError:error];
-                    } else {
-                        [subscriber sendNext:session];
-                    }
-                }];
-                return nil;
-            }]
-            multicast:[RACReplaySubject replaySubjectWithCapacity:1]]
-            autoconnect];
+            // Use NSNotification because only one session state handler can be assigned at a time.
+            // We reserve that handler for session open operators.
+            [[[[[[RACSignal
+                    merge:@[ [[NSNotificationCenter defaultCenter] rac_addObserverForName:FBSessionDidBecomeOpenActiveSessionNotification object:nil],
+                             [[NSNotificationCenter defaultCenter] rac_addObserverForName:FBSessionDidBecomeClosedActiveSessionNotification object:nil] ]]
+                    map:^FBSession *(NSNotification *notification) {
+                        return (FBSession *)notification.object;
+                    }]
+                    startWith:[FBSession activeSession]]
+                    multicast:[RACReplaySubject replaySubjectWithCapacity:1]]
+                    autoconnect]
+                    logAll];
     });
     return facebookSession;
 }

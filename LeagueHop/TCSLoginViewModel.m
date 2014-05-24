@@ -40,14 +40,14 @@
         RAC(self, logInOutButtonText) =
             [[TCSPostController facebookSession]
                 map:^NSString *(FBSession *session) {
-                    if (session.state == FBSessionStateCreated || session.state == FBSessionStateCreatedTokenLoaded) {
+                    if (session.state == FBSessionStateCreated || session.state == FBSessionStateCreatedTokenLoaded || FB_ISSESSIONSTATETERMINAL(session.state)) {
                         return NSLocalizedString(@"Log in with Facebook", nil);
                     } else if (session.state == FBSessionStateCreatedOpening) {
                         return NSLocalizedString(@"Logging in...", nil);
-                    } else if (session.state == FBSessionStateOpen || session.state == FBSessionStateOpenTokenExtended) {
+                    } else if (FB_ISSESSIONOPENWITHSTATE(session.state)) {
                         return NSLocalizedString(@"Log out", nil);
                     } else {
-                        return @"";
+                        return @"Error";
                     }
                 }];
 
@@ -69,13 +69,14 @@
 
         _logInOutFacebookCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
             @strongify(self);
-            return [[TCSPostController facebookSession]
+            return [[[TCSPostController facebookSession]
+                        take:1]
                         flattenMap:^RACSignal *(FBSession *session) {
-                            if (session.state == FBSessionStateCreated) {
+                            if (session.state == FBSessionStateCreated || FB_ISSESSIONSTATETERMINAL(session.state)) {
                                 return [self.controller logInToFacebook];
-                            } else if (session.state == FBSessionStateCreatedOpening || session.state == FBSessionStateCreatedTokenLoaded) {
+                            } else if (session.state == FBSessionStateCreatedTokenLoaded) {
                                 return [self.controller reauthenticateFacebook];
-                            } else if (session.state == FBSessionStateOpen || session.state == FBSessionStateOpenTokenExtended) {
+                            } else if (FB_ISSESSIONOPENWITHSTATE(session.state)) {
                                 return [self.controller logOutOfFacebook];
                             } else {
                                 return [RACSignal empty];

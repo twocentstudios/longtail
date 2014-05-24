@@ -11,12 +11,11 @@
 
 @interface TCSLoginViewModel : TCSViewModel
 
-@property (nonatomic, readonly) NSString *loginButtonText;
+@property (nonatomic, readonly) NSString *logInOutButtonText;
 
 @property (nonatomic, readonly, getter = isLoading) BOOL loading;
 
-@property (nonatomic, readonly) RACCommand *logInToFacebookCommand;
-@property (nonatomic, readonly) RACCommand *logOutOfFacebookCommand;
+@property (nonatomic, readonly) RACCommand *logInOutFacebookCommand;
 @property (nonatomic, readonly) RACCommand *confirmFacebookUserCommand;
 
 - (instancetype)initWithController:(TCSPostController *)controller;

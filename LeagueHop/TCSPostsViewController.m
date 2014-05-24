@@ -5,8 +5,8 @@
 
 #import "TCSPostsViewController.h"
 
-#import "TCSGroupSelectViewController.h"
-#import "TCSGroupViewModel.h"
+#import "TCSLoginViewController.h"
+#import "TCSLoginViewModel.h"
 
 #import "TCSPostViewModel.h"
 
@@ -49,16 +49,15 @@
             [tableView reloadData];
         }];
 
-    [[RACObserve(self, viewModel.presentGroupImportSignal)
+    [[RACObserve(self, viewModel.presentLoginSignal)
         switchToLatest]
-        subscribeNext:^(TCSGroupViewModel *groupViewModel) {
+        subscribeNext:^(TCSLoginViewModel *loginViewModel) {
             @strongify(self);
-            TCSGroupSelectViewController *groupsViewController = [[TCSGroupSelectViewController alloc] initWithViewModel:groupViewModel];
-            UINavigationController *groupsNavigationController = [[UINavigationController alloc] initWithRootViewController:groupsViewController];
-            groupsNavigationController.navigationBar.translucent = NO;
-            [self presentViewController:groupsNavigationController animated:YES completion:nil];
+            TCSLoginViewController *loginViewController = [[TCSLoginViewController alloc] initWithViewModel:loginViewModel];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            navigationController.navigationBar.translucent = NO;
+            [self presentViewController:navigationController animated:YES completion:nil];
         }];
-
 }
 
 - (void)viewWillLayoutSubviews {

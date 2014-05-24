@@ -13,13 +13,11 @@
 
 @interface TCSLoginViewModel ()
 
-@property (nonatomic) NSString *loginButtonText;
+@property (nonatomic) NSString *logInOutButtonText;
 
 @property (nonatomic, getter = isLoading) BOOL loading;
 
-@property (nonatomic) RACCommand *logInToFacebookCommand;
-@property (nonatomic) RACCommand *logOutOfFacebookCommand;
-@property (nonatomic) RACCommand *reauthenticateFacebookCommand;
+@property (nonatomic) RACCommand *logInOutFacebookCommand;
 @property (nonatomic) RACCommand *confirmFacebookUserCommand;
 
 @property (nonatomic) TCSPostController *controller;
@@ -39,27 +37,17 @@
 
         @weakify(self);
 
-        RAC(self, loginButtonText) =
+        RAC(self, logInOutButtonText) =
             [[TCSPostController facebookSession]
                 map:^NSString *(FBSession *session) {
-                    if (session.state == FBSessionStateCreated) {
-                        return NSLocalizedString(@"Login with Facebook", nil);
-                    } else if (session.state == FBSessionStateCreatedOpening || FBSessionStateCreatedTokenLoaded) {
+                    if (session.state == FBSessionStateCreated || session.state == FBSessionStateCreatedTokenLoaded) {
+                        return NSLocalizedString(@"Log in with Facebook", nil);
+                    } else if (session.state == FBSessionStateCreatedOpening) {
                         return NSLocalizedString(@"Logging in...", nil);
                     } else if (session.state == FBSessionStateOpen || session.state == FBSessionStateOpenTokenExtended) {
                         return NSLocalizedString(@"Log out", nil);
                     } else {
                         return @"";
-                    }
-                }];
-
-        RACSignal *logInEnabled =
-            [[TCSPostController facebookSession]
-                map:^NSNumber *(FBSession *session) {
-                    if (session.state == FBSessionStateCreated) {
-                        return @YES;
-                    } else {
-                        return @NO;
                     }
                 }];
 
@@ -73,60 +61,31 @@
                     }
                 }];
 
-        RACSignal *reauthenticateEnabled =
-            [[TCSPostController facebookSession]
-                map:^NSNumber *(FBSession *session) {
-                    if (session.state == FBSessionStateCreatedTokenLoaded) {
-                        return @YES;
-                    } else {
-                        return @NO;
-                    }
-                }];
-
         _confirmFacebookUserCommand = [[RACCommand alloc] initWithEnabled:logOutEnabled signalBlock:^RACSignal *(id _) {
             @strongify(self);
             TCSGroupsViewModel *viewModel = [[TCSGroupsViewModel alloc] initWithController:self.controller];
             return [RACSignal return:viewModel];
         }];
 
-        _logInToFacebookCommand = [[RACCommand alloc] initWithEnabled:logInEnabled signalBlock:^RACSignal *(id _) {
+        _logInOutFacebookCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
             @strongify(self);
-            return [self.controller logInToFacebook];
+            return [[TCSPostController facebookSession]
+                        flattenMap:^RACSignal *(FBSession *session) {
+                            if (session.state == FBSessionStateCreated) {
+                                return [self.controller logInToFacebook];
+                            } else if (session.state == FBSessionStateCreatedOpening || session.state == FBSessionStateCreatedTokenLoaded) {
+                                return [self.controller reauthenticateFacebook];
+                            } else if (session.state == FBSessionStateOpen || session.state == FBSessionStateOpenTokenExtended) {
+                                return [self.controller logOutOfFacebook];
+                            } else {
+                                return [RACSignal empty];
+                            }
+                        }];
         }];
 
-        _logOutOfFacebookCommand = [[RACCommand alloc] initWithEnabled:logOutEnabled signalBlock:^RACSignal *(id _) {
-            @strongify(self);
-            return [self.controller logOutOfFacebook];
-        }];
+        RAC(self, loading) = [self.logInOutFacebookCommand executing];
 
-        _reauthenticateFacebookCommand = [[RACCommand alloc] initWithEnabled:reauthenticateEnabled signalBlock:^RACSignal *(id _) {
-            @strongify(self);
-            return [self.controller reauthenticateFacebook];
-        }];
-
-        RAC(self, loading) =
-            [[RACSignal merge:
-                @[
-                    [self.logInToFacebookCommand executing],
-                    [self.logOutOfFacebookCommand executing],
-                    [self.reauthenticateFacebookCommand executing]
-                ]]
-                or];
-
-        [[[RACSignal merge:
-            @[
-                [self.logInToFacebookCommand errors],
-                [self.logOutOfFacebookCommand errors],
-                [self.reauthenticateFacebookCommand errors]
-            ]]
-            switchToLatest]
-            subscribe:_errors];
-
-        [[self.didBecomeActiveSignal
-            flattenMap:^RACStream *(TCSLoginViewModel *loginViewModel) {
-                return [[loginViewModel reauthenticateFacebookCommand] execute:nil];
-            }]
-            subscribeError:^(NSError *error) { }];
+        [[self.logInOutFacebookCommand errors] subscribe:_errors];
     }
     return self;
 }

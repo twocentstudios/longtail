@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "TCSViewController.h"
 
-@interface TCSLoginViewController : UIViewController
+#import "TCSLoginViewModel.h"
+
+@interface TCSLoginViewController : TCSViewController
+
+@property (nonatomic) TCSLoginViewModel *viewModel;
 
 @end

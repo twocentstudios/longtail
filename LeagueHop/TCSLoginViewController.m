@@ -5,49 +5,59 @@
 
 #import "TCSLoginViewController.h"
 
-#import <FacebookSDK/FacebookSDK.h>
+#import "TCSGroupSelectViewController.h"
+#import "TCSGroupViewModel.h"
 
 #pragma mark -
 
-@interface TCSLoginViewController () <FBLoginViewDelegate>
+@interface TCSLoginViewController ()
 
-@property (nonatomic) FBLoginView *loginView;
+@property (nonatomic) UIButton *logInOutButton;
+
+@property (nonatomic) UIButton *nextButton;
 
 @end
 
 
 @implementation TCSLoginViewController
 
+@dynamic viewModel;
+
 #pragma mark UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    @weakify(self);
+
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.loginView = [[FBLoginView alloc] initWithReadPermissions:@[@"email, public_profile, user_groups, user_status"]];
-    self.loginView.delegate = self;
-    [self.view addSubview:self.loginView];
+    self.logInOutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.logInOutButton.rac_command = self.viewModel.logInOutFacebookCommand;
+    [self.logInOutButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, logInOutButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
+    [self.view addSubview:self.logInOutButton];
 
-    @weakify(self);
-    [[self rac_signalForSelector:@selector(loginViewShowingLoggedInUser:) fromProtocol:@protocol(FBLoginViewDelegate)]
-        subscribeNext:^(id _) {
+    self.nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.nextButton.rac_command = self.viewModel.confirmFacebookUserCommand;
+    [self.nextButton setTitle:NSLocalizedString(@"Continue", nil) forState:UIControlStateNormal];
+    [self.view addSubview:self.nextButton];
+
+
+    [[[self.nextButton.rac_command executionSignals]
+        switchToLatest]
+        subscribeNext:^(TCSGroupsViewModel *groupsViewModel) {
             @strongify(self);
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }];
-
-    [[self rac_signalForSelector:@selector(loginView:handleError:) fromProtocol:@protocol(FBLoginViewDelegate)]
-        subscribeNext:^(RACTuple *t) {
-            NSError *error = t.second;
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Login Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
+            TCSGroupSelectViewController *groupSelectViewController = [[TCSGroupSelectViewController alloc] initWithViewModel:groupsViewModel];
+            [self.navigationController pushViewController:groupSelectViewController animated:YES];
         }];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
 
-    self.loginView.frame = CGRectOffset(self.loginView.frame, (self.view.center.x - (self.loginView.frame.size.width / 2)), 40);
+    self.logInOutButton.frame = CGRectMake(30, 60, 260, 50);
+
+    self.nextButton.frame = CGRectMake(30, 180, 260, 50);
 }
 
 @end

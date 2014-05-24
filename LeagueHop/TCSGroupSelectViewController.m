@@ -38,9 +38,6 @@
     [self.tableView registerClass:TCSGroupCell.class forCellReuseIdentifier:NSStringFromClass(TCSGroupCell.class)];
     [self.view addSubview:self.tableView];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
-    self.navigationItem.leftBarButtonItem.rac_command = self.viewModel.loadGroupsCommand;
-
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.confirmSelectionCommand;
 

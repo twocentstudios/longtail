@@ -30,8 +30,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    @weakify(self);
-
     RAC(self, title) = RACObserve(self, viewModel.title);
 
     self.tableView = [[UITableView alloc] init];
@@ -40,8 +38,11 @@
     [self.tableView registerClass:TCSPostCell.class forCellReuseIdentifier:NSStringFromClass(TCSPostCell.class)];
     [self.view addSubview:self.tableView];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
-    self.navigationItem.leftBarButtonItem.rac_command = self.viewModel.loadPostsCommand;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
+    self.navigationItem.leftBarButtonItem.rac_command = self.viewModel.presentSettingsCommand;
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
+    self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.loadPostsCommand;
 
     [[RACObserve(self, viewModel.postViewModels)
         mapReplace:self.tableView]
@@ -49,15 +50,23 @@
             [tableView reloadData];
         }];
 
+    void (^presentSettingsViewController)(TCSLoginViewModel *) = ^(TCSLoginViewModel *loginViewModel) {
+        TCSLoginViewController *loginViewController = [[TCSLoginViewController alloc] initWithViewModel:loginViewModel];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+        navigationController.navigationBar.translucent = NO;
+        [self presentViewController:navigationController animated:YES completion:nil];
+    };
+
     [[RACObserve(self, viewModel.presentLoginSignal)
         switchToLatest]
-        subscribeNext:^(TCSLoginViewModel *loginViewModel) {
-            @strongify(self);
-            TCSLoginViewController *loginViewController = [[TCSLoginViewController alloc] initWithViewModel:loginViewModel];
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-            navigationController.navigationBar.translucent = NO;
-            [self presentViewController:navigationController animated:YES completion:nil];
-        }];
+        subscribeNext:presentSettingsViewController];
+
+    [[[RACObserve(self, viewModel.presentSettingsCommand)
+        flattenMap:^RACSignal *(RACCommand *command) {
+            return [command executionSignals];
+        }]
+        switchToLatest]
+        subscribeNext:presentSettingsViewController];
 }
 
 - (void)viewWillLayoutSubviews {

@@ -11,6 +11,7 @@
 #import "TCSPostObject.h"
 
 #import "TCSLoginViewModel.h"
+#import "TCSSessionController.h"
 
 #import "NSDate+TCSDateKey.h"
 
@@ -25,6 +26,7 @@
 @property (nonatomic) NSString *monthDayKey;
 
 @property (nonatomic) RACCommand *loadPostsCommand;
+@property (nonatomic) RACCommand *presentSettingsCommand;
 @property (nonatomic) RACSignal *presentLoginSignal;
 
 @end
@@ -55,10 +57,21 @@
             }]
             distinctUntilChanged];
 
-        self.loadPostsCommand =
+        _loadPostsCommand =
             [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
                 @strongify(self);
                 return [self.controller queryPostsForMonthDayKey:self.monthDayKey];
+            }];
+
+        _presentSettingsCommand =
+            [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
+                return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+                    TCSSessionController *sessionController = [[TCSSessionController alloc] init];
+                    TCSLoginViewModel *loginViewModel = [[TCSLoginViewModel alloc] initWithController:sessionController];
+                    [subscriber sendNext:loginViewModel];
+                    [subscriber sendCompleted];
+                    return nil;
+                }];
             }];
 
         RAC(self, postViewModels) =
@@ -92,10 +105,9 @@
                 filter:^BOOL(NSNumber *isImportNeeded) {
                     return [isImportNeeded boolValue];
                 }]
-                mapReplace:self.controller]
-                map:^id(TCSPostController *controller) {
-                    TCSLoginViewModel *loginViewModel = [[TCSLoginViewModel alloc] initWithController:controller];
-                    return loginViewModel;
+                mapReplace:self.presentSettingsCommand]
+                flattenMap:^RACSignal *(RACCommand *presentSettingsCommand) {
+                    return [presentSettingsCommand execute:nil];
                 }];
 
     }

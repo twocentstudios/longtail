@@ -18,7 +18,10 @@
 // Initiates loading the posts for the day from the database. Does NOT initiate an import.
 @property (nonatomic, readonly) RACCommand *loadPostsCommand;
 
-// Sends a TCSLoginViewModel if login/import should be presented.
+// Sends a TCSLoginViewModel.
+@property (nonatomic, readonly) RACCommand *presentSettingsCommand;
+
+// Triggers `presentSettingsCommand` if login/import should be presented.
 @property (nonatomic, readonly) RACSignal *presentLoginSignal;
 
 - (instancetype)initWithController:(TCSPostController *)controller;

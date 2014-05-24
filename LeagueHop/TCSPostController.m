@@ -8,12 +8,10 @@
 #import "TCSPostObject.h"
 #import "TCSGroupObject.h"
 
-#import <FacebookSDK/Facebook.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import <YapDatabase/YapDatabase.h>
 
 #pragma mark -
-
-NSString * const kFacebookReadPermissions = @"public_profile,user_groups";
 
 NSString * const kDatabaseFilename = @"league_hop.sqlite";
 
@@ -261,76 +259,6 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         return [RACDisposable disposableWithBlock:^{
             [requestConnection cancel];
         }];
-    }];
-}
-
-+ (RACSignal *)facebookSession {
-    static dispatch_once_t onceToken;
-    static RACSignal *facebookSession;
-    dispatch_once(&onceToken, ^{
-        facebookSession =
-            // Use NSNotification because only one session state handler can be assigned at a time.
-            // We reserve that handler for session open operators.
-            [[[[[[RACSignal
-                    merge:@[ [[NSNotificationCenter defaultCenter] rac_addObserverForName:FBSessionDidBecomeOpenActiveSessionNotification object:nil],
-                             [[NSNotificationCenter defaultCenter] rac_addObserverForName:FBSessionDidBecomeClosedActiveSessionNotification object:nil] ]]
-                    map:^FBSession *(NSNotification *notification) {
-                        return (FBSession *)notification.object;
-                    }]
-                    startWith:[FBSession activeSession]]
-                    multicast:[RACReplaySubject replaySubjectWithCapacity:1]]
-                    autoconnect]
-                    logAll];
-    });
-    return facebookSession;
-}
-
-- (RACSignal *)logOutOfFacebook {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        [[FBSession activeSession] closeAndClearTokenInformation];
-        [subscriber sendNext:[FBSession activeSession]];
-        [subscriber sendCompleted];
-        return nil;
-    }];
-}
-
-- (RACSignal *)reauthenticateFacebook {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        if ([FBSession activeSession].state != FBSessionStateCreatedTokenLoaded) {
-            [subscriber sendError:[NSError errorWithDomain:@"com.leaguehop" code:0 userInfo:@{NSLocalizedDescriptionKey: @"No cached Facebook token found."}]];
-        } else {
-            [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
-                                               allowLoginUI:NO
-                                          completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
-                                                if (error) {
-                                                    [subscriber sendError:error];
-                                                } else {
-                                                    [subscriber sendNext:session];
-                                                    [subscriber sendCompleted];
-                                                }
-                                            }];
-        }
-        return nil;
-    }];
-}
-
-- (RACSignal *)logInToFacebook {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        if ([FBSession activeSession].state != FBSessionStateCreated) {
-            [subscriber sendError:[NSError errorWithDomain:@"com.leaguehop" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Facebook session state not ready for log in."}]];
-        } else {
-            [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
-                                               allowLoginUI:YES
-                                          completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
-                                                if (error) {
-                                                    [subscriber sendError:error];
-                                                } else {
-                                                    [subscriber sendNext:session];
-                                                    [subscriber sendCompleted];
-                                                }
-                                            }];
-        }
-        return nil;
     }];
 }
 

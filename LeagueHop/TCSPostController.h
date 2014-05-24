@@ -34,20 +34,4 @@
 // Truncates all posts from the database, removes the last imported date, and completes.
 - (RACSignal *)removeAllObjects;
 
-# pragma mark Facebook Session Management
-
-// A replay subject that sends the current Facebook session and never completes.
-+ (RACSignal *)facebookSession;
-
-// Sends the session then completes. Sends error if session is not in FBSessionCreated state.
-- (RACSignal *)logInToFacebook;
-
-// Sends the session then completes. Sends error if session is not in FBSessionCreatedTokenLoaded state.
-- (RACSignal *)reauthenticateFacebook;
-
-// Sends the session then completes.
-- (RACSignal *)logOutOfFacebook;
-
-
-
 @end

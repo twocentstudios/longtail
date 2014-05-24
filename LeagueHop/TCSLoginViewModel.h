@@ -5,19 +5,22 @@
 
 #import "TCSViewModel.h"
 
-@class TCSPostController;
+@class TCSSessionController;
 
 #pragma mark -
 
 @interface TCSLoginViewModel : TCSViewModel
 
+@property (nonatomic, readonly) NSString *title;
+
+@property (nonatomic, readonly) NSString *importGroupsButtonText;
 @property (nonatomic, readonly) NSString *logInOutButtonText;
 
 @property (nonatomic, readonly, getter = isLoading) BOOL loading;
 
 @property (nonatomic, readonly) RACCommand *logInOutFacebookCommand;
-@property (nonatomic, readonly) RACCommand *confirmFacebookUserCommand;
+@property (nonatomic, readonly) RACCommand *presentGroupImportCommand;
 
-- (instancetype)initWithController:(TCSPostController *)controller;
+- (instancetype)initWithController:(TCSSessionController *)controller;
 
 @end

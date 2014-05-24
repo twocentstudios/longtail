@@ -6,21 +6,26 @@
 #import "TCSLoginViewModel.h"
 #import "TCSViewModel+Protected.h"
 
+#import "TCSSessionController.h"
 #import "TCSPostController.h"
+
 #import <FacebookSDK/FacebookSDK.h>
 
 #import "TCSGroupsViewModel.h"
 
 @interface TCSLoginViewModel ()
 
+@property (nonatomic) NSString *title;
+
+@property (nonatomic) NSString *importGroupsButtonText;
 @property (nonatomic) NSString *logInOutButtonText;
 
 @property (nonatomic, getter = isLoading) BOOL loading;
 
 @property (nonatomic) RACCommand *logInOutFacebookCommand;
-@property (nonatomic) RACCommand *confirmFacebookUserCommand;
+@property (nonatomic) RACCommand *presentGroupImportCommand;
 
-@property (nonatomic) TCSPostController *controller;
+@property (nonatomic) TCSSessionController *controller;
 
 @end
 
@@ -28,7 +33,7 @@
 
 @implementation TCSLoginViewModel
 
-- (instancetype)initWithController:(TCSPostController *)controller {
+- (instancetype)initWithController:(TCSSessionController *)controller {
     NSParameterAssert(controller);
 
     self = [super init];
@@ -37,8 +42,10 @@
 
         @weakify(self);
 
+        RAC(self, title) = [RACSignal return:NSLocalizedString(@"Settings", nil)];
+
         RAC(self, logInOutButtonText) =
-            [[TCSPostController facebookSession]
+            [[self.controller facebookSession]
                 map:^NSString *(FBSession *session) {
                     if (session.state == FBSessionStateCreated || session.state == FBSessionStateCreatedTokenLoaded || FB_ISSESSIONSTATETERMINAL(session.state)) {
                         return NSLocalizedString(@"Log in with Facebook", nil);
@@ -52,7 +59,7 @@
                 }];
 
         RACSignal *logOutEnabled =
-            [[TCSPostController facebookSession]
+            [[self.controller facebookSession]
                 map:^NSNumber *(FBSession *session) {
                     if (session.state == FBSessionStateOpen || session.state == FBSessionStateOpenTokenExtended) {
                         return @YES;
@@ -61,15 +68,24 @@
                     }
                 }];
 
-        _confirmFacebookUserCommand = [[RACCommand alloc] initWithEnabled:logOutEnabled signalBlock:^RACSignal *(id _) {
-            @strongify(self);
-            TCSGroupsViewModel *viewModel = [[TCSGroupsViewModel alloc] initWithController:self.controller];
+        RAC(self, importGroupsButtonText) =
+            [logOutEnabled map:^NSString *(NSNumber *logOutEnabled) {
+                if ([logOutEnabled boolValue]) {
+                    return NSLocalizedString(@"Import Facebook Groups", nil);
+                } else {
+                    return NSLocalizedString(@"Log in to import Facebook Groups", nil);
+                }
+            }];
+
+        _presentGroupImportCommand = [[RACCommand alloc] initWithEnabled:logOutEnabled signalBlock:^RACSignal *(id _) {
+            TCSPostController *postController = [[TCSPostController alloc] init];
+            TCSGroupsViewModel *viewModel = [[TCSGroupsViewModel alloc] initWithController:postController];
             return [RACSignal return:viewModel];
         }];
 
         _logInOutFacebookCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
             @strongify(self);
-            return [[[TCSPostController facebookSession]
+            return [[[self.controller facebookSession]
                         take:1]
                         flattenMap:^RACSignal *(FBSession *session) {
                             if (session.state == FBSessionStateCreated || FB_ISSESSIONSTATETERMINAL(session.state)) {

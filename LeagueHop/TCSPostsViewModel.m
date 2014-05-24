@@ -10,7 +10,7 @@
 #import "TCSPostViewModel.h"
 #import "TCSPostObject.h"
 
-#import "TCSLoginViewModel.h"
+#import "TCSSettingsViewModel.h"
 #import "TCSSessionController.h"
 
 #import "NSDate+TCSDateKey.h"
@@ -27,7 +27,7 @@
 
 @property (nonatomic) RACCommand *loadPostsCommand;
 @property (nonatomic) RACCommand *presentSettingsCommand;
-@property (nonatomic) RACSignal *presentLoginSignal;
+@property (nonatomic) RACSignal *shouldPresentSettingsSignal;
 
 @end
 
@@ -66,9 +66,10 @@
         _presentSettingsCommand =
             [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
                 return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+                    @strongify(self);
                     TCSSessionController *sessionController = [[TCSSessionController alloc] init];
-                    TCSLoginViewModel *loginViewModel = [[TCSLoginViewModel alloc] initWithController:sessionController];
-                    [subscriber sendNext:loginViewModel];
+                    TCSSettingsViewModel *settingsViewModel = [[TCSSettingsViewModel alloc] initWithSessionController:sessionController postController:self.controller];
+                    [subscriber sendNext:settingsViewModel];
                     [subscriber sendCompleted];
                     return nil;
                 }];
@@ -97,7 +98,7 @@
             [viewModel.loadPostsCommand execute:nil];
         }];
 
-        _presentLoginSignal =
+        _shouldPresentSettingsSignal =
             [[[[self.didBecomeActiveSignal
                 flattenMap:^RACSignal *(TCSPostsViewModel *viewModel) {
                     return [viewModel.controller isImportNeeded];

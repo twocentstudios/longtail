@@ -5,8 +5,8 @@
 
 #import "TCSPostsViewController.h"
 
-#import "TCSLoginViewController.h"
-#import "TCSLoginViewModel.h"
+#import "TCSSettingsViewController.h"
+#import "TCSSettingsViewModel.h"
 
 #import "TCSPostViewModel.h"
 
@@ -50,14 +50,14 @@
             [tableView reloadData];
         }];
 
-    void (^presentSettingsViewController)(TCSLoginViewModel *) = ^(TCSLoginViewModel *loginViewModel) {
-        TCSLoginViewController *loginViewController = [[TCSLoginViewController alloc] initWithViewModel:loginViewModel];
+    void (^presentSettingsViewController)(TCSSettingsViewModel *) = ^(TCSSettingsViewModel *loginViewModel) {
+        TCSSettingsViewController *loginViewController = [[TCSSettingsViewController alloc] initWithViewModel:loginViewModel];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
         navigationController.navigationBar.translucent = NO;
         [self presentViewController:navigationController animated:YES completion:nil];
     };
 
-    [[RACObserve(self, viewModel.presentLoginSignal)
+    [[RACObserve(self, viewModel.shouldPresentSettingsSignal)
         switchToLatest]
         subscribeNext:presentSettingsViewController];
 

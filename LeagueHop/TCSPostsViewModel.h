@@ -22,7 +22,7 @@
 @property (nonatomic, readonly) RACCommand *presentSettingsCommand;
 
 // Triggers `presentSettingsCommand` if login/import should be presented.
-@property (nonatomic, readonly) RACSignal *presentLoginSignal;
+@property (nonatomic, readonly) RACSignal *shouldPresentSettingsSignal;
 
 - (instancetype)initWithController:(TCSPostController *)controller;
 

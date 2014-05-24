@@ -3,14 +3,14 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-#import "TCSLoginViewController.h"
+#import "TCSSettingsViewController.h"
 
 #import "TCSGroupSelectViewController.h"
 #import "TCSGroupViewModel.h"
 
 #pragma mark -
 
-@interface TCSLoginViewController ()
+@interface TCSSettingsViewController ()
 
 @property (nonatomic) UIButton *logInOutButton;
 
@@ -19,7 +19,7 @@
 @end
 
 
-@implementation TCSLoginViewController
+@implementation TCSSettingsViewController
 
 @dynamic viewModel;
 

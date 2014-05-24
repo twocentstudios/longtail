@@ -3,7 +3,7 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-#import "TCSLoginViewModel.h"
+#import "TCSSettingsViewModel.h"
 #import "TCSViewModel+Protected.h"
 
 #import "TCSSessionController.h"
@@ -13,7 +13,7 @@
 
 #import "TCSGroupsViewModel.h"
 
-@interface TCSLoginViewModel ()
+@interface TCSSettingsViewModel ()
 
 @property (nonatomic) NSString *title;
 
@@ -25,27 +25,30 @@
 @property (nonatomic) RACCommand *logInOutFacebookCommand;
 @property (nonatomic) RACCommand *presentGroupImportCommand;
 
-@property (nonatomic) TCSSessionController *controller;
+@property (nonatomic) TCSSessionController *sessionController;
+@property (nonatomic) TCSPostController *postController;
 
 @end
 
 #pragma mark -
 
-@implementation TCSLoginViewModel
+@implementation TCSSettingsViewModel
 
-- (instancetype)initWithController:(TCSSessionController *)controller {
-    NSParameterAssert(controller);
+- (instancetype)initWithSessionController:(TCSSessionController *)sessionController postController:(TCSPostController *)postController {
+    NSParameterAssert(sessionController);
+    NSParameterAssert(postController);
 
     self = [super init];
     if (self != nil) {
-        _controller = controller;
+        _sessionController = sessionController;
+        _postController = postController;
 
         @weakify(self);
 
         RAC(self, title) = [RACSignal return:NSLocalizedString(@"Settings", nil)];
 
         RAC(self, logInOutButtonText) =
-            [[self.controller facebookSession]
+            [[self.sessionController facebookSession]
                 map:^NSString *(FBSession *session) {
                     if (session.state == FBSessionStateCreated || session.state == FBSessionStateCreatedTokenLoaded || FB_ISSESSIONSTATETERMINAL(session.state)) {
                         return NSLocalizedString(@"Log in with Facebook", nil);
@@ -59,7 +62,7 @@
                 }];
 
         RACSignal *logOutEnabled =
-            [[self.controller facebookSession]
+            [[self.sessionController facebookSession]
                 map:^NSNumber *(FBSession *session) {
                     if (session.state == FBSessionStateOpen || session.state == FBSessionStateOpenTokenExtended) {
                         return @YES;
@@ -78,22 +81,22 @@
             }];
 
         _presentGroupImportCommand = [[RACCommand alloc] initWithEnabled:logOutEnabled signalBlock:^RACSignal *(id _) {
-            TCSPostController *postController = [[TCSPostController alloc] init];
-            TCSGroupsViewModel *viewModel = [[TCSGroupsViewModel alloc] initWithController:postController];
+            @strongify(self);
+            TCSGroupsViewModel *viewModel = [[TCSGroupsViewModel alloc] initWithController:self.postController];
             return [RACSignal return:viewModel];
         }];
 
         _logInOutFacebookCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
             @strongify(self);
-            return [[[self.controller facebookSession]
+            return [[[self.sessionController facebookSession]
                         take:1]
                         flattenMap:^RACSignal *(FBSession *session) {
                             if (session.state == FBSessionStateCreated || FB_ISSESSIONSTATETERMINAL(session.state)) {
-                                return [self.controller logInToFacebook];
+                                return [self.sessionController logInToFacebook];
                             } else if (session.state == FBSessionStateCreatedTokenLoaded) {
-                                return [self.controller reauthenticateFacebook];
+                                return [self.sessionController reauthenticateFacebook];
                             } else if (FB_ISSESSIONOPENWITHSTATE(session.state)) {
-                                return [self.controller logOutOfFacebook];
+                                return [self.sessionController logOutOfFacebook];
                             } else {
                                 return [RACSignal empty];
                             }

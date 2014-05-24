@@ -6,10 +6,11 @@
 #import "TCSViewModel.h"
 
 @class TCSSessionController;
+@class TCSPostController;
 
 #pragma mark -
 
-@interface TCSLoginViewModel : TCSViewModel
+@interface TCSSettingsViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;
 
@@ -21,6 +22,6 @@
 @property (nonatomic, readonly) RACCommand *logInOutFacebookCommand;
 @property (nonatomic, readonly) RACCommand *presentGroupImportCommand;
 
-- (instancetype)initWithController:(TCSSessionController *)controller;
+- (instancetype)initWithSessionController:(TCSSessionController *)sessionController postController:(TCSPostController *)postController;
 
 @end

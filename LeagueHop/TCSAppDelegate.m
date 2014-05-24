@@ -12,7 +12,7 @@
 #import "TCSPostsViewModel.h"
 #import "TCSPostController.h"
 
-#import "TCSLoginViewController.h"
+#import "TCSSettingsViewController.h"
 
 #import <FacebookSDK/Facebook.h>
 

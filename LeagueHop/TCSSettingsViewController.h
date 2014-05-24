@@ -8,10 +8,10 @@
 
 #import "TCSViewController.h"
 
-#import "TCSLoginViewModel.h"
+#import "TCSSettingsViewModel.h"
 
-@interface TCSLoginViewController : TCSViewController
+@interface TCSSettingsViewController : TCSViewController
 
-@property (nonatomic) TCSLoginViewModel *viewModel;
+@property (nonatomic) TCSSettingsViewModel *viewModel;
 
 @end

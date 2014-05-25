@@ -14,6 +14,8 @@ pod 'TestFlightSDK', '~>2.1'
 pod 'FlurrySDK', '~>4.3'
 pod 'PonyDebugger'
 
+pod 'RHObjectiveBeagle', :git => 'https://github.com/heardrwt/RHObjectiveBeagle.git'
+
 target :LeagueHopTests, :exclusive => true do
   pod 'Kiwi/XCTest'
 end

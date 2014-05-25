@@ -34,6 +34,7 @@ PODS:
     - ReactiveCocoa (~> 2.0)
   - ReactiveViewModel (0.2):
     - ReactiveCocoa (~> 2.1)
+  - RHObjectiveBeagle (1.0.0)
   - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (1.0)
   - TestFlightSDK (2.2.3-beta)
@@ -53,25 +54,31 @@ DEPENDENCIES:
   - ReactiveCocoa (= 2.3)
   - ReactiveCocoaLayout (= 0.4)
   - ReactiveViewModel (= 0.2)
+  - RHObjectiveBeagle (from `https://github.com/heardrwt/RHObjectiveBeagle.git`)
   - SVProgressHUD (= 1.0.0)
   - TestFlightSDK (~> 2.1)
   - YapDatabase (~> 2.4)
 
-SPEC CHECKSUMS:
-  Archimedes: 1d1093ecde61c160ac046369bf4fe5175789b663
-  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
-  CocoaLumberjack: 17803afbade3126a377d32b8d23367264b44ced6
-  Facebook-iOS-SDK: 63e19ff8d275d63b765819f492a4e71e445f9822
-  FlurrySDK: 2cd8f2ce2383ca152c5d96fa34cb9ef29706feda
-  Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
-  Mantle: 0714cdb2b8559d9e6c2410d6a8529e3307bff189
-  PonyDebugger: d31607145d785b2315cd6f6a4ebaa378eb0c1340
-  ReactiveCocoa: dde7b11a14954edf789e7343b2c32e595caabd01
-  ReactiveCocoaLayout: 9e20c9574801c5b146ad11a01e19ca47e2dfb3ff
-  ReactiveViewModel: f636ab3e06b5e69664b69c883fcdb457ab5cb0cb
-  SocketRocket: 7ac946bcce46287a791dfff3c1f8daa692821dae
-  SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
-  TestFlightSDK: 79a20263b43de6f094271655c023d5581762cf8a
-  YapDatabase: 051a7930e3b92097470fe7bcf58d4b715d79997e
+EXTERNAL SOURCES:
+  RHObjectiveBeagle:
+    :git: https://github.com/heardrwt/RHObjectiveBeagle.git
 
-COCOAPODS: 0.32.1
+SPEC CHECKSUMS:
+  Archimedes: f2de3a19892908a92c9ad4d23f6776b377f7ed28
+  Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
+  CocoaLumberjack: baf4a09a3bcbdfea3363556a90104e026d3504e2
+  Facebook-iOS-SDK: 93aae4f3dacd6bad35f419e09889397697b1e20b
+  FlurrySDK: abaedafc350afa41b004236b67ae14f7d3748b68
+  Kiwi: c73667f2b84cbf36f1a3830267c5a4ae8dcbd8ba
+  Mantle: 1ca9c0fa84d3d3fc98524e7229f30489b6dd44e5
+  PonyDebugger: 256e19c15c093e15f950f92b1a5017f3feb3c87e
+  ReactiveCocoa: 2066583826c17dde8e90c41e489f682048cc57c9
+  ReactiveCocoaLayout: 55d636c5c01e4a154173746f2bb9238ac7184f0d
+  ReactiveViewModel: 78387196df2e7535bb2776c41df15dbb17300f8a
+  RHObjectiveBeagle: b834675014f5db213acdd016608057e1f0231da5
+  SocketRocket: 79a68ae186063c65e1fe6f638b1ae2927aa5f304
+  SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
+  TestFlightSDK: f713ed33c62f3f22b66634e7caeeb9a3a8d2a3fb
+  YapDatabase: 269e2799fe19c7a517521783b909d11873dcb0c8
+
+COCOAPODS: 0.33.0

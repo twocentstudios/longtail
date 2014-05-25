@@ -17,7 +17,7 @@
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self != nil) {
         RAC(self.textLabel, text) = RACObserve(self, viewModel.message);
-        RAC(self.detailTextLabel, text) = RACObserve(self, viewModel.createdAt);
+        RAC(self.detailTextLabel, text) = RACObserve(self, viewModel.year);
     }
     return self;
 }

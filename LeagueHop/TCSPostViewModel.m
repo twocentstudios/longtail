@@ -8,15 +8,19 @@
 #import "TCSPostObject.h"
 #import "TCSUserObject.h"
 #import "TCSCommentObject.h"
+#import "UIColor+TCSColorId.h"
 
 @interface TCSPostViewModel ()
 
 @property (nonatomic) TCSPostObject *post;
 
-@property (nonatomic) NSString *userName;
-@property (nonatomic) NSString *message;
-@property (nonatomic) NSString *createdAt;
-@property (nonatomic) NSString *likesSummary;
+@property (nonatomic) NSAttributedString *userName;
+@property (nonatomic) NSAttributedString *postSummary;
+@property (nonatomic) NSAttributedString *year;
+@property (nonatomic) NSAttributedString *message;
+@property (nonatomic) UIImage *linkImage;
+@property (nonatomic) NSAttributedString *linkName;
+@property (nonatomic) NSAttributedString *likesSummary;
 @property (nonatomic) NSAttributedString *commentsSummary;
 
 @end
@@ -30,35 +34,73 @@
     if (self != nil) {
         _post = post;
 
-        RAC(self, groupName) = RACObserve(self, post.sourceObject.sourceName);
-        RAC(self, userName) = RACObserve(self, post.user.userName);
-        RAC(self, message) = RACObserve(self, post.message);
-        RAC(self, createdAt) =
-            [RACObserve(self, post.createdAt) map:^NSString *(NSDate *date) {
+        RAC(self, userName) =
+            [RACObserve(self, post.user) map:^NSAttributedString *(TCSUserObject *user) {
+                return [[NSAttributedString alloc] initWithString:user.userName attributes:@{NSFontAttributeName: FONT_MEDIUM(12), NSForegroundColorAttributeName: [UIColor brightColorForNumber:user.userId]}];
+            }];
+
+        RAC(self, postSummary) =
+            [RACObserve(self, post) map:^NSAttributedString *(TCSPostObject *post) {
+                NSMutableAttributedString *summary = [[NSMutableAttributedString alloc] init];
+                NSDictionary *lightAttributes = @{NSFontAttributeName: FONT_LIGHT(9), NSForegroundColorAttributeName: GRAY_MEDIUM};
+                NSDictionary *boldAttributes = @{NSFontAttributeName: FONT_MEDIUM(9), NSForegroundColorAttributeName: GRAY_MEDIUM};
+                [summary appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"posted a ", nil) attributes:lightAttributes]];
+                [summary appendAttributedString:[[NSAttributedString alloc] initWithString:post.type attributes:boldAttributes]];
+                [summary appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" in ", nil) attributes:lightAttributes]];
+                [summary appendAttributedString:[[NSAttributedString alloc] initWithString:post.sourceObject.sourceName attributes:boldAttributes]];
+                return [summary copy];
+            }];
+
+        RAC(self, message) =
+            [RACObserve(self, post.message) map:^NSAttributedString *(NSString *message) {
+                return [[NSAttributedString alloc] initWithString:message attributes:@{NSFontAttributeName: FONT_MEDIUM(18), NSForegroundColorAttributeName: GRAY_BLACK}];
+            }];
+
+        RAC(self, year) =
+            [RACObserve(self, post.createdAt) map:^NSAttributedString *(NSDate *date) {
                 static NSDateFormatter *dateFormatter;
                 static dispatch_once_t onceToken;
                 dispatch_once(&onceToken, ^{
                     dateFormatter = [[NSDateFormatter alloc] init];
-                    dateFormatter.dateStyle = NSDateFormatterShortStyle;
+                    dateFormatter.dateFormat = @"YYYY";
                 });
-                return [dateFormatter stringFromDate:date];
+                NSString *dateString = [dateFormatter stringFromDate:date];
+                return [[NSAttributedString alloc] initWithString:dateString attributes:@{NSFontAttributeName: FONT_MEDIUM(12), NSForegroundColorAttributeName: GRAY_DARK}];
             }];
+
+        RAC(self, linkName) =
+            [RACObserve(self, post.linkName) map:^NSAttributedString *(NSString *linkName) {
+                return [[NSAttributedString alloc] initWithString:linkName attributes:@{NSFontAttributeName: FONT_REGULAR(12), NSForegroundColorAttributeName: GRAY_DARK}];
+            }];
+
+        // RAC(self, linkImage) =  // TODO: Image fetching
+
         RAC(self, likesSummary) =
             [RACObserve(self, post.likes) map:^id(NSArray *likes) {
-                NSArray *likeNamesArray = [likes valueForKey:@"userName"];
-                NSString *likeNames = [likeNamesArray componentsJoinedByString:@", "];
-                return [NSString stringWithFormat:@"Likes: %@", likeNames];
+                NSMutableAttributedString *allLikes = [[NSMutableAttributedString alloc] init];
+                NSAttributedString *titleString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Likes: ", nil) attributes:@{NSFontAttributeName: FONT_SEMIBOLD(10), NSForegroundColorAttributeName: GRAY_BLACK}];
+                [allLikes appendAttributedString:titleString];
+                for (TCSUserObject *user in likes) {
+                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:user.userName attributes:@{NSFontAttributeName: FONT_REGULAR(10), NSForegroundColorAttributeName: [UIColor brightColorForNumber:user.userId]}];
+                    [allLikes appendAttributedString:nameString];
+                    if (![[likes lastObject] isEqual:user]) {
+                        NSAttributedString *commaString = [[NSAttributedString alloc] initWithString:@", " attributes:@{NSFontAttributeName: FONT_REGULAR(10), NSForegroundColorAttributeName: GRAY_DARK}];
+                        [allLikes appendAttributedString:commaString];
+                    }
+                }
+                return [allLikes copy];
             }];
+
         RAC(self, commentsSummary) =
             [RACObserve(self, post.comments) map:^id(NSArray *comments) {
-                UIFont *font = [UIFont systemFontOfSize:14];
-                UIFont *boldFont = [UIFont boldSystemFontOfSize:14];
+                UIFont *font = FONT_REGULAR(10);
+                UIFont *boldFont = FONT_SEMIBOLD(10);
                 NSMutableAttributedString *allComments = [[NSMutableAttributedString alloc] init];
                 NSAttributedString *spaceString = [[NSAttributedString alloc] initWithString:@" " attributes:@{NSFontAttributeName: font}];
                 NSAttributedString *newLineString = [[NSAttributedString alloc] initWithString:@"\n" attributes:@{NSFontAttributeName: font}];
                 for (TCSCommentObject *comment in comments) {
-                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:comment.user.userName attributes:@{NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor blackColor]}];
-                    NSAttributedString *commentString = [[NSAttributedString alloc] initWithString:comment.message attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor blackColor]}];
+                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:comment.user.userName attributes:@{NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor brightColorForNumber:comment.user.userId]}];
+                    NSAttributedString *commentString = [[NSAttributedString alloc] initWithString:comment.message attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: GRAY_DARK}];
                     [allComments appendAttributedString:nameString];
                     [allComments appendAttributedString:[spaceString copy]];
                     [allComments appendAttributedString:commentString];

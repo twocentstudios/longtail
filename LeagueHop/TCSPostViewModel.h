@@ -11,11 +11,13 @@
 
 @interface TCSPostViewModel : TCSViewModel
 
-@property (nonatomic, readonly) NSString *groupName;
-@property (nonatomic, readonly) NSString *userName;
-@property (nonatomic, readonly) NSString *message;
-@property (nonatomic, readonly) NSString *createdAt;
-@property (nonatomic, readonly) NSString *likesSummary;
+@property (nonatomic, readonly) NSAttributedString *userName;
+@property (nonatomic, readonly) NSAttributedString *postSummary;
+@property (nonatomic, readonly) NSAttributedString *year;
+@property (nonatomic, readonly) NSAttributedString *message;
+@property (nonatomic, readonly) UIImage *linkImage;
+@property (nonatomic, readonly) NSAttributedString *linkName;
+@property (nonatomic, readonly) NSAttributedString *likesSummary;
 @property (nonatomic, readonly) NSAttributedString *commentsSummary;
 
 - (instancetype)initWithPost:(TCSPostObject *)post;

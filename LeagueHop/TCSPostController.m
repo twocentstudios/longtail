@@ -87,7 +87,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
             // will never return.
             signalWithScheduler:[RACScheduler mainThreadScheduler]]
             map:^RACSignal *(TCSGroupObject *group) {
-                return [self importPostsForSourceID:group.groupId];
+                return [self importPostsForSourceObject:group];
             }]
             flatten:1]
             concat:[[self markImportedDate:[NSDate date]] ignoreValues]];
@@ -135,10 +135,10 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 // Fetches all the posts for the given sourceID then writes them to the database.
 // Sends an NSNumber of the number of posts fetched and written.
-- (RACSignal *)importPostsForSourceID:(NSString *)sourceID {
+- (RACSignal *)importPostsForSourceObject:(id<TCSSourceObject>)sourceObject {
     return [[[[RACSignal return:[[[self class] database] newConnection]]
                 subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]]
-                combineLatestWith:[self getPostsForSourceID:sourceID]]
+                combineLatestWith:[self getPostsForSourceObject:sourceObject]]
                 map:^id(RACTuple *t) {
                     RACTupleUnpack(YapDatabaseConnection *connection, NSArray *posts) = t;
                     NSLog(@"Writing %li posts to database...", [posts count]);
@@ -154,15 +154,16 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 }
 
 // Sends an array of all posts objects from all pages.
-- (RACSignal *)getPostsForSourceID:(NSString *)sourceID {
-    NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceID];
+- (RACSignal *)getPostsForSourceObject:(id<TCSSourceObject>)sourceObject {
+    NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceObject.sourceId];
 
     RACSignal *signal = [self recursivelyGetDataForGraphPath:graphPath parameters:@{@"limit": @"5000"} startArray:@[]];
 
     RACSignal *postsSignal =
         [signal tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
             return [[array.rac_sequence.signal tryMap:^id(NSDictionary *postDictionary, NSError *__autoreleasing *errorPtr) {
-                TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:postDictionary error:errorPtr];
+                NSDictionary *postSourceDictionary = [postDictionary mtl_dictionaryByAddingEntriesFromDictionary:@{ @"source": sourceObject }];
+                TCSPostObject *post = [MTLJSONAdapter modelOfClass:[TCSPostObject class] fromJSONDictionary:postSourceDictionary error:errorPtr];
                 return post;
             }]
             toArray];

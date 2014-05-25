@@ -18,4 +18,14 @@
              };
 }
 
+#pragma mark TCSSourceObject
+
+- (NSString *)sourceId {
+    return self.groupId;
+}
+
+- (NSString *)sourceName {
+    return self.name;
+}
+
 @end

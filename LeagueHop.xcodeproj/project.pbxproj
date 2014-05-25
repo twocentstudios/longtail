@@ -120,6 +120,7 @@
 		83C453F11925D647006779BB /* TCSGroupObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSGroupObject.m; sourceTree = "<group>"; };
 		83ECC43F1931505100CD392E /* TCSSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSSessionController.h; sourceTree = "<group>"; };
 		83ECC4401931505100CD392E /* TCSSessionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSSessionController.m; sourceTree = "<group>"; };
+		83ECC4421932773200CD392E /* TCSSourceObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCSSourceObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +274,7 @@
 				8315129E191DFB2500331535 /* TCSUserObject.m */,
 				83C453F01925D647006779BB /* TCSGroupObject.h */,
 				83C453F11925D647006779BB /* TCSGroupObject.m */,
+				83ECC4421932773200CD392E /* TCSSourceObject.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";

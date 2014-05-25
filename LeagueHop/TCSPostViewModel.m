@@ -30,6 +30,7 @@
     if (self != nil) {
         _post = post;
 
+        RAC(self, groupName) = RACObserve(self, post.sourceObject.sourceName);
         RAC(self, userName) = RACObserve(self, post.user.userName);
         RAC(self, message) = RACObserve(self, post.message);
         RAC(self, createdAt) =

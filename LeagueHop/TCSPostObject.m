@@ -7,6 +7,7 @@
 
 #import "TCSUserObject.h"
 #import "TCSCommentObject.h"
+#import "TCSGroupObject.h"
 
 #import "NSDate+TCSDateKey.h"
 
@@ -26,13 +27,14 @@
              @"iconURL": @"icon",
              @"sourceURL": @"source",
              @"caption": @"caption",
-             @"description": @"description",
+             @"content": @"description",
              @"createdAt": @"created_time",
              @"updatedAt": @"updated_time",
              @"monthDayKey": @"created_time",
              @"yearMonthDayKey": @"created_time",
              @"likes": @"likes.data",
              @"comments": @"comments.data",
+             @"sourceObject": @"source"
              };
 }
 

@@ -9,7 +9,7 @@
 
 @interface TCSUserObject : MTLModel <MTLJSONSerializing>
 
-@property (nonatomic, copy, readonly) NSNumber *userId;
+@property (nonatomic, copy, readonly) NSString *userId;
 @property (nonatomic, copy, readonly) NSString *userName;
 
 @end

@@ -34,6 +34,6 @@
 #define FONT_REGULAR(s) [UIFont fontWithName:@"AvenirNext-Regular" size:(s)]
 #define FONT_MEDIUM(s) [UIFont fontWithName:@"AvenirNext-Medium" size:(s)]
 #define FONT_LIGHT(s) [UIFont fontWithName:@"AvenirNext-UltraLight" size:(s)]
-#define FONT_SEMIBOLD(s) [UIFont fontWithName:@"AvenirNext-SemiBold" size:(s)]
+#define FONT_DEMIBOLD(s) [UIFont fontWithName:@"AvenirNext-DemiBold" size:(s)]
 
 #endif

@@ -91,4 +91,8 @@
     return NO;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 300;
+}
+
 @end

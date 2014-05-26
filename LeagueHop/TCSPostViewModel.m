@@ -36,7 +36,7 @@
 
         RAC(self, userName) =
             [[RACObserve(self, post.user) ignore:nil] map:^NSAttributedString *(TCSUserObject *user) {
-                return [[NSAttributedString alloc] initWithString:user.userName attributes:@{NSFontAttributeName: FONT_DEMIBOLD(18), NSForegroundColorAttributeName: [UIColor brightColorForNumber:@([user.userId integerValue])]}];
+                return [[NSAttributedString alloc] initWithString:user.userName attributes:@{NSFontAttributeName: FONT_DEMIBOLD(18), NSForegroundColorAttributeName: [UIColor brightColorForFacebookUserId:user.userId]}];
             }];
 
         RAC(self, postSummary) =
@@ -81,7 +81,7 @@
                 NSAttributedString *titleString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"👍 ", nil) attributes:@{NSFontAttributeName: FONT_DEMIBOLD(12), NSForegroundColorAttributeName: GRAY_MEDIUM}];
                 [allLikes appendAttributedString:titleString];
                 for (TCSUserObject *user in likes) {
-                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:user.userName attributes:@{NSFontAttributeName: FONT_DEMIBOLD(12), NSForegroundColorAttributeName: [UIColor brightColorForNumber:@([user.userId integerValue])]}];
+                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:user.userName attributes:@{NSFontAttributeName: FONT_DEMIBOLD(12), NSForegroundColorAttributeName: [UIColor brightColorForFacebookUserId:user.userId]}];
                     [allLikes appendAttributedString:nameString];
                     if (![[likes lastObject] isEqual:user]) {
                         NSAttributedString *commaString = [[NSAttributedString alloc] initWithString:@", " attributes:@{NSFontAttributeName: FONT_REGULAR(12), NSForegroundColorAttributeName: GRAY_DARK}];
@@ -99,7 +99,7 @@
                 NSAttributedString *spaceString = [[NSAttributedString alloc] initWithString:@" " attributes:@{NSFontAttributeName: font}];
                 NSAttributedString *newLineString = [[NSAttributedString alloc] initWithString:@"\n" attributes:@{NSFontAttributeName: font}];
                 for (TCSCommentObject *comment in comments) {
-                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:comment.user.userName attributes:@{NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor brightColorForNumber:@([comment.user.userId integerValue])]}];
+                    NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:comment.user.userName attributes:@{NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor brightColorForFacebookUserId:comment.user.userId]}];
                     NSAttributedString *commentString = [[NSAttributedString alloc] initWithString:comment.message attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: GRAY_DARK}];
                     [allComments appendAttributedString:nameString];
                     [allComments appendAttributedString:[spaceString copy]];

@@ -10,6 +10,8 @@
 
 @interface UIColor (TCSColorId)
 
++ (UIColor *)brightColorForFacebookUserId:(NSString *)userId;
+
 + (UIColor *)brightColorForNumber:(NSNumber *)number;
 
 @end

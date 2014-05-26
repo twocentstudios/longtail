@@ -10,9 +10,13 @@
 
 @implementation UIColor (TCSColorId)
 
++ (UIColor *)brightColorForFacebookUserId:(NSString *)userId {
+    return [self brightColorForNumber:@([userId longLongValue])];
+}
+
 + (UIColor *)brightColorForNumber:(NSNumber *)number {
     NSNumber *hueNumber = number ?: @0;
-    NSUInteger hue = [hueNumber unsignedIntegerValue] % 360;
+    unsigned long long hue = [hueNumber unsignedLongLongValue] % 360;
     CGFloat hueFloat = hue/360.0f;
     return [UIColor colorWithHue:hueFloat saturation:0.5 brightness:0.75 alpha:1];
 }

@@ -20,6 +20,9 @@
 @property (nonatomic, readonly) NSAttributedString *likesSummary;
 @property (nonatomic, readonly) NSAttributedString *commentsSummary;
 
+// The view model's owner can cache view height calculations here.
+@property (nonatomic) NSNumber *cachedViewHeight;
+
 - (instancetype)initWithPost:(TCSPostObject *)post;
 
 @end

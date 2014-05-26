@@ -43,6 +43,7 @@
 		83C453F21925D647006779BB /* TCSGroupObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83C453F11925D647006779BB /* TCSGroupObject.m */; };
 		83ECC4411931505100CD392E /* TCSSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC4401931505100CD392E /* TCSSessionController.m */; };
 		83ECC44519329B2500CD392E /* UIColor+TCSColorId.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC44419329B2500CD392E /* UIColor+TCSColorId.m */; };
+		83ECC4491932EE6700CD392E /* TCSPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC4481932EE6700CD392E /* TCSPostView.m */; };
 		DCD951E56BE64564BD1CA933 /* libPods-LeagueHopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47AA04267C264DBF8086AFE9 /* libPods-LeagueHopTests.a */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +126,8 @@
 		83ECC44319329B2500CD392E /* UIColor+TCSColorId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+TCSColorId.h"; sourceTree = "<group>"; };
 		83ECC44419329B2500CD392E /* UIColor+TCSColorId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+TCSColorId.m"; sourceTree = "<group>"; };
 		83ECC44619329DB200CD392E /* TCSStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCSStyle.h; sourceTree = "<group>"; };
+		83ECC4471932EE6700CD392E /* TCSPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSPostView.h; sourceTree = "<group>"; };
+		83ECC4481932EE6700CD392E /* TCSPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSPostView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +305,8 @@
 				831512A4191EE74B00331535 /* TCSPostsViewController.m */,
 				831512B7191F352B00331535 /* TCSPostCell.h */,
 				831512B8191F352B00331535 /* TCSPostCell.m */,
+				83ECC4471932EE6700CD392E /* TCSPostView.h */,
+				83ECC4481932EE6700CD392E /* TCSPostView.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -535,6 +540,7 @@
 				831512B9191F352B00331535 /* TCSPostCell.m in Sources */,
 				831512A8191EE81A00331535 /* TCSViewController.m in Sources */,
 				8386AD9E192B222800BBC28D /* TCSGroupSelectViewController.m in Sources */,
+				83ECC4491932EE6700CD392E /* TCSPostView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

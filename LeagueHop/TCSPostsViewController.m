@@ -11,12 +11,16 @@
 #import "TCSPostViewModel.h"
 
 #import "TCSPostCell.h"
+#import "TCSPostView.h"
 
 #pragma mark -
 
 @interface TCSPostsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) UITableView *tableView;
+
+// This view is used for calcuating cell heights.
+@property (nonatomic) TCSPostView *mockPostView;
 
 @end
 
@@ -37,6 +41,8 @@
     self.tableView.dataSource = self;
     [self.tableView registerClass:TCSPostCell.class forCellReuseIdentifier:NSStringFromClass(TCSPostCell.class)];
     [self.view addSubview:self.tableView];
+
+    self.mockPostView = [[TCSPostView alloc] init];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
     self.navigationItem.leftBarButtonItem.rac_command = self.viewModel.presentSettingsCommand;
@@ -92,7 +98,18 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 500;
+    TCSPostViewModel *viewModel = self.viewModel.postViewModels[indexPath.row];
+    if (viewModel.cachedViewHeight != nil) {
+        return [viewModel.cachedViewHeight floatValue];
+    }
+
+    self.mockPostView.viewModel = viewModel;
+    self.mockPostView.frame = self.tableView.bounds;
+    [self.mockPostView setNeedsLayout];
+    [self.mockPostView layoutIfNeeded];
+    CGFloat const height = [self.mockPostView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    viewModel.cachedViewHeight = @(height);
+    return height;
 }
 
 @end

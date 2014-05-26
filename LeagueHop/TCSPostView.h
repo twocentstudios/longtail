@@ -4,14 +4,11 @@
 //
 
 @class TCSPostViewModel;
-@class TCSPostView;
 
 #pragma mark -
 
-@interface TCSPostCell : UITableViewCell
+@interface TCSPostView : UIView
 
 @property (nonatomic) TCSPostViewModel *viewModel;
-
-@property (nonatomic, readonly) TCSPostView *postView;
 
 @end

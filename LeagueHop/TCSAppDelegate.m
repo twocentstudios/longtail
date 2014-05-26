@@ -16,10 +16,19 @@
 
 #import <FacebookSDK/Facebook.h>
 
+#import <PonyDebugger/PonyDebugger.h>
+
 @implementation TCSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+
+    PDDebugger *debugger = [PDDebugger defaultInstance];
+    [debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
+    [debugger enableNetworkTrafficDebugging];
+    [debugger forwardAllNetworkTraffic];
+    [debugger enableViewHierarchyDebugging];
+    
     TCSPostController *postController = [[TCSPostController alloc] init];
     TCSPostsViewModel *postsViewModel = [[TCSPostsViewModel alloc] initWithController:postController];
     TCSPostsViewController *postsViewController = [[TCSPostsViewController alloc] initWithViewModel:postsViewModel];

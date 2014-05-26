@@ -120,6 +120,8 @@
     self.linkNameLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.linkNameLabel.bounds);
     self.likesLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.likesLabel.bounds);
     self.commentsLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.commentsLabel.bounds);
+
+    [super layoutSubviews];
 }
 
 @end

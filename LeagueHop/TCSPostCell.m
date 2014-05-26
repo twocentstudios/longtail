@@ -79,7 +79,7 @@
         CGFloat const vTopSuperInset = 16;
         __unused CGFloat const vBottomSuperInset = vTopSuperInset;
 
-        CGFloat const vComponentMargin = 10;
+        CGFloat const vComponentMargin = 18;
 
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:vTopSuperInset];
@@ -101,14 +101,14 @@
         [self.linkImageView autoSetDimensionsToSize:CGSizeMake(linkImageSide, linkImageSide)];
 
         [self.linkNameLabel autoConstrainAttribute:ALAxisHorizontal toAttribute:ALAxisHorizontal ofView:self.linkImageView];
-        [self.linkNameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.linkImageView withOffset:18];
+        [self.linkNameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.linkImageView withOffset:14];
         [self.linkNameLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
 
         [self.likesLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.linkImageView withOffset:vComponentMargin];
         [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
         [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
 
-        [self.commentsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.likesLabel withOffset:vComponentMargin];
+        [self.commentsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.likesLabel withOffset:8];
         [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
         [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
     }

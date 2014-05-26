@@ -14,7 +14,7 @@
     NSNumber *hueNumber = number ?: @0;
     NSUInteger hue = [hueNumber unsignedIntegerValue] % 360;
     CGFloat hueFloat = hue/360.0f;
-    return [UIColor colorWithHue:hueFloat saturation:0.5 brightness:0.8 alpha:1];
+    return [UIColor colorWithHue:hueFloat saturation:0.5 brightness:0.75 alpha:1];
 }
 
 @end

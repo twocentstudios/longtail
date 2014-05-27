@@ -68,16 +68,13 @@
         [self presentViewController:navigationController animated:YES completion:nil];
     };
 
-    [[RACObserve(self, viewModel.shouldPresentSettingsSignal)
+    [self.viewModel.shouldPresentSettingsSignal
+        subscribeNext:presentSettingsViewController];
+
+    [[[self.viewModel.presentSettingsCommand executionSignals]
         switchToLatest]
         subscribeNext:presentSettingsViewController];
 
-    [[[RACObserve(self, viewModel.presentSettingsCommand)
-        flattenMap:^RACSignal *(RACCommand *command) {
-            return [command executionSignals];
-        }]
-        switchToLatest]
-        subscribeNext:presentSettingsViewController];
 }
 
 - (void)viewWillLayoutSubviews {

@@ -32,7 +32,7 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    RAC(self, title) = RACObserve(self, viewModel.title);
+    RAC(self, title) = RACObserve(self.viewModel, title);
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.leftBarButtonItem.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {

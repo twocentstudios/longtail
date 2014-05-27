@@ -8,6 +8,7 @@
 
 @interface TCSWebViewModel ()
 
+@property (nonatomic) NSString *title;
 @property (nonatomic) NSURL *URL;
 @property (nonatomic) NSURLRequest *URLRequest;
 
@@ -17,10 +18,11 @@
 
 @implementation TCSWebViewModel
 
-- (instancetype)initWithURL:(NSURL *)URL {
+- (instancetype)initWithURL:(NSURL *)URL title:(NSString *)title {
     self = [super init];
     if (self != nil) {
         _URL = URL;
+        _title = title;
 
         RAC(self, URLRequest) =
             [RACObserve(self, URL) map:^NSURLRequest *(NSURL *URL) {

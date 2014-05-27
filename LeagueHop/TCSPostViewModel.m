@@ -123,7 +123,7 @@
 
         _openLinkCommand = [[RACCommand alloc] initWithEnabled:hasLinkURL signalBlock:^RACSignal *(id _) {
             @strongify(self);
-            TCSWebViewModel *webViewModel = [[TCSWebViewModel alloc] initWithURL:self.post.linkURL];
+            TCSWebViewModel *webViewModel = [[TCSWebViewModel alloc] initWithURL:self.post.linkURL title:self.post.linkName];
             return [RACSignal return:webViewModel];
         }];
     }

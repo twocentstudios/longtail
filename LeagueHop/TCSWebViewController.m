@@ -23,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    RAC(self, title) = RACObserve(self.viewModel, title);
+
     self.webView = [[UIWebView alloc] init];
     self.webView.delegate = self;
     [self.view insertSubview:self.webView atIndex:0];

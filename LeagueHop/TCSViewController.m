@@ -56,7 +56,7 @@
 
 	UIView *overlayView = [[UIView alloc] initWithFrame:self.view.bounds];
 	overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	overlayView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.65];
+	overlayView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.35];
 	[self.view addSubview:overlayView];
 
 	UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -73,7 +73,7 @@
             map:^(NSNumber *loading) {
                 return loading.boolValue ? @1 : @0;
             }]
-            animateWithDuration:0.35 curve:RCLAnimationCurveLinear]
+            animateWithDuration:0.25 curve:RCLAnimationCurveLinear]
             startWith:@0];
 }
 

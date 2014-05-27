@@ -43,7 +43,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:TCSPostCell.class forCellReuseIdentifier:NSStringFromClass(TCSPostCell.class)];
-    [self.view addSubview:self.tableView];
+    [self.view insertSubview:self.tableView atIndex:0];
 
     self.mockPostView = [[TCSPostView alloc] init];
 

@@ -36,7 +36,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:TCSGroupCell.class forCellReuseIdentifier:NSStringFromClass(TCSGroupCell.class)];
-    [self.view addSubview:self.tableView];
+    [self.view insertSubview:self.tableView atIndex:0];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.confirmSelectionCommand;

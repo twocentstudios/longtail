@@ -30,7 +30,7 @@
 
     @weakify(self);
 
-    RAC(self, title) = RACObserve(self, viewModel.title);
+    RAC(self, title) = RACObserve(self.viewModel, title);
 
     self.tableView = [[UITableView alloc] init];
     self.tableView.delegate = self;
@@ -41,16 +41,16 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.confirmSelectionCommand;
 
-    [[RACObserve(self, viewModel.groupViewModels)
+    [[RACObserve(self.viewModel, groupViewModels)
         mapReplace:self.tableView]
         subscribeNext:^(UITableView *tableView) {
             [tableView reloadData];
         }];
 
-    [[[RACObserve(self, viewModel.confirmSelectionCommand)
-        flattenMap:^RACSignal *(RACCommand *confirmSelectionCommand) {
-            return [[confirmSelectionCommand executionSignals] switchToLatest];
-        }]
+    RAC(self, loading) = [self.viewModel.loadGroupsCommand executing];
+
+    [[[[self.viewModel.confirmSelectionCommand executionSignals]
+        switchToLatest]
         map:^TCSGroupImportViewController *(TCSGroupImportViewModel *importViewModel) {
             return [[TCSGroupImportViewController alloc] initWithViewModel:importViewModel];
         }]

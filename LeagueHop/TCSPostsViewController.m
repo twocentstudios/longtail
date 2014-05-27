@@ -53,6 +53,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
     self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.loadPostsCommand;
 
+    RAC(self, loading) = [self.viewModel.loadPostsCommand executing];
+
     [[RACObserve(self.viewModel, postViewModels)
         mapReplace:self.tableView]
         subscribeNext:^(UITableView *tableView) {

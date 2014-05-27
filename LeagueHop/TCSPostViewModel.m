@@ -5,9 +5,12 @@
 
 #import "TCSPostViewModel.h"
 
+#import "TCSWebViewModel.h"
+
 #import "TCSPostObject.h"
 #import "TCSUserObject.h"
 #import "TCSCommentObject.h"
+
 #import "UIColor+TCSColorId.h"
 
 @interface TCSPostViewModel ()
@@ -23,6 +26,8 @@
 @property (nonatomic) NSAttributedString *likesSummary;
 @property (nonatomic) NSAttributedString *commentsSummary;
 
+@property (nonatomic) RACCommand *openLinkCommand;
+
 @end
 
 #pragma mark -
@@ -33,6 +38,8 @@
     self = [super init];
     if (self != nil) {
         _post = post;
+
+        @weakify(self);
 
         RAC(self, userName) =
             [[RACObserve(self, post.user) ignore:nil] map:^NSAttributedString *(TCSUserObject *user) {
@@ -108,6 +115,17 @@
                 }
                 return [allComments copy];
             }];
+
+        RACSignal *hasLinkURL =
+            [RACObserve(self, post.linkURL) map:^NSNumber *(NSURL *linkURL) {
+                return linkURL ? @YES : @NO;
+            }];
+
+        _openLinkCommand = [[RACCommand alloc] initWithEnabled:hasLinkURL signalBlock:^RACSignal *(id _) {
+            @strongify(self);
+            TCSWebViewModel *webViewModel = [[TCSWebViewModel alloc] initWithURL:self.post.linkURL];
+            return [RACSignal return:webViewModel];
+        }];
     }
     return self;
 }

@@ -20,6 +20,8 @@
 @property (nonatomic, readonly) NSAttributedString *likesSummary;
 @property (nonatomic, readonly) NSAttributedString *commentsSummary;
 
+@property (nonatomic, readonly) RACCommand *openLinkCommand;
+
 // The view model's owner can cache view height calculations here.
 @property (nonatomic) NSNumber *cachedViewHeight;
 

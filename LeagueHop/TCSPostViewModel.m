@@ -34,12 +34,11 @@
 
 @implementation TCSPostViewModel
 
-- (instancetype)initWithPost:(TCSPostObject *)post {
+- (instancetype)initWithPost:(TCSPostObject *)post openURLCommand:(RACCommand *)openURLCommand {
     self = [super init];
     if (self != nil) {
         _post = post;
-
-        @weakify(self);
+        _openURLCommand = openURLCommand;
 
         RAC(self, userName) =
             [[RACObserve(self, post.user) ignore:nil] map:^NSAttributedString *(TCSUserObject *user) {
@@ -115,17 +114,6 @@
                 }
                 return [allComments copy];
             }];
-
-        RACSignal *hasLinkURL =
-            [RACObserve(self, post.linkURL) map:^NSNumber *(NSURL *linkURL) {
-                return linkURL ? @YES : @NO;
-            }];
-
-        _openLinkCommand = [[RACCommand alloc] initWithEnabled:hasLinkURL signalBlock:^RACSignal *(id _) {
-            @strongify(self);
-            TCSWebViewModel *webViewModel = [[TCSWebViewModel alloc] initWithURL:self.post.linkURL title:self.post.linkName];
-            return [RACSignal return:webViewModel];
-        }];
     }
     return self;
 }

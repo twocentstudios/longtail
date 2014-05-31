@@ -37,6 +37,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    @weakify(self);
+
     RAC(self, title) = RACObserve(self.viewModel, title);
 
     self.tableView = [[UITableView alloc] init];
@@ -75,6 +77,13 @@
         switchToLatest]
         subscribeNext:presentSettingsViewController];
 
+    [[[self.viewModel.openURLCommand executionSignals]
+        switchToLatest]
+        subscribeNext:^(TCSWebViewModel *webViewModel) {
+            @strongify(self);
+            TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
+            [self.navigationController pushViewController:webViewController animated:YES];
+        }];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -96,8 +105,7 @@
 #pragma mark UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-    TCSPostViewModel *viewModel = self.viewModel.postViewModels[indexPath.row];
-    return [[[viewModel.openLinkCommand enabled] first] boolValue];
+    return NO;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -113,20 +121,6 @@
     CGFloat const height = [self.mockPostView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     viewModel.cachedViewHeight = @(height);
     return height;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    @weakify(self);
-
-    TCSPostViewModel *viewModel = self.viewModel.postViewModels[indexPath.row];
-    [[viewModel.openLinkCommand execute:nil]
-        subscribeNext:^(TCSWebViewModel *webViewModel) {
-            @strongify(self);
-            TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
-            [self.navigationController pushViewController:webViewController animated:YES];
-        }];
 }
 
 @end

@@ -10,6 +10,7 @@ pod 'SVProgressHUD', '1.0.0'
 pod 'Mantle', '~> 1.4.1'
 pod 'YapDatabase', '~> 2.4'
 pod 'Facebook-iOS-SDK', '~> 3.14'
+pod 'TTTAttributedLabel', '~> 1.10'
 
 pod 'TestFlightSDK', '~>2.1'
 pod 'FlurrySDK', '~>4.3'

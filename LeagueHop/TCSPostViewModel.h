@@ -20,11 +20,11 @@
 @property (nonatomic, readonly) NSAttributedString *likesSummary;
 @property (nonatomic, readonly) NSAttributedString *commentsSummary;
 
-@property (nonatomic, readonly) RACCommand *openLinkCommand;
+@property (nonatomic, readonly) RACCommand *openURLCommand;
 
 // The view model's owner can cache view height calculations here.
 @property (nonatomic) NSNumber *cachedViewHeight;
 
-- (instancetype)initWithPost:(TCSPostObject *)post;
+- (instancetype)initWithPost:(TCSPostObject *)post openURLCommand:(RACCommand *)openURLCommand;
 
 @end

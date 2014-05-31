@@ -24,6 +24,9 @@
 // Triggers `presentSettingsCommand` if login/import should be presented.
 @property (nonatomic, readonly) RACSignal *shouldPresentSettingsSignal;
 
+// Sends a TCSWebViewModel when executed with a NSURL as a parameter.
+@property (nonatomic, readonly) RACCommand *openURLCommand;
+
 - (instancetype)initWithController:(TCSPostController *)controller;
 
 @end

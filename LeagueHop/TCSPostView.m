@@ -7,12 +7,14 @@
 
 #import "TCSPostViewModel.h"
 
-@interface TCSPostView ()
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
+
+@interface TCSPostView () <TTTAttributedLabelDelegate>
 
 @property (nonatomic) UILabel *nameLabel;
 @property (nonatomic) UILabel *postSummaryLabel;
 @property (nonatomic) UILabel *dateLabel;
-@property (nonatomic) UILabel *messageLabel;
+@property (nonatomic) TTTAttributedLabel *messageLabel;
 @property (nonatomic) UIImageView *linkImageView;
 @property (nonatomic) UILabel *linkNameLabel;
 @property (nonatomic) UILabel *likesLabel;
@@ -39,7 +41,10 @@
         self.dateLabel.numberOfLines = 1;
         [self addSubview:self.dateLabel];
 
-        self.messageLabel = [[UILabel alloc] initForAutoLayout];
+        self.messageLabel = [[TTTAttributedLabel alloc] initForAutoLayout];
+        self.messageLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+        self.messageLabel.textInsets = UIEdgeInsetsMake(0, 0, 4, 0); // fix TTT layout issue
+        self.messageLabel.delegate = self;
         self.messageLabel.numberOfLines = 0;
         [self addSubview:self.messageLabel];
 
@@ -63,7 +68,7 @@
         RAC(self.nameLabel, attributedText) = RACObserve(self, viewModel.userName);
         RAC(self.postSummaryLabel, attributedText) = RACObserve(self, viewModel.postSummary);
         RAC(self.dateLabel, attributedText) = RACObserve(self, viewModel.year);
-        RAC(self.messageLabel, attributedText) = RACObserve(self, viewModel.message);
+        [self.messageLabel rac_liftSelector:@selector(setText:) withSignalsFromArray:@[RACObserve(self, viewModel.message)]];
         RAC(self.linkImageView, image) = RACObserve(self, viewModel.linkImage);
         RAC(self.linkNameLabel, attributedText) = RACObserve(self, viewModel.linkName);
         RAC(self.likesLabel, attributedText) = RACObserve(self, viewModel.likesSummary);
@@ -122,6 +127,12 @@
     self.commentsLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.commentsLabel.bounds);
 
     [super layoutSubviews];
+}
+
+# pragma mark TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    [self.viewModel.openURLCommand execute:url];
 }
 
 @end

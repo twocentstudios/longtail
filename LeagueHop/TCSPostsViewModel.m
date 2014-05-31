@@ -13,6 +13,8 @@
 #import "TCSSettingsViewModel.h"
 #import "TCSSessionController.h"
 
+#import "TCSWebViewModel.h"
+
 #import "NSDate+TCSDateKey.h"
 
 @interface TCSPostsViewModel ()
@@ -28,6 +30,7 @@
 @property (nonatomic) RACCommand *loadPostsCommand;
 @property (nonatomic) RACCommand *presentSettingsCommand;
 @property (nonatomic) RACSignal *shouldPresentSettingsSignal;
+@property (nonatomic) RACCommand *openURLCommand;
 
 @end
 
@@ -75,6 +78,11 @@
                 }];
             }];
 
+        _openURLCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(NSURL *URL) {
+            TCSWebViewModel *webViewModel = [[TCSWebViewModel alloc] initWithURL:URL title:nil];
+            return [RACSignal return:webViewModel];
+        }];
+
         RAC(self, postViewModels) =
             [[[[[self.loadPostsCommand executionSignals]
                 switchToLatest]
@@ -84,7 +92,8 @@
                 map:^id(NSArray *posts) {
                     return [[posts.rac_sequence.signal
                                 map:^id(TCSPostObject *post) {
-                                    return [[TCSPostViewModel alloc] initWithPost:post];
+                                    @strongify(self);
+                                    return [[TCSPostViewModel alloc] initWithPost:post openURLCommand:self.openURLCommand];
                                 }]
                                 toArray];
                 }]

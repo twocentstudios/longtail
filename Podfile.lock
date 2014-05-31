@@ -38,6 +38,7 @@ PODS:
   - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (1.0)
   - TestFlightSDK (2.2.3-beta)
+  - TTTAttributedLabel (1.10.0)
   - UIView+AutoLayout (1.3.0)
   - YapDatabase (2.4.2):
     - YapDatabase/standard
@@ -58,6 +59,7 @@ DEPENDENCIES:
   - RHObjectiveBeagle (from `https://github.com/heardrwt/RHObjectiveBeagle.git`)
   - SVProgressHUD (= 1.0.0)
   - TestFlightSDK (~> 2.1)
+  - TTTAttributedLabel (~> 1.10)
   - UIView+AutoLayout (= 1.3)
   - YapDatabase (~> 2.4)
 
@@ -81,6 +83,7 @@ SPEC CHECKSUMS:
   SocketRocket: 79a68ae186063c65e1fe6f638b1ae2927aa5f304
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   TestFlightSDK: f713ed33c62f3f22b66634e7caeeb9a3a8d2a3fb
+  TTTAttributedLabel: c3a11b538bc7beb4815f156e2ba4b066929e13f9
   UIView+AutoLayout: dc24ec6114498617510af759148a05b957af1b38
   YapDatabase: 269e2799fe19c7a517521783b909d11873dcb0c8
 

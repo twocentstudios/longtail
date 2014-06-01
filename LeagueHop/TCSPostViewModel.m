@@ -61,17 +61,18 @@
             [[RACObserve(self, post) ignore:nil] map:^NSAttributedString *(TCSPostObject *post) {
                 NSString *message = post.message;
                 NSString *linkURLString = [post.linkURL absoluteString];
+                NSString *maybeLinkURLString = (linkURLString && [message rangeOfString:linkURLString].length == 0) ? linkURLString : nil;
                 NSMutableAttributedString *fullMessage = [[NSMutableAttributedString alloc] init];
                 NSDictionary *messageAttributes = @{NSFontAttributeName: FONT_MEDIUM(22), NSForegroundColorAttributeName: GRAY_BLACK};
                 NSDictionary *linkAttributes = @{NSFontAttributeName: FONT_MEDIUM(18), NSForegroundColorAttributeName: GRAY_MEDIUM};
                 if (message) {
                     [fullMessage appendAttributedString:[[NSAttributedString alloc] initWithString:message attributes:messageAttributes]];
                 }
-                if (linkURLString) {
+                if (maybeLinkURLString) {
                     if (message) {
                         [fullMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:messageAttributes]];
                     }
-                    [fullMessage appendAttributedString:[[NSAttributedString alloc] initWithString:linkURLString attributes:linkAttributes]];
+                    [fullMessage appendAttributedString:[[NSAttributedString alloc] initWithString:maybeLinkURLString attributes:linkAttributes]];
                 }
                 return [fullMessage copy];
             }];

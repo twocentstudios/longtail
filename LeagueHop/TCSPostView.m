@@ -71,7 +71,7 @@
         CGFloat const vTopSuperInset = 16;
         CGFloat const vBottomSuperInset = vTopSuperInset;
 
-        CGFloat const vComponentMargin = 18;
+        CGFloat const vComponentMargin = 14;
 
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:vTopSuperInset];

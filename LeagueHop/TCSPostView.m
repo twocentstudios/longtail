@@ -15,10 +15,8 @@
 @property (nonatomic) UILabel *postSummaryLabel;
 @property (nonatomic) UILabel *dateLabel;
 @property (nonatomic) TTTAttributedLabel *messageLabel;
-@property (nonatomic) UIImageView *linkImageView;
-@property (nonatomic) UILabel *linkNameLabel;
 @property (nonatomic) UILabel *likesLabel;
-@property (nonatomic) UILabel *commentsLabel;
+@property (nonatomic) TTTAttributedLabel *commentsLabel;
 
 @end
 
@@ -43,24 +41,19 @@
 
         self.messageLabel = [[TTTAttributedLabel alloc] initForAutoLayout];
         self.messageLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-        self.messageLabel.textInsets = UIEdgeInsetsMake(0, 0, 4, 0); // fix TTT layout issue
+        self.messageLabel.textInsets = UIEdgeInsetsMake(-4, 0, 4, 0); // fix TTT layout issue
         self.messageLabel.delegate = self;
         self.messageLabel.numberOfLines = 0;
         [self addSubview:self.messageLabel];
-
-        self.linkImageView = [[UIImageView alloc] initForAutoLayout];
-        self.linkImageView.backgroundColor = GRAY_LIGHT;
-        [self addSubview:self.linkImageView];
-
-        self.linkNameLabel = [[UILabel alloc] initForAutoLayout];
-        self.linkNameLabel.numberOfLines = 2;
-        [self addSubview:self.linkNameLabel];
 
         self.likesLabel = [[UILabel alloc] initForAutoLayout];
         self.likesLabel.numberOfLines = 0;
         [self addSubview:self.likesLabel];
 
-        self.commentsLabel = [[UILabel alloc] initForAutoLayout];
+        self.commentsLabel = [[TTTAttributedLabel alloc] initForAutoLayout];
+        self.commentsLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+        self.commentsLabel.textInsets = UIEdgeInsetsMake(-4, 0, 4, 0); // fix TTT layout issue
+        self.commentsLabel.delegate = self;
         self.commentsLabel.numberOfLines = 0;
         [self addSubview:self.commentsLabel];
 
@@ -69,10 +62,8 @@
         RAC(self.postSummaryLabel, attributedText) = RACObserve(self, viewModel.postSummary);
         RAC(self.dateLabel, attributedText) = RACObserve(self, viewModel.year);
         [self.messageLabel rac_liftSelector:@selector(setText:) withSignalsFromArray:@[RACObserve(self, viewModel.message)]];
-        RAC(self.linkImageView, image) = RACObserve(self, viewModel.linkImage);
-        RAC(self.linkNameLabel, attributedText) = RACObserve(self, viewModel.linkName);
         RAC(self.likesLabel, attributedText) = RACObserve(self, viewModel.likesSummary);
-        RAC(self.commentsLabel, attributedText) = RACObserve(self, viewModel.commentsSummary);
+        [self.commentsLabel rac_liftSelector:@selector(setText:) withSignalsFromArray:@[RACObserve(self, viewModel.commentsSummary)]];
 
         // AutoLayout
         CGFloat const hLeftSuperInset = 20;
@@ -96,16 +87,7 @@
         [self.messageLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
         [self.messageLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.postSummaryLabel withOffset:vComponentMargin];
 
-        CGFloat const linkImageSide = 50;
-        [self.linkImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
-        [self.linkImageView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.messageLabel withOffset:vComponentMargin];
-        [self.linkImageView autoSetDimensionsToSize:CGSizeMake(linkImageSide, linkImageSide)];
-
-        [self.linkNameLabel autoConstrainAttribute:ALAxisHorizontal toAttribute:ALAxisHorizontal ofView:self.linkImageView];
-        [self.linkNameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.linkImageView withOffset:14];
-        [self.linkNameLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
-
-        [self.likesLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.linkImageView withOffset:vComponentMargin];
+        [self.likesLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.messageLabel withOffset:vComponentMargin];
         [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
         [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
 
@@ -122,7 +104,6 @@
     [super layoutSubviews];
 
     self.messageLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.messageLabel.bounds);
-    self.linkNameLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.linkNameLabel.bounds);
     self.likesLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.likesLabel.bounds);
     self.commentsLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.commentsLabel.bounds);
 

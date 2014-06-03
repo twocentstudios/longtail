@@ -65,7 +65,9 @@
                 }]
                 deliverOn:[RACScheduler mainThreadScheduler]];
 
-        [[[self.loadGroupsCommand errors]
+        [[[RACSignal merge:@[
+                            [self.loadGroupsCommand errors],
+                            [self.confirmSelectionCommand errors] ]]
             deliverOn:[RACScheduler mainThreadScheduler]]
             subscribe:_errors];
 

@@ -19,6 +19,7 @@
 
 @property (nonatomic) NSString *importGroupsButtonText;
 @property (nonatomic) NSString *logInOutButtonText;
+@property (nonatomic) NSString *importGroupsHintText;
 
 @property (nonatomic, getter = isLoading) BOOL loading;
 
@@ -55,7 +56,7 @@
                     } else if (session.state == FBSessionStateCreatedOpening) {
                         return NSLocalizedString(@"Logging in...", nil);
                     } else if (FB_ISSESSIONOPENWITHSTATE(session.state)) {
-                        return NSLocalizedString(@"Log out", nil);
+                        return NSLocalizedString(@"Log out of Facebook", nil);
                     } else {
                         return @"Error";
                     }
@@ -76,7 +77,16 @@
                 if ([logOutEnabled boolValue]) {
                     return NSLocalizedString(@"Import Facebook Groups", nil);
                 } else {
-                    return NSLocalizedString(@"Log in to import Facebook Groups", nil);
+                    return NSLocalizedString(@"Import Facebook Groups", nil);
+                }
+            }];
+
+        RAC(self, importGroupsHintText) =
+            [logOutEnabled map:^NSString *(NSNumber *logOutEnabled) {
+                if ([logOutEnabled boolValue]) {
+                    return NSLocalizedString(@"We'll show you posts from your Facebook Groups this day in past years.", nil);
+                } else {
+                    return NSLocalizedString(@"Please log in to Facebook first before importing your Facebook Groups", nil);
                 }
             }];
 

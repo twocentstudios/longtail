@@ -14,8 +14,9 @@
 
 @property (nonatomic, readonly) NSString *title;
 
-@property (nonatomic, readonly) NSString *importGroupsButtonText;
 @property (nonatomic, readonly) NSString *logInOutButtonText;
+@property (nonatomic, readonly) NSString *importGroupsButtonText;
+@property (nonatomic, readonly) NSString *importGroupsHintText;
 
 @property (nonatomic, readonly, getter = isLoading) BOOL loading;
 

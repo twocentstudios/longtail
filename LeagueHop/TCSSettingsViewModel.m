@@ -115,7 +115,7 @@
 
         _deleteAllCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
             @strongify(self);
-            return [self.postController removeAllObjects];
+            return [[self.postController removeAllObjects] delay:2]; // Add some artificial delay so the user can see what's happening
         }];
 
         RAC(self, deleteAllButtonText) =

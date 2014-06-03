@@ -92,6 +92,7 @@
     self.deleteAllButton.backgroundColor = WARNING_RED;
     self.deleteAllButton.titleLabel.font = FONT_MEDIUM(20);
     [self.deleteAllButton setTitleColor:WHITE forState:UIControlStateNormal];
+    [self.deleteAllButton setTitleColor:WHITEA(0.6) forState:UIControlStateDisabled];
     self.deleteAllButton.rac_command = self.viewModel.deleteAllCommand;
     [self.deleteAllButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, deleteAllButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.view addSubview:self.deleteAllButton];

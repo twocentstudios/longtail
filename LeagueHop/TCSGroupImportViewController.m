@@ -10,6 +10,8 @@
 
 @interface TCSGroupImportViewController ()
 
+@property (nonatomic) UILabel *titleLabel;
+
 @end
 
 
@@ -22,11 +24,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
     @weakify(self);
 
     self.view.backgroundColor = WHITE;
 
-    RAC(self, title) = RACObserve(self, viewModel.title);
+    RAC(self, title) = RACObserve(self.viewModel, title);
 
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@keypath(CALayer.new, backgroundColor)];
     [animation setFromValue:(id)[UIColor whiteColor].CGColor];
@@ -34,6 +38,16 @@
     [animation setDuration:2.0];
     [animation setAutoreverses:YES];
     [animation setRepeatCount:CGFLOAT_MAX];
+
+    self.titleLabel = [[UILabel alloc] initForAutoLayout];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleLabel.backgroundColor = [UIColor clearColor];
+    self.titleLabel.numberOfLines = 1;
+    self.titleLabel.textColor = APP_TINT;
+    self.titleLabel.font = FONT_DEMIBOLD(22);
+    [self.view addSubview:self.titleLabel];
+
+    RAC(self.titleLabel, text) = RACObserve(self.viewModel, title);
 
     [[[[RACObserve(self, viewModel.importCommand.executing)
         flatten]
@@ -56,6 +70,9 @@
             @strongify(self);
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }];
+
+    // Layout
+    [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(50, 10, 0, 10) excludingEdge:ALEdgeBottom];
 }
 
 @end

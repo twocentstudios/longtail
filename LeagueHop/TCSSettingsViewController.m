@@ -12,6 +12,9 @@
 
 @interface TCSSettingsViewController ()
 
+@property (nonatomic) UIScrollView *scrollView;
+@property (nonatomic) UIView *contentView;
+
 @property (nonatomic) UILabel *servicesLabel;
 @property (nonatomic) UIButton *facebookServiceButton;
 
@@ -46,13 +49,25 @@
         return [self rac_liftSelector:@selector(dismissViewControllerAnimated:completion:) withSignalsFromArray:@[[RACSignal return:@YES], [RACSignal return:nil]]];
     }];
 
+    // Quick summary of scrollView+autolayout madness:
+    // The scrollView wraps itself to view.
+    // scrollView.contentSize wraps itself to contentView's size.
+    // contentView holds all the subviews.
+    // contentView is locked to view's width.
+    // contentView extends to fit its subviews' heights.
+    self.scrollView = [[UIScrollView alloc] initForAutoLayout];
+    [self.view addSubview:self.scrollView];
+
+    self.contentView = [[UIView alloc] initForAutoLayout];
+    [self.scrollView addSubview:self.contentView];
+
     self.servicesLabel = [[UILabel alloc] initForAutoLayout];
     self.servicesLabel.backgroundColor = [UIColor clearColor];
     self.servicesLabel.numberOfLines = 1;
     self.servicesLabel.textColor = GRAY_DARK;
     self.servicesLabel.font = FONT_DEMIBOLD(22);
     self.servicesLabel.text = NSLocalizedString(@"Services", nil);
-    [self.view addSubview:self.servicesLabel];
+    [self.contentView addSubview:self.servicesLabel];
 
     self.facebookServiceButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.facebookServiceButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -60,7 +75,7 @@
     self.facebookServiceButton.titleLabel.font = FONT_MEDIUM(20);
     self.facebookServiceButton.rac_command = self.viewModel.logInOutFacebookCommand;
     [self.facebookServiceButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, logInOutButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
-    [self.view addSubview:self.facebookServiceButton];
+    [self.contentView addSubview:self.facebookServiceButton];
 
     self.importingLabel = [[UILabel alloc] initForAutoLayout];
     self.importingLabel.backgroundColor = [UIColor clearColor];
@@ -68,7 +83,7 @@
     self.importingLabel.textColor = GRAY_DARK;
     self.importingLabel.font = FONT_DEMIBOLD(22);
     self.importingLabel.text = NSLocalizedString(@"Importing", nil);
-    [self.view addSubview:self.importingLabel];
+    [self.contentView addSubview:self.importingLabel];
 
     self.importGroupsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.importGroupsButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -76,7 +91,7 @@
     self.importGroupsButton.titleLabel.font = FONT_MEDIUM(20);
     self.importGroupsButton.rac_command = self.viewModel.presentGroupImportCommand;
     [self.importGroupsButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, importGroupsButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
-    [self.view addSubview:self.importGroupsButton];
+    [self.contentView addSubview:self.importGroupsButton];
 
     self.importGroupsHintLabel = [[UILabel alloc] initForAutoLayout];
     self.importGroupsHintLabel.textAlignment = NSTextAlignmentCenter;
@@ -85,7 +100,7 @@
     self.importGroupsHintLabel.textColor = GRAY_MEDIUM;
     self.importGroupsHintLabel.font = FONT_REGULAR(14);
     RAC(self.importGroupsHintLabel, text) = RACObserve(self.viewModel, importGroupsHintText);
-    [self.view addSubview:self.importGroupsHintLabel];
+    [self.contentView addSubview:self.importGroupsHintLabel];
 
     self.deleteAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.deleteAllButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -95,7 +110,7 @@
     [self.deleteAllButton setTitleColor:WHITEA(0.6) forState:UIControlStateDisabled];
     self.deleteAllButton.rac_command = self.viewModel.deleteAllCommand;
     [self.deleteAllButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, deleteAllButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
-    [self.view addSubview:self.deleteAllButton];
+    [self.contentView addSubview:self.deleteAllButton];
 
     self.deleteAllHintLabel = [[UILabel alloc] initForAutoLayout];
     self.deleteAllHintLabel.textAlignment = NSTextAlignmentCenter;
@@ -104,7 +119,7 @@
     self.deleteAllHintLabel.textColor = GRAY_MEDIUM;
     self.deleteAllHintLabel.font = FONT_REGULAR(14);
     self.deleteAllHintLabel.text = NSLocalizedString(@"WARNING: this will delete all posts from your local device only. Your posts will have to be imported from the server again.", nil);
-    [self.view addSubview:self.deleteAllHintLabel];
+    [self.contentView addSubview:self.deleteAllHintLabel];
 
     [[[self.importGroupsButton.rac_command executionSignals]
         switchToLatest]
@@ -118,9 +133,14 @@
     CGFloat const hLeftInset = 14;
     CGFloat const hRightInset = hLeftInset;
     CGFloat const vTopInset = 26;
+    CGFloat const vBottomInset = vTopInset;
     CGFloat const vButtonHeight = 50;
     CGFloat const vLabelButtonMargin = 6;
     CGFloat const vButtonLabelMargin = 26;
+
+    [self.scrollView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.contentView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.contentView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.view];
 
     [self.servicesLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(vTopInset, hLeftInset, 0, hRightInset) excludingEdge:ALEdgeBottom];
 
@@ -150,6 +170,7 @@
     [self.deleteAllHintLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deleteAllButton withOffset:vLabelButtonMargin];
     [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
     [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
+    [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:vBottomInset];
 }
 
 @end

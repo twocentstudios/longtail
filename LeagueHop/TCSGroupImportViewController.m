@@ -24,12 +24,14 @@
 
     @weakify(self);
 
+    self.view.backgroundColor = WHITE;
+
     RAC(self, title) = RACObserve(self, viewModel.title);
 
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@keypath(CALayer.new, backgroundColor)];
     [animation setFromValue:(id)[UIColor whiteColor].CGColor];
-    [animation setToValue:(id)[UIColor blueColor].CGColor];
-    [animation setDuration:3.0];
+    [animation setToValue:(id)APP_TINT.CGColor];
+    [animation setDuration:2.0];
     [animation setAutoreverses:YES];
     [animation setRepeatCount:CGFLOAT_MAX];
 

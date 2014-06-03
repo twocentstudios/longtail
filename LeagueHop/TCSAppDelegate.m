@@ -36,9 +36,12 @@
     navigationController.navigationBar.translucent = NO;
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.tintColor = APP_TINT;
     self.window.rootViewController = navigationController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName: FONT_DEMIBOLD(18), NSForegroundColorAttributeName: GRAY_DARK}];
 
     return YES;
 }

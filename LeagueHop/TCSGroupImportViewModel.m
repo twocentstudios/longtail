@@ -34,7 +34,7 @@
         _groups = groups;
         _controller = controller;
 
-        _title = NSLocalizedString(@"Importing...", nil);
+        _title = NSLocalizedString(@"Importing groups...", nil);
 
         @weakify(self);
 

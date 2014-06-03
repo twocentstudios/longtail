@@ -21,8 +21,6 @@
 @property (nonatomic) NSAttributedString *postSummary;
 @property (nonatomic) NSAttributedString *year;
 @property (nonatomic) NSAttributedString *message;
-@property (nonatomic) UIImage *linkImage;
-@property (nonatomic) NSAttributedString *linkName;
 @property (nonatomic) NSAttributedString *likesSummary;
 @property (nonatomic) NSAttributedString *commentsSummary;
 
@@ -88,13 +86,6 @@
                 NSString *dateString = [dateFormatter stringFromDate:date];
                 return [[NSAttributedString alloc] initWithString:dateString attributes:@{NSFontAttributeName: FONT_MEDIUM(15), NSForegroundColorAttributeName: GRAY_DARK}];
             }];
-
-        RAC(self, linkName) =
-            [[RACObserve(self, post.linkName) ignore:nil] map:^NSAttributedString *(NSString *linkName) {
-                return [[NSAttributedString alloc] initWithString:linkName attributes:@{NSFontAttributeName: FONT_REGULAR(16), NSForegroundColorAttributeName: GRAY_DARK}];
-            }];
-
-        // RAC(self, linkImage) =  // TODO: Image fetching
 
         RAC(self, likesSummary) =
             [[RACObserve(self, post.likes) ignore:nil] map:^id(NSArray *likes) {

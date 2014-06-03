@@ -15,8 +15,6 @@
 @property (nonatomic, readonly) NSAttributedString *postSummary;
 @property (nonatomic, readonly) NSAttributedString *year;
 @property (nonatomic, readonly) NSAttributedString *message;
-@property (nonatomic, readonly) UIImage *linkImage;
-@property (nonatomic, readonly) NSAttributedString *linkName;
 @property (nonatomic, readonly) NSAttributedString *likesSummary;
 @property (nonatomic, readonly) NSAttributedString *commentsSummary;
 

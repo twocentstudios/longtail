@@ -52,9 +52,6 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
     self.navigationItem.leftBarButtonItem.rac_command = self.viewModel.presentSettingsCommand;
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:nil action:nil];
-    self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.loadPostsCommand;
-
     RAC(self, loading) = [self.viewModel.loadPostsCommand executing];
 
     [[RACObserve(self.viewModel, postViewModels)

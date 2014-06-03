@@ -113,6 +113,17 @@
                         }];
         }];
 
+        _deleteAllCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+            @strongify(self);
+            return [self.postController removeAllObjects];
+        }];
+
+        RAC(self, deleteAllButtonText) =
+            [[_deleteAllCommand executing]
+                map:^NSString *(NSNumber *executing) {
+                    return [executing boolValue] ? NSLocalizedString(@"Deleting...", nil) : NSLocalizedString(@"Delete All Posts", nil);
+                }];
+
         RAC(self, loading) = [self.logInOutFacebookCommand executing];
 
         [[self.logInOutFacebookCommand errors] subscribe:_errors];

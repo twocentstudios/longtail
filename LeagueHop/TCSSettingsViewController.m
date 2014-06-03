@@ -19,6 +19,9 @@
 @property (nonatomic) UIButton *importGroupsButton;
 @property (nonatomic) UILabel *importGroupsHintLabel;
 
+@property (nonatomic) UIButton *deleteAllButton;
+@property (nonatomic) UILabel *deleteAllHintLabel;
+
 @end
 
 
@@ -75,6 +78,33 @@
     [self.importGroupsButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, importGroupsButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.view addSubview:self.importGroupsButton];
 
+    self.importGroupsHintLabel = [[UILabel alloc] initForAutoLayout];
+    self.importGroupsHintLabel.textAlignment = NSTextAlignmentCenter;
+    self.importGroupsHintLabel.backgroundColor = [UIColor clearColor];
+    self.importGroupsHintLabel.numberOfLines = 0;
+    self.importGroupsHintLabel.textColor = GRAY_MEDIUM;
+    self.importGroupsHintLabel.font = FONT_REGULAR(14);
+    RAC(self.importGroupsHintLabel, text) = RACObserve(self.viewModel, importGroupsHintText);
+    [self.view addSubview:self.importGroupsHintLabel];
+
+    self.deleteAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.deleteAllButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.deleteAllButton.backgroundColor = WARNING_RED;
+    self.deleteAllButton.titleLabel.font = FONT_MEDIUM(20);
+    [self.deleteAllButton setTitleColor:WHITE forState:UIControlStateNormal];
+    self.deleteAllButton.rac_command = self.viewModel.deleteAllCommand;
+    [self.deleteAllButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, deleteAllButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
+    [self.view addSubview:self.deleteAllButton];
+
+    self.deleteAllHintLabel = [[UILabel alloc] initForAutoLayout];
+    self.deleteAllHintLabel.textAlignment = NSTextAlignmentCenter;
+    self.deleteAllHintLabel.backgroundColor = [UIColor clearColor];
+    self.deleteAllHintLabel.numberOfLines = 0;
+    self.deleteAllHintLabel.textColor = GRAY_MEDIUM;
+    self.deleteAllHintLabel.font = FONT_REGULAR(14);
+    self.deleteAllHintLabel.text = NSLocalizedString(@"WARNING: this will delete all posts from your local device only. Your posts will have to be imported from the server again.", nil);
+    [self.view addSubview:self.deleteAllHintLabel];
+
     [[[self.importGroupsButton.rac_command executionSignals]
         switchToLatest]
         subscribeNext:^(TCSGroupsViewModel *groupsViewModel) {
@@ -83,15 +113,7 @@
             [self.navigationController pushViewController:groupSelectViewController animated:YES];
         }];
 
-    self.importGroupsHintLabel = [[UILabel alloc] initForAutoLayout];
-    self.importGroupsHintLabel.textAlignment = NSTextAlignmentCenter;
-    self.importGroupsHintLabel.backgroundColor = [UIColor clearColor];
-    self.importGroupsHintLabel.numberOfLines = 0;
-    self.importGroupsHintLabel.textColor = GRAY_MEDIUM;
-    self.importGroupsHintLabel.font = FONT_REGULAR(16);
-    RAC(self.importGroupsHintLabel, text) = RACObserve(self.viewModel, importGroupsHintText);
-    [self.view addSubview:self.importGroupsHintLabel];
-
+    // Layout
     CGFloat const hLeftInset = 14;
     CGFloat const hRightInset = hLeftInset;
     CGFloat const vTopInset = 26;
@@ -118,14 +140,15 @@
     [self.importGroupsHintLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.importGroupsButton withOffset:vLabelButtonMargin];
     [self.importGroupsHintLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
     [self.importGroupsHintLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
-}
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
+    [self.deleteAllButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.importGroupsHintLabel withOffset:vButtonLabelMargin];
+    [self.deleteAllButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
+    [self.deleteAllButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
+    [self.deleteAllButton autoSetDimension:ALDimensionHeight toSize:vButtonHeight];
 
-    self.importGroupsHintLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.importGroupsHintLabel.bounds);
-
-    [self.view layoutIfNeeded];
+    [self.deleteAllHintLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deleteAllButton withOffset:vLabelButtonMargin];
+    [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
+    [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
 }
 
 @end

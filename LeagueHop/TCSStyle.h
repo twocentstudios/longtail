@@ -22,7 +22,6 @@
 #define WHITE GRAYCOLOR(255)
 #define BLACKA(a) GRAYACOLOR(0, a)
 #define WHITEA(a) GRAYACOLOR(255, a)
-#define APP_TINT RGBCOLOR(94, 124, 206)
 
 #define GRAY_BLACK GRAYCOLOR(30)
 #define GRAY_DARK GRAYCOLOR(78)
@@ -30,6 +29,9 @@
 #define GRAY_LIGHT GRAYCOLOR(184)
 #define GRAY_WHITE GRAYCOLOR(240)
 #define GRAY_PATTERN [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-table"]]
+
+#define APP_TINT RGBCOLOR(94, 124, 206)
+#define WARNING_RED RGBCOLOR(242, 80, 80)
 
 // Application Fonts
 #define FONT_REGULAR(s) [UIFont fontWithName:@"AvenirNext-Regular" size:(s)]

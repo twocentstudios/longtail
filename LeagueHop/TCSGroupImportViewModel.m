@@ -44,12 +44,13 @@
         }];
 
         _importedPostsCountsSignal =
-            [[[[_importCommand executionSignals]
+            [[[[[_importCommand executionSignals]
                 take:1]
                 flatten]
                 map:^NSString *(NSNumber *postsCount) {
                     return [postsCount stringValue];
-                }];
+                }]
+                deliverOn:[RACScheduler mainThreadScheduler]];
 
         [self.didBecomeActiveSignal subscribeNext:^(TCSGroupImportViewModel *viewModel) {
             [viewModel.importCommand execute:nil];

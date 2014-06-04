@@ -31,7 +31,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 - (RACSignal *)queryPostsForMonthDayKey:(NSString *)monthDayKey {
     return [[[RACSignal return:[[[self class] database] newConnection]]
-                subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]]
+                subscribeOn:[RACScheduler scheduler]]
                 map:^id(YapDatabaseConnection *connection) {
                     NSLog(@"Starting read posts from database for %@...", monthDayKey);
                     NSMutableArray *array = [NSMutableArray array];
@@ -43,7 +43,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                             return [proposedMonthDayKey isEqualToString:monthDayKey];
                         }];
                     }];
-                    NSLog(@"Read %li posts from database", [array count]);
+                    NSLog(@"Read %li posts from database", (long)[array count]);
                     return [array copy];
                 }];
 }
@@ -83,9 +83,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 - (RACSignal *)importPostsForGroups:(NSArray *)groups {
     RACSignal *signal =
         [[[[groups.rac_sequence
-            // This sequence must be signalified on the main thread or the FBRequestConnections
-            // will never return.
-            signalWithScheduler:[RACScheduler mainThreadScheduler]]
+            signal]
             map:^RACSignal *(TCSGroupObject *group) {
                 return [self importPostsForSourceObject:group];
             }]
@@ -137,11 +135,11 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 // Sends an NSNumber of the number of posts fetched and written.
 - (RACSignal *)importPostsForSourceObject:(id<TCSSourceObject>)sourceObject {
     return [[[[RACSignal return:[[[self class] database] newConnection]]
-                subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]]
+                subscribeOn:[RACScheduler scheduler]]
                 combineLatestWith:[self getPostsForSourceObject:sourceObject]]
                 map:^id(RACTuple *t) {
                     RACTupleUnpack(YapDatabaseConnection *connection, NSArray *posts) = t;
-                    NSLog(@"Writing %li posts to database...", [posts count]);
+                    NSLog(@"Writing %li posts to database...", (long)[posts count]);
                     [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                         for(TCSPostObject *post in posts) {
                             NSString *formattedKey = [@[post.monthDayKey, post.yearMonthDayKey, post.postId] componentsJoinedByString:kDatabaseKeySeparator];
@@ -157,7 +155,8 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 - (RACSignal *)getPostsForSourceObject:(id<TCSSourceObject>)sourceObject {
     NSString *graphPath = [NSString stringWithFormat:@"/%@/feed", sourceObject.sourceId];
 
-    RACSignal *signal = [self recursivelyGetDataForGraphPath:graphPath parameters:@{@"limit": @"5000"} startArray:@[]];
+    RACSignal *signal = [[self recursivelyGetDataForGraphPath:graphPath parameters:@{@"limit": @"5000"} startArray:@[]]
+                            deliverOn:[RACScheduler scheduler]];
 
     RACSignal *postsSignal =
         [signal tryMap:^id(NSArray *array, NSError *__autoreleasing *errorPtr) {
@@ -210,8 +209,9 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 }
 
 // graphPath should be the path component not including host or parameters. Parameters should not include authToken.
+// Note: The returned signal is automatically subscribed to on the main thread because FBRequestConnection never returns otherwise.
 - (RACSignal *)requestGraphPath:(NSString *)graphPath parameters:(NSDictionary *)parameters HTTPMethod:(NSString *)HTTPMethod {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         FBRequestConnection *requestConnection =
             [FBRequestConnection
                  startWithGraphPath:graphPath
@@ -228,13 +228,15 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         return [RACDisposable disposableWithBlock:^{
             [requestConnection cancel];
         }];
-    }];
+    }]
+    subscribeOn:[RACScheduler mainThreadScheduler]];
 }
 
 // URLString should be a fully formed Facebook URL including host, path, and parameters, including auth token and paging tokens.
 // This method is a hack for requesting data using Facebook supplied paging URLs.
+// Note: The returned signal is automatically subscribed to on the main thread because FBRequestConnection never returns otherwise.
 - (RACSignal *)requestURLString:(NSString *)URLString HTTPMethod:(NSString *)HTTPMethod {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
                                                       graphPath:nil
                                                      parameters:nil
@@ -260,7 +262,8 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         return [RACDisposable disposableWithBlock:^{
             [requestConnection cancel];
         }];
-    }];
+    }]
+    subscribeOn:[RACScheduler mainThreadScheduler]];
 }
 
 # pragma mark Database Client

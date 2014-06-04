@@ -12,13 +12,13 @@
 
 - (NSString *)monthDayDateKey {
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
-    NSString *string = [NSString stringWithFormat:@"%02li%02li", components.month, components.day];
+    NSString *string = [NSString stringWithFormat:@"%02li%02li", (long)components.month, (long)components.day];
     return string;
 }
 
 - (NSString *)yearMonthDayDateKey {
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
-    NSString *string = [NSString stringWithFormat:@"%04li%02li%02li", components.year, components.month, components.day];
+    NSString *string = [NSString stringWithFormat:@"%04li%02li%02li", (long)components.year, (long)components.month, (long)components.day];
     return string;
 }
 

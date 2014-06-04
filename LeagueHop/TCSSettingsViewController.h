@@ -12,6 +12,6 @@
 
 @interface TCSSettingsViewController : TCSViewController
 
-@property (nonatomic) TCSSettingsViewModel *viewModel;
+@property (nonatomic, readonly) TCSSettingsViewModel *viewModel;
 
 @end

@@ -21,8 +21,8 @@
 // Sends a TCSLoginViewModel.
 @property (nonatomic, readonly) RACCommand *presentSettingsCommand;
 
-// Triggers `presentSettingsCommand` if login/import should be presented.
-@property (nonatomic, readonly) RACSignal *shouldPresentSettingsSignal;
+// Sends a LogInViewModel if login/import should be presented.
+@property (nonatomic, readonly) RACSignal *shouldPresentLogInSignal;
 
 // Sends a TCSWebViewModel when executed with a NSURL as a parameter.
 @property (nonatomic, readonly) RACCommand *openURLCommand;

@@ -13,6 +13,9 @@
 #import "TCSSettingsViewModel.h"
 #import "TCSSessionController.h"
 
+#import "TCSLogInViewModel.h"
+#import "TCSLogInViewController.h"
+
 #import "TCSWebViewModel.h"
 
 #import "NSDate+TCSDateKey.h"
@@ -29,7 +32,7 @@
 
 @property (nonatomic) RACCommand *loadPostsCommand;
 @property (nonatomic) RACCommand *presentSettingsCommand;
-@property (nonatomic) RACSignal *shouldPresentSettingsSignal;
+@property (nonatomic) RACSignal *shouldPresentLogInSignal;
 @property (nonatomic) RACCommand *openURLCommand;
 
 @end
@@ -46,6 +49,7 @@
         @weakify(self);
 
         RAC(self, date) = [[RACSignal interval:5*60 onScheduler:[RACScheduler mainThreadScheduler]] startWith:[NSDate date]];
+//        self.date = [NSDate dateWithTimeIntervalSinceNow:-60*60*24*42];
         RAC(self, title) =
             [[RACObserve(self, date) map:^id(NSDate *date) {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -107,17 +111,19 @@
             [viewModel.loadPostsCommand execute:nil];
         }];
 
-        _shouldPresentSettingsSignal =
-            [[[[self.didBecomeActiveSignal
+        _shouldPresentLogInSignal =
+            [[[self.didBecomeActiveSignal
                 flattenMap:^RACSignal *(TCSPostsViewModel *viewModel) {
                     return [viewModel.controller isImportNeeded];
                 }]
                 filter:^BOOL(NSNumber *isImportNeeded) {
                     return [isImportNeeded boolValue];
                 }]
-                mapReplace:self.presentSettingsCommand]
-                flattenMap:^RACSignal *(RACCommand *presentSettingsCommand) {
-                    return [presentSettingsCommand execute:nil];
+                map:^TCSLogInViewModel *(id _) {
+                    @strongify(self);
+                    TCSSessionController *sessionController = [[TCSSessionController alloc] init];
+                    TCSLogInViewModel *viewModel = [[TCSLogInViewModel alloc] initWithSessionController:sessionController postController:self.controller];
+                    return viewModel;
                 }];
 
     }

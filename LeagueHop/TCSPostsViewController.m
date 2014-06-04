@@ -13,6 +13,9 @@
 #import "TCSSettingsViewController.h"
 #import "TCSSettingsViewModel.h"
 
+#import "TCSLogInViewController.h"
+#import "TCSLogInViewModel.h"
+
 #import "TCSWebViewController.h"
 #import "TCSWebViewModel.h"
 
@@ -60,19 +63,22 @@
             [tableView reloadData];
         }];
 
-    void (^presentSettingsViewController)(TCSSettingsViewModel *) = ^(TCSSettingsViewModel *loginViewModel) {
-        TCSSettingsViewController *loginViewController = [[TCSSettingsViewController alloc] initWithViewModel:loginViewModel];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-        navigationController.navigationBar.translucent = NO;
-        [self presentViewController:navigationController animated:YES completion:nil];
-    };
-
-    [self.viewModel.shouldPresentSettingsSignal
-        subscribeNext:presentSettingsViewController];
+    [self.viewModel.shouldPresentLogInSignal
+        subscribeNext:^(TCSLogInViewModel *logInViewModel) {
+            TCSLogInViewController *logInViewController = [[TCSLogInViewController alloc] initWithViewModel:logInViewModel];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:logInViewController];
+            navigationController.navigationBar.translucent = NO;
+            [self presentViewController:navigationController animated:YES completion:nil];
+        }];
 
     [[[self.viewModel.presentSettingsCommand executionSignals]
         switchToLatest]
-        subscribeNext:presentSettingsViewController];
+        subscribeNext:^(TCSSettingsViewModel *settingsViewModel) {
+            TCSSettingsViewController *settingsViewController = [[TCSSettingsViewController alloc] initWithViewModel:settingsViewModel];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+            navigationController.navigationBar.translucent = NO;
+            [self presentViewController:navigationController animated:YES completion:nil];
+        }];
 
     [[[self.viewModel.openURLCommand executionSignals]
         switchToLatest]

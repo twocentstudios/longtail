@@ -31,8 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-
     @weakify(self);
 
     self.view.backgroundColor = WHITE;
@@ -108,6 +106,12 @@
     // UIGestures
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapView:)];
     [self.view addGestureRecognizer:tapGesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 // Creates a new label with the supplied text and adds it to the view and dynamics system

@@ -6,7 +6,6 @@
 #import "TCSSettingsViewController.h"
 
 #import "TCSGroupSelectViewController.h"
-#import "TCSGroupViewModel.h"
 
 #pragma mark -
 

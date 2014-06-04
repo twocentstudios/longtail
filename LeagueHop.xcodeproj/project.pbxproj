@@ -46,6 +46,8 @@
 		83ECC4491932EE6700CD392E /* TCSPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC4481932EE6700CD392E /* TCSPostView.m */; };
 		83ECC44F19344FB300CD392E /* TCSWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC44E19344FB300CD392E /* TCSWebViewController.m */; };
 		83ECC453193450AD00CD392E /* TCSWebViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC452193450AD00CD392E /* TCSWebViewModel.m */; };
+		83F70C09193EB0F100FBC0C8 /* TCSLogInViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F70C08193EB0F100FBC0C8 /* TCSLogInViewModel.m */; };
+		83F70C0C193EB4AF00FBC0C8 /* TCSLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F70C0B193EB4AF00FBC0C8 /* TCSLogInViewController.m */; };
 		DCD951E56BE64564BD1CA933 /* libPods-LeagueHopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47AA04267C264DBF8086AFE9 /* libPods-LeagueHopTests.a */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +136,10 @@
 		83ECC44E19344FB300CD392E /* TCSWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSWebViewController.m; sourceTree = "<group>"; };
 		83ECC451193450AD00CD392E /* TCSWebViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSWebViewModel.h; sourceTree = "<group>"; };
 		83ECC452193450AD00CD392E /* TCSWebViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSWebViewModel.m; sourceTree = "<group>"; };
+		83F70C07193EB0F100FBC0C8 /* TCSLogInViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSLogInViewModel.h; sourceTree = "<group>"; };
+		83F70C08193EB0F100FBC0C8 /* TCSLogInViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSLogInViewModel.m; sourceTree = "<group>"; };
+		83F70C0A193EB4AF00FBC0C8 /* TCSLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSLogInViewController.h; sourceTree = "<group>"; };
+		83F70C0B193EB4AF00FBC0C8 /* TCSLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSLogInViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,7 +253,8 @@
 			children = (
 				831512A6191EE81A00331535 /* TCSViewController.h */,
 				831512A7191EE81A00331535 /* TCSViewController.m */,
-				836048FA192F12CC002E48B8 /* Onboarding Flow */,
+				836048FA192F12CC002E48B8 /* Settings */,
+				83F70C0D193EBBDB00FBC0C8 /* Importing */,
 				836048F9192F12C2002E48B8 /* Posts */,
 				83ECC4501934508600CD392E /* Web */,
 			);
@@ -319,19 +326,15 @@
 			name = Posts;
 			sourceTree = "<group>";
 		};
-		836048FA192F12CC002E48B8 /* Onboarding Flow */ = {
+		836048FA192F12CC002E48B8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				831512BC191F418100331535 /* TCSSettingsViewController.h */,
 				831512BD191F418100331535 /* TCSSettingsViewController.m */,
-				8386AD9C192B222800BBC28D /* TCSGroupSelectViewController.h */,
-				8386AD9D192B222800BBC28D /* TCSGroupSelectViewController.m */,
-				83868453192C4C210069E123 /* TCSGroupImportViewController.h */,
-				83868454192C4C210069E123 /* TCSGroupImportViewController.m */,
-				8386ADA5192B240900BBC28D /* TCSGroupCell.h */,
-				8386ADA6192B240900BBC28D /* TCSGroupCell.m */,
+				83F70C0A193EB4AF00FBC0C8 /* TCSLogInViewController.h */,
+				83F70C0B193EB4AF00FBC0C8 /* TCSLogInViewController.m */,
 			);
-			name = "Onboarding Flow";
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		836048FB192F12E5002E48B8 /* Onboarding Flow */ = {
@@ -339,6 +342,8 @@
 			children = (
 				836048F6192EF836002E48B8 /* TCSSettingsViewModel.h */,
 				836048F7192EF836002E48B8 /* TCSSettingsViewModel.m */,
+				83F70C07193EB0F100FBC0C8 /* TCSLogInViewModel.h */,
+				83F70C08193EB0F100FBC0C8 /* TCSLogInViewModel.m */,
 				8386AD9F192B237B00BBC28D /* TCSGroupsViewModel.h */,
 				8386ADA0192B237B00BBC28D /* TCSGroupsViewModel.m */,
 				8386ADA2192B238900BBC28D /* TCSGroupViewModel.h */,
@@ -376,6 +381,19 @@
 				83ECC452193450AD00CD392E /* TCSWebViewModel.m */,
 			);
 			name = Web;
+			sourceTree = "<group>";
+		};
+		83F70C0D193EBBDB00FBC0C8 /* Importing */ = {
+			isa = PBXGroup;
+			children = (
+				8386AD9C192B222800BBC28D /* TCSGroupSelectViewController.h */,
+				8386AD9D192B222800BBC28D /* TCSGroupSelectViewController.m */,
+				83868453192C4C210069E123 /* TCSGroupImportViewController.h */,
+				83868454192C4C210069E123 /* TCSGroupImportViewController.m */,
+				8386ADA5192B240900BBC28D /* TCSGroupCell.h */,
+				8386ADA6192B240900BBC28D /* TCSGroupCell.m */,
+			);
+			name = Importing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -563,11 +581,13 @@
 				831512BE191F418100331535 /* TCSSettingsViewController.m in Sources */,
 				83868452192C435E0069E123 /* TCSGroupImportViewModel.m in Sources */,
 				8386ADA4192B238900BBC28D /* TCSGroupViewModel.m in Sources */,
+				83F70C09193EB0F100FBC0C8 /* TCSLogInViewModel.m in Sources */,
 				8386ADA1192B237B00BBC28D /* TCSGroupsViewModel.m in Sources */,
 				831512B9191F352B00331535 /* TCSPostCell.m in Sources */,
 				831512A8191EE81A00331535 /* TCSViewController.m in Sources */,
 				8386AD9E192B222800BBC28D /* TCSGroupSelectViewController.m in Sources */,
 				83ECC453193450AD00CD392E /* TCSWebViewModel.m in Sources */,
+				83F70C0C193EB4AF00FBC0C8 /* TCSLogInViewController.m in Sources */,
 				83ECC4491932EE6700CD392E /* TCSPostView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

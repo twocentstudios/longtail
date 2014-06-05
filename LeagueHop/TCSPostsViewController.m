@@ -52,7 +52,7 @@
 
     self.mockPostView = [[TCSPostView alloc] init];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:nil action:nil];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings-icon"] style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.leftBarButtonItem.rac_command = self.viewModel.presentSettingsCommand;
 
     RAC(self, loading) = [self.viewModel.loadPostsCommand executing];

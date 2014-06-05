@@ -5,11 +5,15 @@
 
 #import "TCSViewController.h"
 
+#import "TCSTopBarActivityView.h"
+
 #import "TCSViewModel.h"
 
 #pragma mark -
 
 @interface TCSViewController ()
+
+@property (nonatomic) TCSTopBarActivityView *activityView;
 
 @end
 
@@ -54,27 +58,10 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	UIView *overlayView = [[UIView alloc] initWithFrame:self.view.bounds];
-	overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	overlayView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.35];
-	[self.view addSubview:overlayView];
+    self.activityView = [[TCSTopBarActivityView alloc] init];
+    [self.view addSubview:self.activityView];
 
-	UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-	[loadingView startAnimating];
-	[overlayView addSubview:loadingView];
-
-	RCLFrame(loadingView) = @{
-                              rcl_center: overlayView.rcl_boundsSignal.center
-                              };
-
-	RAC(overlayView, alpha) =
-        [[[[RACObserve(self, loading)
-            distinctUntilChanged]
-            map:^(NSNumber *loading) {
-                return loading.boolValue ? @1 : @0;
-            }]
-            animateWithDuration:0.25 curve:RCLAnimationCurveLinear]
-            startWith:@0];
+    RAC(self.activityView, loading) = RACObserve(self, loading);
 }
 
 #pragma mark Error handling

@@ -7,6 +7,8 @@
 
 #import "TCSGroupSelectViewController.h"
 
+#import "TCSWebViewController.h"
+
 #pragma mark -
 
 @interface TCSSettingsViewController ()
@@ -20,9 +22,12 @@
 @property (nonatomic) UILabel *importingLabel;
 @property (nonatomic) UIButton *importGroupsButton;
 @property (nonatomic) UILabel *importGroupsHintLabel;
-
 @property (nonatomic) UIButton *deleteAllButton;
 @property (nonatomic) UILabel *deleteAllHintLabel;
+
+@property (nonatomic) UILabel *creditsLabel;
+@property (nonatomic) UIButton *authorButton;
+@property (nonatomic) UIButton *licencesButton;
 
 @end
 
@@ -120,12 +125,46 @@
     self.deleteAllHintLabel.text = NSLocalizedString(@"WARNING: this will delete all posts from your local device only. Your posts will have to be imported from the server again.", nil);
     [self.contentView addSubview:self.deleteAllHintLabel];
 
+    self.creditsLabel = [[UILabel alloc] initForAutoLayout];
+    self.creditsLabel.backgroundColor = [UIColor clearColor];
+    self.creditsLabel.numberOfLines = 1;
+    self.creditsLabel.textColor = GRAY_DARK;
+    self.creditsLabel.font = FONT_DEMIBOLD(22);
+    self.creditsLabel.text = NSLocalizedString(@"Credits", nil);
+    [self.contentView addSubview:self.creditsLabel];
+
+    self.authorButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.authorButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.authorButton.backgroundColor = GRAY_WHITE;
+    self.authorButton.titleLabel.font = FONT_MEDIUM(20);
+    self.authorButton.rac_command = self.viewModel.presentAuthorCommand;
+    [self.authorButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, authorText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
+    [self.contentView addSubview:self.authorButton];
+
+    self.licencesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.licencesButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.licencesButton.backgroundColor = GRAY_WHITE;
+    self.licencesButton.titleLabel.font = FONT_MEDIUM(20);
+    self.licencesButton.rac_command = self.viewModel.presentLicensesCommand;
+    [self.licencesButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, licensesText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
+    [self.contentView addSubview:self.licencesButton];
+
     [[[self.importGroupsButton.rac_command executionSignals]
         switchToLatest]
         subscribeNext:^(TCSGroupsViewModel *groupsViewModel) {
             @strongify(self);
             TCSGroupSelectViewController *groupSelectViewController = [[TCSGroupSelectViewController alloc] initWithViewModel:groupsViewModel];
             [self.navigationController pushViewController:groupSelectViewController animated:YES];
+        }];
+
+    [[[RACSignal
+        merge:@[[self.authorButton.rac_command executionSignals],
+                [self.licencesButton.rac_command executionSignals]]]
+        switchToLatest]
+        subscribeNext:^(TCSWebViewModel *webViewModel) {
+            @strongify(self);
+            TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
+            [self.navigationController pushViewController:webViewController animated:YES];
         }];
 
     // Layout
@@ -169,7 +208,21 @@
     [self.deleteAllHintLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deleteAllButton withOffset:vLabelButtonMargin];
     [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
     [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
-    [self.deleteAllHintLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:vBottomInset];
+
+    [self.creditsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deleteAllHintLabel withOffset:vButtonLabelMargin];
+    [self.creditsLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
+    [self.creditsLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
+
+    [self.authorButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.creditsLabel withOffset:vLabelButtonMargin];
+    [self.authorButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
+    [self.authorButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
+    [self.authorButton autoSetDimension:ALDimensionHeight toSize:vButtonHeight];
+
+    [self.licencesButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.authorButton withOffset:vLabelButtonMargin];
+    [self.licencesButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftInset];
+    [self.licencesButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightInset];
+    [self.licencesButton autoSetDimension:ALDimensionHeight toSize:vButtonHeight];
+    [self.licencesButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:vBottomInset];
 }
 
 @end

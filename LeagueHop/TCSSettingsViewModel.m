@@ -9,9 +9,10 @@
 #import "TCSSessionController.h"
 #import "TCSPostController.h"
 
-#import <FacebookSDK/FacebookSDK.h>
-
 #import "TCSGroupsViewModel.h"
+#import "TCSWebViewModel.h"
+
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface TCSSettingsViewModel ()
 
@@ -20,11 +21,16 @@
 @property (nonatomic) NSString *importGroupsButtonText;
 @property (nonatomic) NSString *logInOutButtonText;
 @property (nonatomic) NSString *importGroupsHintText;
+@property (nonatomic) NSString *authorText;
+@property (nonatomic) NSString *licensesText;
 
 @property (nonatomic, getter = isLoading) BOOL loading;
 
 @property (nonatomic) RACCommand *logInOutFacebookCommand;
 @property (nonatomic) RACCommand *presentGroupImportCommand;
+@property (nonatomic) RACCommand *deleteAllCommand;
+@property (nonatomic) RACCommand *presentAuthorCommand;
+@property (nonatomic) RACCommand *presentLicensesCommand;
 
 @property (nonatomic) TCSSessionController *sessionController;
 @property (nonatomic) TCSPostController *postController;
@@ -113,7 +119,7 @@
                         }];
         }];
 
-        _deleteAllCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        _deleteAllCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
             @strongify(self);
             return [[self.postController removeAllObjects] delay:2]; // Add some artificial delay so the user can see what's happening
         }];
@@ -123,6 +129,21 @@
                 map:^NSString *(NSNumber *executing) {
                     return [executing boolValue] ? NSLocalizedString(@"Deleting...", nil) : NSLocalizedString(@"Delete All Posts", nil);
                 }];
+
+        _presentAuthorCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
+            NSURL *URL = [NSURL URLWithString:@"http://twitter.com/twocentstudios"];
+            TCSWebViewModel *viewModel = [[TCSWebViewModel alloc] initWithURL:URL title:NSLocalizedString(@"Twitter", nil)];
+            return [RACSignal return:viewModel];
+        }];
+
+        _presentLicensesCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
+            NSURL *URL = [NSURL URLWithString:@"http://twocentstudios.com/apps/althop/licenses.html"];
+            TCSWebViewModel *viewModel = [[TCSWebViewModel alloc] initWithURL:URL title:NSLocalizedString(@"Licenses", nil)];
+            return [RACSignal return:viewModel];
+        }];
+
+        _authorText = NSLocalizedString(@"@twocentstudios", nil);
+        _licensesText = NSLocalizedString(@"Licenses", nil);
 
         RAC(self, loading) = [self.logInOutFacebookCommand executing];
 

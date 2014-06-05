@@ -256,11 +256,10 @@
 			children = (
 				831512A6191EE81A00331535 /* TCSViewController.h */,
 				831512A7191EE81A00331535 /* TCSViewController.m */,
-				83E218801940003700559941 /* TCSTopBarActivityView.h */,
-				83E218811940003700559941 /* TCSTopBarActivityView.m */,
+				83E218831940355D00559941 /* Generic */,
+				836048F9192F12C2002E48B8 /* Posts */,
 				836048FA192F12CC002E48B8 /* Settings */,
 				83F70C0D193EBBDB00FBC0C8 /* Importing */,
-				836048F9192F12C2002E48B8 /* Posts */,
 				83ECC4501934508600CD392E /* Web */,
 			);
 			name = Views;
@@ -368,6 +367,15 @@
 				831512B5191F23FE00331535 /* TCSPostViewModel.m */,
 			);
 			name = Posts;
+			sourceTree = "<group>";
+		};
+		83E218831940355D00559941 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				83E218801940003700559941 /* TCSTopBarActivityView.h */,
+				83E218811940003700559941 /* TCSTopBarActivityView.m */,
+			);
+			name = Generic;
 			sourceTree = "<group>";
 		};
 		83ECC4501934508600CD392E /* Web */ = {

@@ -5,12 +5,9 @@
 
 #pragma mark -
 
-@interface TCSBottomBarActivityView : UIView
+@interface TCSTopBarActivityView : UIView
 
-@property (nonatomic, weak, readonly) UIView *barView;
 @property (nonatomic, getter = isLoading) BOOL loading;
 @property (nonatomic) CGFloat progress;
-
-- (instancetype)initWithBarView:(UIView *)barView;
 
 @end

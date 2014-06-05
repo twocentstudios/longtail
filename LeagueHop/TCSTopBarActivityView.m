@@ -3,11 +3,10 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-#import "TCSBottomBarActivityView.h"
+#import "TCSTopBarActivityView.h"
 
-@interface TCSBottomBarActivityView ()
+@interface TCSTopBarActivityView ()
 
-@property (nonatomic, weak) UIView *barView;
 @property (nonatomic, getter = isShowingLoading) BOOL showingLoading;
 
 @property (nonatomic) CABasicAnimation *pulseAnimation;
@@ -17,15 +16,14 @@
 
 #pragma mark -
 
-@implementation TCSBottomBarActivityView
+@implementation TCSTopBarActivityView
 
 #pragma mark Creation
 
-- (instancetype)initWithBarView:(UIView *)barView {
-    self = [super initWithFrame:CGRectZero];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self != nil) {
-        _barView = barView;
-        _loading = 1;
+        _progress = 1;
 
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -34,7 +32,7 @@
         self.pulseAnimation = [CABasicAnimation animationWithKeyPath:@keypath(CALayer.new, backgroundColor)];
         [self.pulseAnimation setFromValue:(id)[UIColor whiteColor].CGColor];
         [self.pulseAnimation setToValue:(id)APP_TINT.CGColor];
-        [self.pulseAnimation setDuration:1.0];
+        [self.pulseAnimation setDuration:0.6];
         [self.pulseAnimation setAutoreverses:YES];
         [self.pulseAnimation setRepeatCount:CGFLOAT_MAX];
 
@@ -45,7 +43,7 @@
         RAC(self, showingLoading) =
             [[RACSignal combineLatest:@[RACObserve(self, loading), RACObserve(self, progress)]]
                 reduceEach:^NSNumber *(NSNumber *loading, NSNumber *progress) {
-                    return @([loading boolValue] || ([progress floatValue] == 1));
+                    return @([loading boolValue] || ([progress floatValue] != 1));
                 }];
 
         [[RACObserve(self, progress)
@@ -63,7 +61,8 @@
                 [self setNeedsLayout];
             }];
 
-        [RACObserve(self, showingLoading)
+        [[RACObserve(self, showingLoading)
+            distinctUntilChanged]
             subscribeNext:^(NSNumber *loading) {
                 @strongify(self);
                 if ([loading boolValue]) {
@@ -73,22 +72,29 @@
                 }
             }];
 
-        [barView addSubview:self];
-
-        CGFloat const vHeight = 3;
-        [self.maskLayer setFrame:CGRectMake(0, 0, 0, vHeight)];
-        [self autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self autoSetDimension:ALDimensionHeight toSize:vHeight];
     }
     return self;
 }
 
 #pragma mark UIView
 
+- (void)updateConstraints {
+    [super updateConstraints];
+
+    CGFloat const vHeight = 3;
+    [self.maskLayer setFrame:CGRectMake(0, 0, 0, vHeight)];
+    [self autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+    [self autoSetDimension:ALDimensionHeight toSize:vHeight];
+}
+
 - (void)layoutSubviews {
     CGRect maskRect = [self.maskLayer frame];
     maskRect.size.width = CGRectGetWidth([self bounds]) * self.progress;
     [self.maskLayer setFrame:maskRect];
+}
+
+- (void)didMoveToSuperview {
+    [self setNeedsUpdateConstraints];
 }
 
 @end

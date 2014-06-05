@@ -27,6 +27,7 @@
         CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@keypath(CALayer.new, backgroundColor)];
         [pulseAnimation setFromValue:(id)[UIColor whiteColor].CGColor];
         [pulseAnimation setToValue:(id)APP_TINT.CGColor];
+        [pulseAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.74 :0.85 :0.42 :0.91]];
         [pulseAnimation setDuration:0.6];
         [pulseAnimation setAutoreverses:YES];
         [pulseAnimation setRepeatCount:CGFLOAT_MAX];

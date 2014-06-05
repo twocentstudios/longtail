@@ -16,7 +16,6 @@
     #import <ReactiveCocoa/ReactiveCocoa.h>
     #import <ReactiveCocoa/RACEXTScope.h>
     #import <ReactiveCocoa/RACEXTKeyPathCoding.h>
-    #import <ReactiveCocoaLayout/ReactiveCocoaLayout.h>
     #import <UIView+AutoLayout/UIView+AutoLayout.h>
     #import "TCSStyle.h"
 #endif

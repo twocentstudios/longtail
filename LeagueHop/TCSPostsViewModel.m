@@ -18,6 +18,8 @@
 
 #import "TCSWebViewModel.h"
 
+#import "TCSInformationViewModel.h"
+
 #import "NSDate+TCSDateKey.h"
 
 @interface TCSPostsViewModel ()
@@ -31,6 +33,7 @@
 @property (nonatomic) NSString *monthDayKey;
 
 @property (nonatomic) RACCommand *loadPostsCommand;
+@property (nonatomic) TCSInformationViewModel *emptyViewModel;
 @property (nonatomic) RACCommand *presentSettingsCommand;
 @property (nonatomic) RACSignal *shouldPresentLogInSignal;
 @property (nonatomic) RACCommand *openURLCommand;
@@ -102,6 +105,17 @@
                                 toArray];
                 }]
                 deliverOn:[RACScheduler mainThreadScheduler]];
+
+        _emptyViewModel = [[TCSInformationViewModel alloc] initWithTitle:NSLocalizedString(@"No posts today :(", nil) subtitle:NSLocalizedString(@"You should try again tomorrow!", nil)];
+
+        RAC(self.emptyViewModel, hidden) =
+            [RACSignal
+                combineLatest:@[ RACObserve(self, postViewModels),
+                                 [self.loadPostsCommand executing],
+                                 RACObserve(self, active) ]
+                reduce:^NSNumber *(NSArray *postViewModels, NSNumber *executing, NSNumber *active) {
+                    return @([postViewModels count] > 0 || [executing boolValue] || ![active boolValue]);
+                }];
 
         [[[self.loadPostsCommand errors]
             deliverOn:[RACScheduler mainThreadScheduler]]

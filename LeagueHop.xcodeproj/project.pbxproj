@@ -40,6 +40,8 @@
 		8386ADA1192B237B00BBC28D /* TCSGroupsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8386ADA0192B237B00BBC28D /* TCSGroupsViewModel.m */; };
 		8386ADA4192B238900BBC28D /* TCSGroupViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8386ADA3192B238900BBC28D /* TCSGroupViewModel.m */; };
 		8386ADA7192B240900BBC28D /* TCSGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8386ADA6192B240900BBC28D /* TCSGroupCell.m */; };
+		83A378D31941604300932479 /* TCSInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A378D21941604300932479 /* TCSInformationView.m */; };
+		83A378D61941613C00932479 /* TCSInformationViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A378D51941613C00932479 /* TCSInformationViewModel.m */; };
 		83C453F21925D647006779BB /* TCSGroupObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 83C453F11925D647006779BB /* TCSGroupObject.m */; };
 		83E218821940003700559941 /* TCSTopBarActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E218811940003700559941 /* TCSTopBarActivityView.m */; };
 		83ECC4411931505100CD392E /* TCSSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ECC4401931505100CD392E /* TCSSessionController.m */; };
@@ -123,6 +125,10 @@
 		8386ADA3192B238900BBC28D /* TCSGroupViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSGroupViewModel.m; sourceTree = "<group>"; };
 		8386ADA5192B240900BBC28D /* TCSGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSGroupCell.h; sourceTree = "<group>"; };
 		8386ADA6192B240900BBC28D /* TCSGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSGroupCell.m; sourceTree = "<group>"; };
+		83A378D11941604300932479 /* TCSInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSInformationView.h; sourceTree = "<group>"; };
+		83A378D21941604300932479 /* TCSInformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSInformationView.m; sourceTree = "<group>"; };
+		83A378D41941613C00932479 /* TCSInformationViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSInformationViewModel.h; sourceTree = "<group>"; };
+		83A378D51941613C00932479 /* TCSInformationViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSInformationViewModel.m; sourceTree = "<group>"; };
 		83C453F01925D647006779BB /* TCSGroupObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSGroupObject.h; sourceTree = "<group>"; };
 		83C453F11925D647006779BB /* TCSGroupObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSGroupObject.m; sourceTree = "<group>"; };
 		83E218801940003700559941 /* TCSTopBarActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSTopBarActivityView.h; sourceTree = "<group>"; };
@@ -271,6 +277,7 @@
 				831512A9191EE97A00331535 /* TCSViewModel.h */,
 				831512AC191EEA7100331535 /* TCSViewModel+Protected.h */,
 				831512AA191EE97A00331535 /* TCSViewModel.m */,
+				83A378D7194161EA00932479 /* Generic */,
 				836048FB192F12E5002E48B8 /* Onboarding Flow */,
 				836048FC192F12EB002E48B8 /* Posts */,
 				83ECC454193450B200CD392E /* Web */,
@@ -369,11 +376,22 @@
 			name = Posts;
 			sourceTree = "<group>";
 		};
+		83A378D7194161EA00932479 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				83A378D41941613C00932479 /* TCSInformationViewModel.h */,
+				83A378D51941613C00932479 /* TCSInformationViewModel.m */,
+			);
+			name = Generic;
+			sourceTree = "<group>";
+		};
 		83E218831940355D00559941 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
 				83E218801940003700559941 /* TCSTopBarActivityView.h */,
 				83E218811940003700559941 /* TCSTopBarActivityView.m */,
+				83A378D11941604300932479 /* TCSInformationView.h */,
+				83A378D21941604300932479 /* TCSInformationView.m */,
 			);
 			name = Generic;
 			sourceTree = "<group>";
@@ -589,6 +607,7 @@
 				831512A2191E01E000331535 /* TCSPostController.m in Sources */,
 				83ECC44519329B2500CD392E /* UIColor+TCSColorId.m in Sources */,
 				831512AB191EE97A00331535 /* TCSViewModel.m in Sources */,
+				83A378D61941613C00932479 /* TCSInformationViewModel.m in Sources */,
 				83151270191DEF8400331535 /* TCSAppDelegate.m in Sources */,
 				831512A5191EE74B00331535 /* TCSPostsViewController.m in Sources */,
 				831512BE191F418100331535 /* TCSSettingsViewController.m in Sources */,
@@ -602,6 +621,7 @@
 				8386AD9E192B222800BBC28D /* TCSGroupSelectViewController.m in Sources */,
 				83ECC453193450AD00CD392E /* TCSWebViewModel.m in Sources */,
 				83F70C0C193EB4AF00FBC0C8 /* TCSLogInViewController.m in Sources */,
+				83A378D31941604300932479 /* TCSInformationView.m in Sources */,
 				83ECC4491932EE6700CD392E /* TCSPostView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,11 +19,15 @@
 #import "TCSWebViewController.h"
 #import "TCSWebViewModel.h"
 
+#import "TCSInformationView.h"
+
 #pragma mark -
 
 @interface TCSPostsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) UITableView *tableView;
+
+@property (nonatomic) TCSInformationView *emptyView;
 
 // This view is used for calcuating cell heights.
 @property (nonatomic) TCSPostView *mockPostView;
@@ -49,6 +53,9 @@
     self.tableView.dataSource = self;
     [self.tableView registerClass:TCSPostCell.class forCellReuseIdentifier:NSStringFromClass(TCSPostCell.class)];
     [self.view insertSubview:self.tableView atIndex:0];
+
+    self.emptyView = [[TCSInformationView alloc] initWithViewModel:self.viewModel.emptyViewModel];
+    [self.view addSubview:self.emptyView];
 
     self.mockPostView = [[TCSPostView alloc] init];
 
@@ -91,6 +98,7 @@
 
 - (void)viewWillLayoutSubviews {
     self.tableView.frame = self.view.bounds;
+    self.emptyView.frame = self.view.bounds;
 }
 
 #pragma mark UITableViewDataSource

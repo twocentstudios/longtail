@@ -65,40 +65,45 @@
         RAC(self.likesLabel, attributedText) = RACObserve(self, viewModel.likesSummary);
         [self.commentsLabel rac_liftSelector:@selector(setText:) withSignalsFromArray:@[RACObserve(self, viewModel.commentsSummary)]];
 
-        // AutoLayout
-        CGFloat const hLeftSuperInset = 20;
-        CGFloat const hRightSuperInset = hLeftSuperInset;
-        CGFloat const vTopSuperInset = 16;
-        CGFloat const vBottomSuperInset = vTopSuperInset;
-
-        CGFloat const vComponentMargin = 14;
-
-        [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
-        [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:vTopSuperInset];
-        [self.nameLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.dateLabel withOffset:10]; // TODO: not sure if we need this for max width
-
-        [self.postSummaryLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
-        [self.postSummaryLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
-        [self.postSummaryLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameLabel withOffset:0];
-
-        [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
-        [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:vTopSuperInset];
-
-        [self.messageLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
-        [self.messageLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
-        [self.messageLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.postSummaryLabel withOffset:vComponentMargin];
-
-        [self.likesLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.messageLabel withOffset:vComponentMargin];
-        [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
-        [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
-
-        [self.commentsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.likesLabel withOffset:8];
-        [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
-        [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
-        [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:vBottomSuperInset];
-
     }
     return self;
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+
+    if ([self.constraints count] > 0) return;
+
+    CGFloat const hLeftSuperInset = 20;
+    CGFloat const hRightSuperInset = hLeftSuperInset;
+    CGFloat const vTopSuperInset = 16;
+    CGFloat const vBottomSuperInset = vTopSuperInset;
+
+    CGFloat const vComponentMargin = 14;
+
+    [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
+    [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:vTopSuperInset];
+    [self.nameLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.dateLabel withOffset:10]; // TODO: not sure if we need this for max width
+
+    [self.postSummaryLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
+    [self.postSummaryLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
+    [self.postSummaryLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameLabel withOffset:0];
+
+    [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
+    [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:vTopSuperInset];
+
+    [self.messageLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
+    [self.messageLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
+    [self.messageLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.postSummaryLabel withOffset:vComponentMargin];
+
+    [self.likesLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.messageLabel withOffset:vComponentMargin];
+    [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
+    [self.likesLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
+
+    [self.commentsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.likesLabel withOffset:8];
+    [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
+    [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
+    [self.commentsLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:vBottomSuperInset];
 }
 
 - (void)layoutSubviews {

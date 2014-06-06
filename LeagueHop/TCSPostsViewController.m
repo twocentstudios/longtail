@@ -110,7 +110,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	TCSPostCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(TCSPostCell.class) forIndexPath:indexPath];
 	cell.viewModel = self.viewModel.postViewModels[indexPath.row];
-	return cell;
+
+    [cell.postView setNeedsUpdateConstraints];
+    [cell.postView updateConstraintsIfNeeded];
+
+    return cell;
 }
 
 #pragma mark UITableViewDelegate
@@ -125,12 +129,18 @@
         return [viewModel.cachedViewHeight floatValue];
     }
 
+    [self.mockPostView setNeedsUpdateConstraints];
+    [self.mockPostView updateConstraintsIfNeeded];
+
     self.mockPostView.viewModel = viewModel;
-    self.mockPostView.frame = self.tableView.bounds;
+    self.mockPostView.bounds = self.tableView.bounds;
+
     [self.mockPostView setNeedsLayout];
     [self.mockPostView layoutIfNeeded];
-    CGFloat const height = [self.mockPostView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+
+    CGFloat const height = [self.mockPostView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
     viewModel.cachedViewHeight = @(height);
+    
     return height;
 }
 

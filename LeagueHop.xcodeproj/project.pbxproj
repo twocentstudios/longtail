@@ -129,6 +129,7 @@
 		83A378D21941604300932479 /* TCSInformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSInformationView.m; sourceTree = "<group>"; };
 		83A378D41941613C00932479 /* TCSInformationViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSInformationViewModel.h; sourceTree = "<group>"; };
 		83A378D51941613C00932479 /* TCSInformationViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSInformationViewModel.m; sourceTree = "<group>"; };
+		83BA886B194182740045612B /* TCSSecret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCSSecret.h; sourceTree = "<group>"; };
 		83C453F01925D647006779BB /* TCSGroupObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSGroupObject.h; sourceTree = "<group>"; };
 		83C453F11925D647006779BB /* TCSGroupObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSGroupObject.m; sourceTree = "<group>"; };
 		83E218801940003700559941 /* TCSTopBarActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSTopBarActivityView.h; sourceTree = "<group>"; };
@@ -235,6 +236,7 @@
 				83151268191DEF8400331535 /* InfoPlist.strings */,
 				8315126B191DEF8400331535 /* main.m */,
 				8315126D191DEF8400331535 /* LeagueHop-Prefix.pch */,
+				83BA886B194182740045612B /* TCSSecret.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

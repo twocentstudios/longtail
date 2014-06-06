@@ -28,7 +28,7 @@
         [pulseAnimation setFromValue:(id)[UIColor whiteColor].CGColor];
         [pulseAnimation setToValue:(id)APP_TINT.CGColor];
         [pulseAnimation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.74 :0.85 :0.42 :0.91]];
-        [pulseAnimation setDuration:0.6];
+        [pulseAnimation setDuration:0.5];
         [pulseAnimation setAutoreverses:YES];
         [pulseAnimation setRepeatCount:CGFLOAT_MAX];
 
@@ -53,13 +53,11 @@
 - (void)updateConstraints {
     [super updateConstraints];
 
+    if ([self.constraints count] > 0) return;
+
     CGFloat const vHeight = 3;
     [self autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
     [self autoSetDimension:ALDimensionHeight toSize:vHeight];
-}
-
-- (void)didMoveToSuperview {
-    [self setNeedsUpdateConstraints];
 }
 
 @end

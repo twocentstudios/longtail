@@ -147,9 +147,25 @@
     // Bindings
     self.facebookServiceButton.rac_command = self.viewModel.logInOutFacebookCommand;
     self.importGroupsButton.rac_command = self.viewModel.presentGroupImportCommand;
-    self.deleteAllButton.rac_command = self.viewModel.deleteAllCommand;
     self.authorButton.rac_command = self.viewModel.presentAuthorCommand;
     self.licencesButton.rac_command = self.viewModel.presentLicensesCommand;
+
+    RAC(self.deleteAllButton, enabled) = [[self.viewModel.deleteAllCommand executing] not];
+    [[[self.deleteAllButton rac_signalForControlEvents:UIControlEventTouchUpInside]
+        flattenMap:^RACSignal *(id _) {
+            @strongify(self);
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete All Posts", nil) message:NSLocalizedString(@"Are you sure you want to delete all posts? This action cannot be undone.", nil) delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+            [alertView show];
+            NSInteger const cancelButtonIndex = alertView.cancelButtonIndex;
+            return [[[alertView rac_buttonClickedSignal]
+                        filter:^BOOL(NSNumber *buttonIndex) {
+                            return ([buttonIndex integerValue] != cancelButtonIndex);
+                        }]
+                        flattenMap:^RACSignal *(id _) {
+                            return [self.viewModel.deleteAllCommand execute:nil];
+                        }];
+        }]
+        subscribeCompleted:^{ }];
 
     [[[self.importGroupsButton.rac_command executionSignals]
         switchToLatest]

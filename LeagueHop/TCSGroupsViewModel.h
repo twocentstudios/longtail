@@ -5,7 +5,7 @@
 
 #import "TCSViewModel.h"
 
-@class TCSPostController;
+@class TCSPostController, TCSInformationViewModel;
 
 #pragma mark -
 
@@ -17,6 +17,7 @@
 
 @property (nonatomic, readonly) RACCommand *loadGroupsCommand;
 @property (nonatomic, readonly) RACCommand *confirmSelectionCommand;
+@property (nonatomic, readonly) TCSInformationViewModel *emptyViewModel;
 
 - (instancetype)initWithController:(TCSPostController *)controller;
 

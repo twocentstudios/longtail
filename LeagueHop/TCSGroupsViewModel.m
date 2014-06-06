@@ -13,6 +13,8 @@
 
 #import "TCSGroupObject.h"
 
+#import "TCSInformationViewModel.h"
+
 #pragma mark -
 
 @interface TCSGroupsViewModel ()
@@ -21,6 +23,7 @@
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSArray *groupViewModels;
+@property (nonatomic) TCSInformationViewModel *emptyViewModel;
 
 @property (nonatomic) RACCommand *loadGroupsCommand;
 @property (nonatomic) RACCommand *confirmSelectionCommand;
@@ -56,7 +59,7 @@
                 map:^id(NSArray *groups) {
                     return [groups sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@keypath(TCSGroupObject.new, order) ascending:YES]]];
                 }]
-                map:^id(NSArray *groups) {
+                map:^NSArray *(NSArray *groups) {
                     return [[groups.rac_sequence.signal
                                 map:^id(TCSGroupObject *group) {
                                     return [[TCSGroupViewModel alloc] initWithGroup:group];
@@ -64,6 +67,17 @@
                                 toArray];
                 }]
                 deliverOn:[RACScheduler mainThreadScheduler]];
+
+        _emptyViewModel = [[TCSInformationViewModel alloc] initWithTitle:NSLocalizedString(@"You have no Facebook Groups", nil) subtitle:NSLocalizedString(@"Unfortunately, you probably won't get much enjoyment out of this app :(", nil)];
+
+        RAC(self.emptyViewModel, hidden) =
+            [RACSignal
+                combineLatest:@[ RACObserve(self, groupViewModels),
+                                 [self.loadGroupsCommand executing],
+                                 RACObserve(self, active) ]
+                reduce:^NSNumber *(NSArray *groupViewModels, NSNumber *executing, NSNumber *active) {
+                    return @([groupViewModels count] > 0 || [executing boolValue] || ![active boolValue]);
+                }];
 
         [[[RACSignal merge:@[
                             [self.loadGroupsCommand errors],

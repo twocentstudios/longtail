@@ -12,9 +12,14 @@
 
 #import "TCSGroupCell.h"
 
+#import "TCSInformationView.h"
+#import "TCSInformationViewModel.h"
+
 @interface TCSGroupSelectViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) UITableView *tableView;
+
+@property (nonatomic) TCSInformationView *emptyView;
 
 @end
 
@@ -38,6 +43,9 @@
     self.tableView.rowHeight = 46;
     [self.tableView registerClass:TCSGroupCell.class forCellReuseIdentifier:NSStringFromClass(TCSGroupCell.class)];
     [self.view insertSubview:self.tableView atIndex:0];
+
+    self.emptyView = [[TCSInformationView alloc] initWithViewModel:self.viewModel.emptyViewModel];
+    [self.view addSubview:self.emptyView];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Import", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.confirmSelectionCommand;
@@ -63,6 +71,7 @@
 
 - (void)viewWillLayoutSubviews {
     self.tableView.frame = self.view.bounds;
+    self.emptyView.frame = self.view.bounds;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

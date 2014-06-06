@@ -78,6 +78,7 @@
         [self.nameLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.dateLabel withOffset:10]; // TODO: not sure if we need this for max width
 
         [self.postSummaryLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:hLeftSuperInset];
+        [self.postSummaryLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];
         [self.postSummaryLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameLabel withOffset:0];
 
         [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:hRightSuperInset];

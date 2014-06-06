@@ -16,19 +16,29 @@
 
 #import <FacebookSDK/Facebook.h>
 
+#import <TestFlightSDK/TestFlight.h>
+#import "TCSSecret.h"
+
+#ifdef DEBUG
 #import <PonyDebugger/PonyDebugger.h>
+#endif
 
 @implementation TCSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-
+#ifdef DEBUG
     PDDebugger *debugger = [PDDebugger defaultInstance];
     [debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
     [debugger enableNetworkTrafficDebugging];
     [debugger forwardAllNetworkTraffic];
     [debugger enableViewHierarchyDebugging];
-    
+#endif
+
+    if ([TCSTestFlightKey length] > 0) { // Defined in TCSSecret.h
+        [TestFlight takeOff:TCSTestFlightKey];
+    }
+
     TCSPostController *postController = [[TCSPostController alloc] init];
     TCSPostsViewModel *postsViewModel = [[TCSPostsViewModel alloc] initWithController:postController];
     TCSPostsViewController *postsViewController = [[TCSPostsViewController alloc] initWithViewModel:postsViewModel];

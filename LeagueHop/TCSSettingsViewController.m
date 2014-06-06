@@ -77,7 +77,6 @@
     self.facebookServiceButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.facebookServiceButton.backgroundColor = GRAY_WHITE;
     self.facebookServiceButton.titleLabel.font = FONT_MEDIUM(20);
-    self.facebookServiceButton.rac_command = self.viewModel.logInOutFacebookCommand;
     [self.facebookServiceButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, logInOutButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.contentView addSubview:self.facebookServiceButton];
 
@@ -93,7 +92,6 @@
     self.importGroupsButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.importGroupsButton.backgroundColor = GRAY_WHITE;
     self.importGroupsButton.titleLabel.font = FONT_MEDIUM(20);
-    self.importGroupsButton.rac_command = self.viewModel.presentGroupImportCommand;
     [self.importGroupsButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, importGroupsButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.contentView addSubview:self.importGroupsButton];
 
@@ -112,7 +110,6 @@
     self.deleteAllButton.titleLabel.font = FONT_MEDIUM(20);
     [self.deleteAllButton setTitleColor:WHITE forState:UIControlStateNormal];
     [self.deleteAllButton setTitleColor:WHITEA(0.6) forState:UIControlStateDisabled];
-    self.deleteAllButton.rac_command = self.viewModel.deleteAllCommand;
     [self.deleteAllButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, deleteAllButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.contentView addSubview:self.deleteAllButton];
 
@@ -137,7 +134,6 @@
     self.authorButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.authorButton.backgroundColor = GRAY_WHITE;
     self.authorButton.titleLabel.font = FONT_MEDIUM(20);
-    self.authorButton.rac_command = self.viewModel.presentAuthorCommand;
     [self.authorButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, authorText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.contentView addSubview:self.authorButton];
 
@@ -145,9 +141,15 @@
     self.licencesButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.licencesButton.backgroundColor = GRAY_WHITE;
     self.licencesButton.titleLabel.font = FONT_MEDIUM(20);
-    self.licencesButton.rac_command = self.viewModel.presentLicensesCommand;
     [self.licencesButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, licensesText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.contentView addSubview:self.licencesButton];
+
+    // Bindings
+    self.facebookServiceButton.rac_command = self.viewModel.logInOutFacebookCommand;
+    self.importGroupsButton.rac_command = self.viewModel.presentGroupImportCommand;
+    self.deleteAllButton.rac_command = self.viewModel.deleteAllCommand;
+    self.authorButton.rac_command = self.viewModel.presentAuthorCommand;
+    self.licencesButton.rac_command = self.viewModel.presentLicensesCommand;
 
     [[[self.importGroupsButton.rac_command executionSignals]
         switchToLatest]
@@ -166,8 +168,13 @@
             TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
             [self.navigationController pushViewController:webViewController animated:YES];
         }];
+}
 
-    // Layout
+- (void)updateViewConstraints {
+    [super updateViewConstraints];
+
+    if ([self.contentView.constraints count] > 0) return;
+
     CGFloat const hLeftInset = 14;
     CGFloat const hRightInset = hLeftInset;
     CGFloat const vTopInset = 26;

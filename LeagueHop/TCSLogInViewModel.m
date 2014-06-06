@@ -44,7 +44,7 @@
 
         @weakify(self);
 
-        _title = NSLocalizedString(@"Welcome to Althop", nil);
+        _title = NSLocalizedString(@"Welcome to longtail", nil);
         _subtitle = NSLocalizedString(@"We'll show you what your Facebook Groups were talking about last year.", nil);
 
         RAC(self, logInButtonText) =

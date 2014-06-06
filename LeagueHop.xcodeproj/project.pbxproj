@@ -69,7 +69,7 @@
 		2D9DB8AA92064CF1B5276FD6 /* Pods-LeagueHopTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LeagueHopTests.xcconfig"; path = "Pods/Pods-LeagueHopTests.xcconfig"; sourceTree = "<group>"; };
 		47AA04267C264DBF8086AFE9 /* libPods-LeagueHopTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LeagueHopTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70EE544333E042839530E4A2 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		8315125C191DEF8400331535 /* LeagueHop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeagueHop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8315125C191DEF8400331535 /* longtail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = longtail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8315125F191DEF8400331535 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		83151261191DEF8400331535 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		83151263191DEF8400331535 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -193,7 +193,7 @@
 		8315125D191DEF8400331535 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8315125C191DEF8400331535 /* LeagueHop.app */,
+				8315125C191DEF8400331535 /* longtail.app */,
 				83151277191DEF8400331535 /* LeagueHopTests.xctest */,
 			);
 			name = Products;
@@ -446,7 +446,7 @@
 			);
 			name = LeagueHop;
 			productName = LeagueHop;
-			productReference = 8315125C191DEF8400331535 /* LeagueHop.app */;
+			productReference = 8315125C191DEF8400331535 /* longtail.app */;
 			productType = "com.apple.product-type.application";
 		};
 		83151276191DEF8400331535 /* LeagueHopTests */ = {
@@ -743,7 +743,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LeagueHop/LeagueHop-Prefix.pch";
 				INFOPLIST_FILE = "LeagueHop/LeagueHop-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = longtail;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -757,7 +758,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LeagueHop/LeagueHop-Prefix.pch";
 				INFOPLIST_FILE = "LeagueHop/LeagueHop-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = longtail;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

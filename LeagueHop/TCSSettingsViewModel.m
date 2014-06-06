@@ -137,7 +137,7 @@
         }];
 
         _presentLicensesCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id _) {
-            NSURL *URL = [NSURL URLWithString:@"http://twocentstudios.com/apps/althop/licenses.html"];
+            NSURL *URL = [NSURL URLWithString:@"http://twocentstudios.com/apps/longtail/licenses.html"];
             TCSWebViewModel *viewModel = [[TCSWebViewModel alloc] initWithURL:URL title:NSLocalizedString(@"Licenses", nil)];
             return [RACSignal return:viewModel];
         }];

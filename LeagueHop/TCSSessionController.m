@@ -48,7 +48,7 @@ NSString * const kFacebookReadPermissions = @"public_profile,user_groups";
 - (RACSignal *)reauthenticateFacebook {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         if ([FBSession activeSession].state != FBSessionStateCreatedTokenLoaded) {
-            [subscriber sendError:[NSError errorWithDomain:@"com.leaguehop" code:0 userInfo:@{NSLocalizedDescriptionKey: @"No cached Facebook token found."}]];
+            [subscriber sendError:[NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"No cached Facebook token found."}]];
         } else {
             [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
                                                allowLoginUI:NO
@@ -68,7 +68,7 @@ NSString * const kFacebookReadPermissions = @"public_profile,user_groups";
 - (RACSignal *)logInToFacebook {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         if ([FBSession activeSession].state != FBSessionStateCreated && !FB_ISSESSIONSTATETERMINAL([FBSession activeSession].state)) {
-            [subscriber sendError:[NSError errorWithDomain:@"com.leaguehop" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Facebook session state not ready for log in."}]];
+            [subscriber sendError:[NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"Facebook session state not ready for log in."}]];
         } else {
             [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
                                                allowLoginUI:YES

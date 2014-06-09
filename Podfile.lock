@@ -8,9 +8,6 @@ PODS:
     - CocoaLumberjack/Core
   - Facebook-iOS-SDK (3.14.0):
     - Bolts
-  - FlurrySDK (4.4.0):
-    - FlurrySDK/FlurrySDK
-  - FlurrySDK/FlurrySDK (4.4.0)
   - Kiwi/ARC (2.2.4)
   - Kiwi/NonARC (2.2.4)
   - Kiwi/XCTest (2.2.4):
@@ -30,9 +27,8 @@ PODS:
     - ReactiveCocoa/Core
   - ReactiveViewModel (0.2):
     - ReactiveCocoa (~> 2.1)
-  - RHObjectiveBeagle (1.0.0)
   - SocketRocket (0.3.1-beta2)
-  - TestFlightSDK (2.2.3-beta)
+  - TestFlightSDK (3.0.2)
   - TTTAttributedLabel (1.10.0)
   - UIView+AutoLayout (1.3.0)
   - YapDatabase (2.4.2):
@@ -44,35 +40,27 @@ PODS:
 
 DEPENDENCIES:
   - Facebook-iOS-SDK (~> 3.14)
-  - FlurrySDK (~> 4.3)
   - Kiwi/XCTest
   - Mantle (~> 1.4.1)
   - PonyDebugger
   - ReactiveCocoa (= 2.3)
   - ReactiveViewModel (= 0.2)
-  - RHObjectiveBeagle (from `https://github.com/heardrwt/RHObjectiveBeagle.git`)
-  - TestFlightSDK (~> 2.1)
+  - TestFlightSDK (~> 3.0)
   - TTTAttributedLabel (~> 1.10)
   - UIView+AutoLayout (= 1.3)
   - YapDatabase (~> 2.4)
-
-EXTERNAL SOURCES:
-  RHObjectiveBeagle:
-    :git: https://github.com/heardrwt/RHObjectiveBeagle.git
 
 SPEC CHECKSUMS:
   Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
   CocoaLumberjack: baf4a09a3bcbdfea3363556a90104e026d3504e2
   Facebook-iOS-SDK: 93aae4f3dacd6bad35f419e09889397697b1e20b
-  FlurrySDK: abaedafc350afa41b004236b67ae14f7d3748b68
   Kiwi: c73667f2b84cbf36f1a3830267c5a4ae8dcbd8ba
   Mantle: 1ca9c0fa84d3d3fc98524e7229f30489b6dd44e5
   PonyDebugger: 256e19c15c093e15f950f92b1a5017f3feb3c87e
   ReactiveCocoa: 2066583826c17dde8e90c41e489f682048cc57c9
   ReactiveViewModel: 78387196df2e7535bb2776c41df15dbb17300f8a
-  RHObjectiveBeagle: b834675014f5db213acdd016608057e1f0231da5
   SocketRocket: 79a68ae186063c65e1fe6f638b1ae2927aa5f304
-  TestFlightSDK: f713ed33c62f3f22b66634e7caeeb9a3a8d2a3fb
+  TestFlightSDK: 0c24c533748d0d84bfe7a3cb6036fa79124d84ee
   TTTAttributedLabel: c3a11b538bc7beb4815f156e2ba4b066929e13f9
   UIView+AutoLayout: dc24ec6114498617510af759148a05b957af1b38
   YapDatabase: 269e2799fe19c7a517521783b909d11873dcb0c8

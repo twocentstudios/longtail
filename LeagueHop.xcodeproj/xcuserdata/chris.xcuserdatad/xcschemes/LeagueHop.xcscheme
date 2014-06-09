@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8315125B191DEF8300331535"
-               BuildableName = "LeagueHop.app"
+               BuildableName = "longtail.app"
                BlueprintName = "LeagueHop"
                ReferencedContainer = "container:LeagueHop.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8315125B191DEF8300331535"
-            BuildableName = "LeagueHop.app"
+            BuildableName = "longtail.app"
             BlueprintName = "LeagueHop"
             ReferencedContainer = "container:LeagueHop.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8315125B191DEF8300331535"
-            BuildableName = "LeagueHop.app"
+            BuildableName = "longtail.app"
             BlueprintName = "LeagueHop"
             ReferencedContainer = "container:LeagueHop.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8315125B191DEF8300331535"
-            BuildableName = "LeagueHop.app"
+            BuildableName = "longtail.app"
             BlueprintName = "LeagueHop"
             ReferencedContainer = "container:LeagueHop.xcodeproj">
          </BuildableReference>

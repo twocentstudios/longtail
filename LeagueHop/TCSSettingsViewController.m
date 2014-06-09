@@ -184,13 +184,8 @@
             TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
             [self.navigationController pushViewController:webViewController animated:YES];
         }];
-}
 
-- (void)updateViewConstraints {
-    [super updateViewConstraints];
-
-    if ([self.contentView.constraints count] > 0) return;
-
+    // layout
     CGFloat const hLeftInset = 14;
     CGFloat const hRightInset = hLeftInset;
     CGFloat const vTopInset = 26;

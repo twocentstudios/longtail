@@ -62,6 +62,8 @@
     [self.view addSubview:self.activityView];
 
     RAC(self.activityView, loading) = RACObserve(self, loading);
+
+    [self.activityView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
 }
 
 #pragma mark Error handling

@@ -44,20 +44,11 @@
                 }
             }];
 
+        // layout
+        CGFloat const vHeight = 3;
+        [self autoSetDimension:ALDimensionHeight toSize:vHeight];
     }
     return self;
-}
-
-#pragma mark UIView
-
-- (void)updateConstraints {
-    [super updateConstraints];
-
-    if ([self.constraints count] > 0) return;
-
-    CGFloat const vHeight = 3;
-    [self autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-    [self autoSetDimension:ALDimensionHeight toSize:vHeight];
 }
 
 @end

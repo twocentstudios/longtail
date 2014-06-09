@@ -59,12 +59,13 @@
     [self.logInButton rac_liftSelector:@selector(setTitle:forState:) withSignalsFromArray:@[[RACObserve(self.viewModel, logInButtonText) ignore:nil], [RACSignal return:@(UIControlStateNormal)]]];
     [self.view addSubview:self.logInButton];
 
-    [[RACSignal
+    [[[RACSignal
         combineLatest:@[ [RACObserve(self.viewModel, groupsViewModel) ignore:nil],
-                         [self.viewModel.didBecomeActiveSignal ignore:@NO] ]
+                         [[RACObserve(self.viewModel, active) ignore:@NO] distinctUntilChanged] ]
         reduce:^TCSGroupsViewModel *(TCSGroupsViewModel *viewModel, NSNumber *active){
             return viewModel;
         }]
+        delay:0.25]
         subscribeNext:^(TCSGroupsViewModel *groupsViewModel) {
             @strongify(self);
             TCSGroupSelectViewController *viewController = [[TCSGroupSelectViewController alloc] initWithViewModel:groupsViewModel];

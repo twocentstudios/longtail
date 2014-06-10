@@ -95,6 +95,18 @@
             TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
             [self.navigationController pushViewController:webViewController animated:YES];
         }];
+
+    [[[[self rac_signalForSelector:@selector(willRotateToInterfaceOrientation:duration:)]
+        reduceEach:^NSNumber *(NSNumber *interfaceOrientation, NSNumber *duration) {
+            return interfaceOrientation;
+        }]
+        distinctUntilChanged]
+        subscribeNext:^(id _) {
+            @strongify(self);
+            [self.viewModel.postViewModels enumerateObjectsUsingBlock:^(TCSPostViewModel *postViewModel, NSUInteger idx, BOOL *stop) {
+                postViewModel.cachedViewHeight = nil;
+            }];
+        }];
 }
 
 - (void)viewWillLayoutSubviews {

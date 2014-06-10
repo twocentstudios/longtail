@@ -95,18 +95,6 @@
             TCSWebViewController *webViewController = [[TCSWebViewController alloc] initWithViewModel:webViewModel];
             [self.navigationController pushViewController:webViewController animated:YES];
         }];
-
-    [[[[self rac_signalForSelector:@selector(willRotateToInterfaceOrientation:duration:)]
-        reduceEach:^NSNumber *(NSNumber *interfaceOrientation, NSNumber *duration) {
-            return interfaceOrientation;
-        }]
-        distinctUntilChanged]
-        subscribeNext:^(id _) {
-            @strongify(self);
-            [self.viewModel.postViewModels enumerateObjectsUsingBlock:^(TCSPostViewModel *postViewModel, NSUInteger idx, BOOL *stop) {
-                postViewModel.cachedViewHeight = nil;
-            }];
-        }];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -138,9 +126,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     TCSPostViewModel *viewModel = self.viewModel.postViewModels[indexPath.row];
-    if (viewModel.cachedViewHeight != nil) {
-        return [viewModel.cachedViewHeight floatValue];
-    }
 
     [self.mockPostView setNeedsUpdateConstraints];
     [self.mockPostView updateConstraintsIfNeeded];
@@ -152,8 +137,7 @@
     [self.mockPostView layoutIfNeeded];
 
     CGFloat const height = [self.mockPostView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
-    viewModel.cachedViewHeight = @(height);
-    
+
     return height;
 }
 

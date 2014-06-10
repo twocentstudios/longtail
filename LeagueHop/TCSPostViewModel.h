@@ -20,9 +20,6 @@
 
 @property (nonatomic, readonly) RACCommand *openURLCommand;
 
-// The view model's owner can cache view height calculations here.
-@property (nonatomic) NSNumber *cachedViewHeight;
-
 - (instancetype)initWithPost:(TCSPostObject *)post openURLCommand:(RACCommand *)openURLCommand;
 
 @end

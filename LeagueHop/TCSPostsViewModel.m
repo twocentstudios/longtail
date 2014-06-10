@@ -52,7 +52,6 @@
         @weakify(self);
 
         RAC(self, date) = [[RACSignal interval:5*60 onScheduler:[RACScheduler mainThreadScheduler]] startWith:[NSDate date]];
-//        self.date = [NSDate dateWithTimeIntervalSinceNow:-60*60*24*42];
         RAC(self, title) =
             [[RACObserve(self, date) map:^id(NSDate *date) {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

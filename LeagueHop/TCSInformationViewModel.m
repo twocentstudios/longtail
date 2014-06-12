@@ -12,7 +12,6 @@
 
 @end
 
-
 #pragma mark -
 
 @implementation TCSInformationViewModel

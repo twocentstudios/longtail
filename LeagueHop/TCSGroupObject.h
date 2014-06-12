@@ -7,8 +7,6 @@
 
 #import "TCSSourceObject.h"
 
-#pragma mark -
-
 @interface TCSGroupObject : MTLModel <MTLJSONSerializing, TCSSourceObject>
 
 @property (nonatomic, copy, readonly) NSString *groupId;

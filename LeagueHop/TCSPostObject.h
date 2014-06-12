@@ -9,8 +9,6 @@
 
 @class TCSUserObject;
 
-#pragma mark -
-
 @interface TCSPostObject : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *postId;

@@ -3,11 +3,6 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-
-#pragma mark -
-
 @interface UIColor (TCSColorId)
 
 // Converts a Facebook userId to a long long integer before calling brightColorForNumber.

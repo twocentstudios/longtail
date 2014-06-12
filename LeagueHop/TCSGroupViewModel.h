@@ -7,8 +7,6 @@
 
 @class TCSGroupObject;
 
-#pragma mark -
-
 @interface TCSGroupViewModel : TCSViewModel
 
 @property (nonatomic, readonly) TCSGroupObject *group;

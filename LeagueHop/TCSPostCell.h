@@ -6,8 +6,6 @@
 @class TCSPostViewModel;
 @class TCSPostView;
 
-#pragma mark -
-
 @interface TCSPostCell : UITableViewCell
 
 @property (nonatomic) TCSPostViewModel *viewModel;

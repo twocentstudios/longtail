@@ -3,8 +3,6 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-#pragma mark -
-
 @interface TCSPostController : NSObject
 
 // Sends an array of posts that happened on that day in all years in history then completes.

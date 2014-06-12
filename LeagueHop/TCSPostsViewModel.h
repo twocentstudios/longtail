@@ -7,8 +7,6 @@
 
 @class TCSPostController, TCSInformationViewModel;
 
-#pragma mark -
-
 @interface TCSPostsViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

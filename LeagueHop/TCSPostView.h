@@ -5,8 +5,6 @@
 
 @class TCSPostViewModel;
 
-#pragma mark -
-
 @interface TCSPostView : UIView
 
 @property (nonatomic) TCSPostViewModel *viewModel;

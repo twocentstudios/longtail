@@ -5,8 +5,6 @@
 
 #import "TCSViewModel.h"
 
-#pragma mark -
-
 @interface TCSInformationViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

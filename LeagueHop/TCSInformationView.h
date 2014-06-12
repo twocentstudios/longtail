@@ -5,8 +5,6 @@
 
 @class TCSInformationViewModel;
 
-#pragma mark -
-
 @interface TCSInformationView : UIView
 
 - (instancetype)initWithViewModel:(TCSInformationViewModel *)viewModel;

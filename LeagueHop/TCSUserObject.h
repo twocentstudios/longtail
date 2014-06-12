@@ -5,8 +5,6 @@
 
 #import <Mantle/Mantle.h>
 
-#pragma mark -
-
 @interface TCSUserObject : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *userId;

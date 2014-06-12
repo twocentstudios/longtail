@@ -5,8 +5,6 @@
 
 #import <ReactiveViewModel/ReactiveViewModel.h>
 
-#pragma mark -
-
 @interface TCSViewModel : RVMViewModel
 
 // A unified signal of all errors that have occurred within the view model.

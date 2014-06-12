@@ -8,8 +8,6 @@
 @class TCSSessionController;
 @class TCSPostController;
 
-#pragma mark -
-
 @interface TCSSettingsViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

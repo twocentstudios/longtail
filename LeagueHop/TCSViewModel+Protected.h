@@ -5,9 +5,6 @@
 
 #import "TCSViewModel.h"
 
-
-#pragma mark -
-
 @interface TCSViewModel () {
 @protected
     RACSubject *_errors;

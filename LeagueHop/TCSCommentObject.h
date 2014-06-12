@@ -7,8 +7,6 @@
 
 @class TCSUserObject;
 
-#pragma mark -
-
 @interface TCSCommentObject : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *commentId;

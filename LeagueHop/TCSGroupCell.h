@@ -5,8 +5,6 @@
 
 @class TCSGroupViewModel;
 
-#pragma mark -
-
 @interface TCSGroupCell : UITableViewCell
 
 @property (nonatomic) TCSGroupViewModel *viewModel;

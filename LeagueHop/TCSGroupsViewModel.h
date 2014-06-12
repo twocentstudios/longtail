@@ -14,6 +14,9 @@
 
 @property (nonatomic, readonly) NSArray *groupViewModels; // TCSGroupViewModels
 
+@property (nonatomic, readonly) NSString *nextButtonTitle;
+@property (nonatomic, readonly) RACCommand *nextCommand;
+
 @property (nonatomic, readonly) RACCommand *loadGroupsCommand;
 @property (nonatomic, readonly) RACCommand *confirmSelectionCommand;
 @property (nonatomic, readonly) TCSInformationViewModel *emptyViewModel;

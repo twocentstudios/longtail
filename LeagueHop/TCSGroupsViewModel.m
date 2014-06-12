@@ -23,6 +23,9 @@
 @property (nonatomic) NSArray *groupViewModels;
 @property (nonatomic) TCSInformationViewModel *emptyViewModel;
 
+@property (nonatomic) NSString *nextButtonTitle;
+@property (nonatomic) RACCommand *nextCommand;
+
 @property (nonatomic) RACCommand *loadGroupsCommand;
 @property (nonatomic) RACCommand *confirmSelectionCommand;
 
@@ -53,6 +56,27 @@
                 return importViewModelSignal(self.groupViewModels, self.controller);
             }];
 
+        RAC(self, nextCommand) =
+            [RACObserve(self, groupViewModels)
+                map:^RACCommand *(NSArray *groupViewModels) {
+                    @strongify(self);
+                    if ([groupViewModels count] > 0) {
+                        return self.confirmSelectionCommand;
+                    } else {
+                        return self.loadGroupsCommand;
+                    }
+                }];
+
+        RAC(self, nextButtonTitle) =
+            [RACObserve(self, groupViewModels)
+                map:^NSString *(NSArray *groupViewModels) {
+                    if ([groupViewModels count] > 0) {
+                        return NSLocalizedString(@"Import", nil);
+                    } else {
+                        return NSLocalizedString(@"Refresh", nil);
+                    }
+                }];
+
         RAC(self, groupViewModels) =
             [[[[[self.loadGroupsCommand executionSignals]
                 switchToLatest]
@@ -68,7 +92,7 @@
                 }]
                 deliverOn:[RACScheduler mainThreadScheduler]];
 
-        _emptyViewModel = [[TCSInformationViewModel alloc] initWithTitle:NSLocalizedString(@"You have no Facebook Groups", nil) subtitle:NSLocalizedString(@"Unfortunately, you probably won't get much enjoyment out of this app :(", nil)];
+        _emptyViewModel = [[TCSInformationViewModel alloc] initWithTitle:NSLocalizedString(@"You have no Facebook Groups", nil) subtitle:NSLocalizedString(@"Tap retry if you actually do have Facebook Groups.", nil)];
 
         RAC(self.emptyViewModel, hidden) =
             [RACSignal

@@ -48,8 +48,9 @@
     self.emptyView = [[TCSInformationView alloc] initWithViewModel:self.viewModel.emptyViewModel];
     [self.view addSubview:self.emptyView];
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Import", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.rightBarButtonItem.rac_command = self.viewModel.confirmSelectionCommand;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:nil action:nil];
+    RAC(self.navigationItem.rightBarButtonItem, title) = RACObserve(self.viewModel, nextButtonTitle);
+    RAC(self.navigationItem.rightBarButtonItem, rac_command) = RACObserve(self.viewModel, nextCommand);
 
     [[RACObserve(self.viewModel, groupViewModels)
         mapReplace:self.tableView]

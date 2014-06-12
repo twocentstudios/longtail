@@ -22,6 +22,6 @@
 // importing then completes.
 @property (nonatomic, readonly) RACSignal *importedPostsCountsSignal;
 
-- (instancetype)initWithGroup:(NSArray *)groups controller:(TCSPostController *)controller;
+- (instancetype)initWithGroups:(NSArray *)groups controller:(TCSPostController *)controller;
 
 @end

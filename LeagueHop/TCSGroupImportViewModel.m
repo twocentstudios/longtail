@@ -24,7 +24,7 @@
 
 @implementation TCSGroupImportViewModel
 
-- (instancetype)initWithGroup:(NSArray *)groups controller:(TCSPostController *)controller {
+- (instancetype)initWithGroups:(NSArray *)groups controller:(TCSPostController *)controller {
     NSParameterAssert(groups);
     NSParameterAssert(controller);
 

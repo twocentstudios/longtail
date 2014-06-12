@@ -107,7 +107,7 @@ RACSignal *importViewModelSignal(NSArray *groupViewModels, TCSPostController *co
                 }]
                 combineLatestWith:[RACSignal return:controller]]
                 reduceEach:^id(NSArray *selectedGroups, TCSPostController *postController){
-                    TCSGroupImportViewModel *importViewModel = [[TCSGroupImportViewModel alloc] initWithGroup:selectedGroups controller:postController];
+                    TCSGroupImportViewModel *importViewModel = [[TCSGroupImportViewModel alloc] initWithGroups:selectedGroups controller:postController];
                     return importViewModel;
                 }];
 }

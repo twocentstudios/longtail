@@ -27,10 +27,29 @@ NSUInteger const kDatabasePostKeyMonthDayIndex = 0;
 NSUInteger const kDatabasePostKeyYearMonthDayIndex = 1;
 NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
+
+@interface TCSPostController ()
+
+@property (nonatomic) YapDatabase *database;
+
+@end
+
 @implementation TCSPostController
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *baseDir = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
+        NSString *databasePath = [baseDir stringByAppendingPathComponent:kDatabaseFilename];
+        _database = [[YapDatabase alloc] initWithPath:databasePath];
+        NSAssert(_database != nil, @"Database was not created at path %@", databasePath);
+    }
+    return self;
+}
+
 - (RACSignal *)queryPostsForMonthDayKey:(NSString *)monthDayKey {
-    return [[[RACSignal return:[[[self class] database] newConnection]]
+    return [[[RACSignal return:[self.database newConnection]]
                 subscribeOn:[RACScheduler scheduler]]
                 map:^id(YapDatabaseConnection *connection) {
                     NSLog(@"Starting read posts from database for %@...", monthDayKey);
@@ -50,7 +69,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 - (RACSignal *)isImportNeeded {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        YapDatabaseConnection *connection = [[[self class] database] newConnection];
+        YapDatabaseConnection *connection = [self.database newConnection];
         NSLog(@"Starting last import check...");
         __block NSDate *lastPostImportDate;
         [connection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
@@ -69,7 +88,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 - (RACSignal *)markImportedDate:(NSDate *)importedDate {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        YapDatabaseConnection *connection = [[[self class] database] newConnection];
+        YapDatabaseConnection *connection = [self.database newConnection];
         [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [transaction setObject:importedDate forKey:kDatabaseKeyLastPostImportDate inCollection:kDatabaseCollectionPreferences];
         }];
@@ -119,7 +138,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 
 - (RACSignal *)removeAllObjects {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        YapDatabaseConnection *connection = [[[self class] database] newConnection];
+        YapDatabaseConnection *connection = [self.database newConnection];
         [connection readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
             [transaction removeAllObjectsInAllCollections];
         }];
@@ -134,7 +153,7 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 // Fetches all the posts for the given sourceID then writes them to the database.
 // Sends an NSNumber of the number of posts fetched and written.
 - (RACSignal *)importPostsForSourceObject:(id<TCSSourceObject>)sourceObject {
-    return [[[[RACSignal return:[[[self class] database] newConnection]]
+    return [[[[RACSignal return:[self.database newConnection]]
                 subscribeOn:[RACScheduler scheduler]]
                 combineLatestWith:[self getPostsForSourceObject:sourceObject]]
                 map:^id(RACTuple *t) {
@@ -264,21 +283,6 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
         }];
     }]
     subscribeOn:[RACScheduler mainThreadScheduler]];
-}
-
-# pragma mark Database Client
-
-+ (YapDatabase *)database {
-    static YapDatabase *database;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *baseDir = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
-        NSString *databasePath = [baseDir stringByAppendingPathComponent:kDatabaseFilename];
-        database = [[YapDatabase alloc] initWithPath:databasePath];
-        NSAssert(database != nil, @"Database was not created at path %@", databasePath);
-    });
-    return database;
 }
 
 @end

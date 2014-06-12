@@ -5,14 +5,13 @@
 
 #import "TCSWebViewController.h"
 
-
-#pragma mark -
-
 @interface TCSWebViewController () <UIWebViewDelegate>
 
 @property (nonatomic) UIWebView *webView;
 
 @end
+
+#pragma mark -
 
 @implementation TCSWebViewController
 

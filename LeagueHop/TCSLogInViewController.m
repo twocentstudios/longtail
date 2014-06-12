@@ -7,8 +7,6 @@
 
 #import "TCSGroupSelectViewController.h"
 
-#pragma mark -
-
 @interface TCSLogInViewController ()
 
 @property (nonatomic) UILabel *titleLabel;
@@ -18,6 +16,7 @@
 
 @end
 
+#pragma mark -
 
 @implementation TCSLogInViewController
 

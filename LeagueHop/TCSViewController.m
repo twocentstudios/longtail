@@ -9,14 +9,13 @@
 
 #import "TCSViewModel.h"
 
-#pragma mark -
-
 @interface TCSViewController ()
 
 @property (nonatomic) TCSTopBarActivityView *activityView;
 
 @end
 
+#pragma mark -
 
 @implementation TCSViewController
 

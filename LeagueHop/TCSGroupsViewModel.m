@@ -15,8 +15,6 @@
 
 #import "TCSInformationViewModel.h"
 
-#pragma mark -
-
 @interface TCSGroupsViewModel ()
 
 @property (nonatomic) TCSPostController *controller;
@@ -29,6 +27,8 @@
 @property (nonatomic) RACCommand *confirmSelectionCommand;
 
 @end
+
+#pragma mark -
 
 @implementation TCSGroupsViewModel
 

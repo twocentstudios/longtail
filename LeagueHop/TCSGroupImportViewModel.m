@@ -8,10 +8,7 @@
 
 #import "TCSPostController.h"
 
-#pragma mark -
-
 @interface TCSGroupImportViewModel ()
-
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSArray *groups;
@@ -22,6 +19,8 @@
 @property (nonatomic) TCSPostController *controller;
 
 @end
+
+#pragma mark -
 
 @implementation TCSGroupImportViewModel
 

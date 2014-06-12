@@ -20,6 +20,8 @@
 #import <PonyDebugger/PonyDebugger.h>
 #endif
 
+#pragma mark -
+
 @implementation TCSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

@@ -9,8 +9,6 @@
 
 #import "TCSWebViewController.h"
 
-#pragma mark -
-
 @interface TCSSettingsViewController ()
 
 @property (nonatomic) UIScrollView *scrollView;
@@ -31,6 +29,7 @@
 
 @end
 
+#pragma mark -
 
 @implementation TCSSettingsViewController
 

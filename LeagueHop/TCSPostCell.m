@@ -9,7 +9,6 @@
 
 #import "TCSPostViewModel.h"
 
-
 @interface TCSPostCell ()
 
 @property (nonatomic) TCSPostView *postView;

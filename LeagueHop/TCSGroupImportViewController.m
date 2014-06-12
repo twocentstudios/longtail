@@ -7,8 +7,6 @@
 
 #import "UIColor+TCSColorId.h"
 
-#pragma mark -
-
 @interface TCSGroupImportViewController ()
 
 @property (nonatomic) UILabel *titleLabel;
@@ -21,6 +19,7 @@
 
 @end
 
+#pragma mark -
 
 @implementation TCSGroupImportViewController
 

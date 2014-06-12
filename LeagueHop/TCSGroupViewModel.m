@@ -8,8 +8,6 @@
 
 #import "TCSGroupObject.h"
 
-#pragma mark -
-
 @interface TCSGroupViewModel ()
 
 @property (nonatomic) TCSGroupObject *group;
@@ -17,6 +15,8 @@
 @property (nonatomic) NSString *name;
 
 @end
+
+#pragma mark -
 
 @implementation TCSGroupViewModel
 

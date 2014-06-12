@@ -21,8 +21,6 @@
 
 #import "TCSInformationView.h"
 
-#pragma mark -
-
 @interface TCSPostsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) UITableView *tableView;
@@ -34,6 +32,7 @@
 
 @end
 
+#pragma mark -
 
 @implementation TCSPostsViewController
 

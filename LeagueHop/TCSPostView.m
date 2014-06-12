@@ -20,6 +20,8 @@
 
 @end
 
+#pragma mark -
+
 @implementation TCSPostView
 
 - (id)initWithFrame:(CGRect)frame {

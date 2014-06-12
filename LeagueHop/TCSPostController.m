@@ -11,8 +11,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <YapDatabase/YapDatabase.h>
 
-#pragma mark -
-
 NSString * const kDatabaseFilename = @"league_hop.sqlite";
 
 NSString * const kDatabaseCollectionPosts = @"posts";
@@ -33,6 +31,8 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
 @property (nonatomic) YapDatabase *database;
 
 @end
+
+#pragma mark -
 
 @implementation TCSPostController
 

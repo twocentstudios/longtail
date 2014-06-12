@@ -74,7 +74,6 @@
         subscribeNext:^(TCSLogInViewModel *logInViewModel) {
             TCSLogInViewController *logInViewController = [[TCSLogInViewController alloc] initWithViewModel:logInViewModel];
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:logInViewController];
-            navigationController.navigationBar.translucent = NO;
             [self presentViewController:navigationController animated:YES completion:nil];
         }];
 
@@ -83,7 +82,6 @@
         subscribeNext:^(TCSSettingsViewModel *settingsViewModel) {
             TCSSettingsViewController *settingsViewController = [[TCSSettingsViewController alloc] initWithViewModel:settingsViewModel];
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-            navigationController.navigationBar.translucent = NO;
             [self presentViewController:navigationController animated:YES completion:nil];
         }];
 

@@ -242,4 +242,12 @@
     [self.licencesButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:vBottomInset];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    // Is there a better way to do translucent nav bars?
+    [self.scrollView setContentInset:UIEdgeInsetsMake([self.topLayoutGuide length], 0, 0, 0)];
+    [self.scrollView setContentOffset:CGPointMake(0, -[self.topLayoutGuide length])];
+}
+
 @end

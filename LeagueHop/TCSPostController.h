@@ -25,10 +25,10 @@
 - (RACSignal *)getGroups;
 
 // Recursively fetchs all the posts of the groups passed as an argument from Facebook,
-// sends an NSNumber-wrapped NSInteger of the number of posts imported for each group (zere or more `next`s),
+// sends an NSNumber-wrapped NSInteger of the number of posts imported for each group (zero or more `next`s),
 // writes the posts to the database, marks the imported date as now, then completes.
 // Note: this can take a long time depending on how many groups the user has and the number of posts each group has.
-// Note: requires an active Facebook session.
+// Note: requires an active Facebook session. (TODO: make this dependency explicit).
 - (RACSignal *)importPostsForGroups:(NSArray *)groups;
 
 // Truncates all posts from the database, removes the last imported date, and completes.

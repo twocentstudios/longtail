@@ -145,7 +145,12 @@
         _authorText = NSLocalizedString(@"@twocentstudios", nil);
         _licensesText = NSLocalizedString(@"Licenses", nil);
 
-        RAC(self, loading) = [self.logInOutFacebookCommand executing];
+        RAC(self, loading) =
+            [[RACSignal merge:@[
+                    [self.logInOutFacebookCommand executing],
+                    [self.deleteAllCommand executing]
+                ]]
+                or];
 
         [[self.logInOutFacebookCommand errors] subscribe:_errors];
     }

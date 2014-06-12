@@ -146,7 +146,7 @@
         _licensesText = NSLocalizedString(@"Licenses", nil);
 
         RAC(self, loading) =
-            [[RACSignal merge:@[
+            [[RACSignal combineLatest:@[
                     [self.logInOutFacebookCommand executing],
                     [self.deleteAllCommand executing]
                 ]]

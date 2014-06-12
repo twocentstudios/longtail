@@ -9,6 +9,7 @@
 @class TCSPostController;
 @class TCSGroupsViewModel;
 
+// Allows Facebook session creation.
 @interface TCSLogInViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

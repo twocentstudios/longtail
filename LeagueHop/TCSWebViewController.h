@@ -7,6 +7,7 @@
 
 #import "TCSWebViewModel.h"
 
+// Shows a one-page webview with no navigation.
 @interface TCSWebViewController : TCSViewController
 
 @property (nonatomic, readonly) TCSWebViewModel *viewModel;

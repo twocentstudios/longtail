@@ -5,6 +5,8 @@
 
 #import "TCSViewModel.h"
 
+// Represents a URLRequest that can be loaded by a UIWebView and an optional title.
+// Basically converts a URL->URLRequest because UIWebViews are pretty full featured.
 @interface TCSWebViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

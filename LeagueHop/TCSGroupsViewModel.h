@@ -7,6 +7,7 @@
 
 @class TCSPostController, TCSInformationViewModel;
 
+// Loads a list of groupViewModels.
 @interface TCSGroupsViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

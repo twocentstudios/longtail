@@ -3,6 +3,7 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
+// Interfaces with the Facebook SDK to provide an open session.
 @interface TCSSessionController : NSObject
 
 // A replay subject that sends the current Facebook session and never completes.

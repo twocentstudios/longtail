@@ -5,6 +5,8 @@
 
 @class TCSPostViewModel;
 
+// Lays out a postViewModel.
+// Can pass link tap events to its view model.
 @interface TCSPostView : UIView
 
 @property (nonatomic) TCSPostViewModel *viewModel;

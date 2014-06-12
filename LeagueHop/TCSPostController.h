@@ -3,6 +3,12 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
+// Handles the following functions:
+// * Importing posts from Facebook Groups.
+// * Keeping track of the last time posts were imported.
+// * Querying posts by date key.
+// * Getting a list of Facebook Groups.
+// * Truncating the database.
 @interface TCSPostController : NSObject
 
 // Sends an array of posts that happened on that day in all years in history then completes.

@@ -7,6 +7,8 @@
 
 #import "TCSSettingsViewModel.h"
 
+// A manually laid out scroll view with buttons.
+// Can push other view controllers onto its navigation controller.
 @interface TCSSettingsViewController : TCSViewController
 
 @property (nonatomic, readonly) TCSSettingsViewModel *viewModel;

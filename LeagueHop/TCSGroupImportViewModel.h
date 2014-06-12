@@ -7,6 +7,7 @@
 
 @class TCSPostController;
 
+// Imports an array of groups.
 @interface TCSGroupImportViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

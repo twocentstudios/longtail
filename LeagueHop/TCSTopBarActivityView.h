@@ -3,7 +3,7 @@
 //  Copyright (c) 2014 TwoCentStudios. All rights reserved.
 //
 
-// A simple thin bar that's pinned to the top of its superview and pulses
+// A simple, thin and fixed height bar that pulses
 // from white to the app's tint color when loading is YES.
 @interface TCSTopBarActivityView : UIView
 

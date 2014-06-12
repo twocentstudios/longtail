@@ -9,6 +9,13 @@
 
 @class TCSUserObject;
 
+// Represents a piece of content submitted to a data source.
+//
+// The original property layout comes from Facebook.
+// In theory this model should be generic to any other type of "post".
+//
+// Embeds its "source" object, aka a the place the post was originally submitted to.
+// An example is a Facebook Group.
 @interface TCSPostObject : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, readonly) NSString *postId;

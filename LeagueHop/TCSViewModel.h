@@ -5,6 +5,7 @@
 
 #import <ReactiveViewModel/ReactiveViewModel.h>
 
+// The base view model for all other view models.
 @interface TCSViewModel : RVMViewModel
 
 // A unified signal of all errors that have occurred within the view model.

@@ -8,6 +8,7 @@
 @class TCSSessionController;
 @class TCSPostController;
 
+// Various settings buttons.
 @interface TCSSettingsViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

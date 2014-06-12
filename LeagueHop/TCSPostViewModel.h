@@ -7,6 +7,7 @@
 
 @class TCSPostObject;
 
+// Representation of a post.
 @interface TCSPostViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSAttributedString *userName;

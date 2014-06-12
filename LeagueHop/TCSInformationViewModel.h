@@ -5,6 +5,8 @@
 
 #import "TCSViewModel.h"
 
+// Provides basic information about a view state (e.g. empty state, error state).
+// Should be controlled by another view model.
 @interface TCSInformationViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

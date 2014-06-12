@@ -27,7 +27,7 @@
 #define GRAY_LIGHT GRAYCOLOR(184)
 #define GRAY_WHITE GRAYCOLOR(240)
 
-#define APP_TINT RGBCOLOR(94, 124, 206)
+#define APP_TINT RGBCOLOR(94, 124, 206) // flat, ligher navy blue
 #define WARNING_RED RGBCOLOR(242, 80, 80)
 
 // Application Fonts

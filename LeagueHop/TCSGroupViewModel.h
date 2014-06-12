@@ -7,6 +7,7 @@
 
 @class TCSGroupObject;
 
+// Representation of a group and its selected state.
 @interface TCSGroupViewModel : TCSViewModel
 
 @property (nonatomic, readonly) TCSGroupObject *group;

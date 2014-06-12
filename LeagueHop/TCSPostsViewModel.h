@@ -7,6 +7,10 @@
 
 @class TCSPostController, TCSInformationViewModel;
 
+// Loads an array of postViewModels.
+// Presents settings if triggered by user or import is out of date.
+// Presents login if no imports necessary.
+// Can push web sites.
 @interface TCSPostsViewModel : TCSViewModel
 
 @property (nonatomic, readonly) NSString *title;

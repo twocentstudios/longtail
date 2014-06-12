@@ -7,6 +7,7 @@
 
 #import "TCSGroupsViewModel.h"
 
+// Shows a multi-select list of Facebook groups for a user.
 @interface TCSGroupSelectViewController : TCSViewController
 
 @property (nonatomic, readonly) TCSGroupsViewModel *viewModel;

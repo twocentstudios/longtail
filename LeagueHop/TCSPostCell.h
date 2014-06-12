@@ -6,6 +6,7 @@
 @class TCSPostViewModel;
 @class TCSPostView;
 
+// TableViewCell that wraps a post view.
 @interface TCSPostCell : UITableViewCell
 
 @property (nonatomic) TCSPostViewModel *viewModel;

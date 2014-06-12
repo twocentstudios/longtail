@@ -7,6 +7,7 @@
 
 #import "TCSLogInViewModel.h"
 
+// Shows one button for opening a Facebook session.
 @interface TCSLogInViewController : TCSViewController
 
 @property (nonatomic, readonly) TCSLogInViewModel *viewModel;

@@ -7,6 +7,9 @@
 
 #import "TCSPostsViewModel.h"
 
+// Shows posts provided by a postViewModel.
+// Can present a login or settings flow.
+// Can push web view controllers.
 @interface TCSPostsViewController : TCSViewController
 
 @property (nonatomic, readonly) TCSPostsViewModel *viewModel;

@@ -11,7 +11,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <YapDatabase/YapDatabase.h>
 
-NSString * const kDatabaseFilename = @"league_hop.sqlite";
+NSString * const kDatabaseFilename = @"longtail.sqlite";
 
 NSString * const kDatabaseCollectionPosts = @"posts";
 NSString * const kDatabaseCollectionPreferences = @"preferences";

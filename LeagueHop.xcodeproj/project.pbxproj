@@ -612,6 +612,7 @@
 				8315129F191DFB2500331535 /* TCSUserObject.m in Sources */,
 				83ECC44F19344FB300CD392E /* TCSWebViewController.m in Sources */,
 				831512A2191E01E000331535 /* TCSPostController.m in Sources */,
+				8327845D194A0EAA009F5885 /* NSError+TCSAppErrors.m in Sources */,
 				83ECC44519329B2500CD392E /* UIColor+TCSColorId.m in Sources */,
 				831512AB191EE97A00331535 /* TCSViewModel.m in Sources */,
 				83A378D61941613C00932479 /* TCSInformationViewModel.m in Sources */,

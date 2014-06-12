@@ -65,8 +65,6 @@
     [self.activityView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
 }
 
-#pragma mark Error handling
-
 - (void)presentError:(NSError *)error {
 	NSLog(@"%@", error);
     

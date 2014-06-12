@@ -18,4 +18,5 @@
     #import <ReactiveCocoa/RACEXTKeyPathCoding.h>
     #import <UIView+AutoLayout/UIView+AutoLayout.h>
     #import "TCSStyle.h"
+    #import "NSError+TCSAppErrors.h"
 #endif

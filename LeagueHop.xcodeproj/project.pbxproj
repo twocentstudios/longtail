@@ -33,6 +33,7 @@
 		831512B9191F352B00331535 /* TCSPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512B8191F352B00331535 /* TCSPostCell.m */; };
 		831512BB191F3B6300331535 /* TCSExampleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512BA191F3B6300331535 /* TCSExampleTest.m */; };
 		831512BE191F418100331535 /* TCSSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831512BD191F418100331535 /* TCSSettingsViewController.m */; };
+		8327845D194A0EAA009F5885 /* NSError+TCSAppErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8327845C194A0EAA009F5885 /* NSError+TCSAppErrors.m */; };
 		836048F8192EF836002E48B8 /* TCSSettingsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 836048F7192EF836002E48B8 /* TCSSettingsViewModel.m */; };
 		83868452192C435E0069E123 /* TCSGroupImportViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83868451192C435E0069E123 /* TCSGroupImportViewModel.m */; };
 		83868455192C4C210069E123 /* TCSGroupImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83868454192C4C210069E123 /* TCSGroupImportViewController.m */; };
@@ -111,6 +112,8 @@
 		831512BA191F3B6300331535 /* TCSExampleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSExampleTest.m; sourceTree = "<group>"; };
 		831512BC191F418100331535 /* TCSSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSSettingsViewController.h; sourceTree = "<group>"; };
 		831512BD191F418100331535 /* TCSSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSSettingsViewController.m; sourceTree = "<group>"; };
+		8327845B194A0EAA009F5885 /* NSError+TCSAppErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+TCSAppErrors.h"; sourceTree = "<group>"; };
+		8327845C194A0EAA009F5885 /* NSError+TCSAppErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+TCSAppErrors.m"; sourceTree = "<group>"; };
 		836048F6192EF836002E48B8 /* TCSSettingsViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSSettingsViewModel.h; sourceTree = "<group>"; };
 		836048F7192EF836002E48B8 /* TCSSettingsViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSSettingsViewModel.m; sourceTree = "<group>"; };
 		83868450192C435E0069E123 /* TCSGroupImportViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSGroupImportViewModel.h; sourceTree = "<group>"; };
@@ -321,6 +324,8 @@
 				831512B2191F1E7100331535 /* NSDate+TCSDateKey.m */,
 				83ECC44319329B2500CD392E /* UIColor+TCSColorId.h */,
 				83ECC44419329B2500CD392E /* UIColor+TCSColorId.m */,
+				8327845B194A0EAA009F5885 /* NSError+TCSAppErrors.h */,
+				8327845C194A0EAA009F5885 /* NSError+TCSAppErrors.m */,
 				83ECC44619329DB200CD392E /* TCSStyle.h */,
 			);
 			name = Helpers;

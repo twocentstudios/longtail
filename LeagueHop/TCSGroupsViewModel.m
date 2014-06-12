@@ -102,7 +102,7 @@ RACSignal *importViewModelSignal(NSArray *groupViewModels, TCSPostController *co
                     if ([selectedGroupViewModels count] > 0) {
                         return [selectedGroupViewModels valueForKey:@keypath(TCSGroupViewModel.new, group)];
                     }
-                    *errorPtr = [NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"At least one group must be selected."}];
+                    *errorPtr = [NSError errorWithDescription:@"At least one group must be selected."];
                     return nil;
                 }]
                 combineLatestWith:[RACSignal return:controller]]

@@ -241,7 +241,8 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                          [subscriber sendNext:result];
                          [subscriber sendCompleted];
                      } else {
-                         [subscriber sendError:error];
+                         NSError *convertedError = [NSError errorForFacebookError:error];
+                         [subscriber sendError:convertedError];
                      }
              }];
         return [RACDisposable disposableWithBlock:^{
@@ -262,14 +263,15 @@ NSUInteger const kDatabasePostKeyPostIdIndex = 2;
                                                      HTTPMethod:HTTPMethod];
         FBRequestConnection *requestConnection = [[FBRequestConnection alloc] init];
         [requestConnection addRequest:request
-             completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                 if (!error) {
-                     [subscriber sendNext:result];
-                     [subscriber sendCompleted];
-                 } else {
-                     [subscriber sendError:error];
-                 }
-             }];
+            completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    [subscriber sendNext:result];
+                    [subscriber sendCompleted];
+                } else {
+                    NSError *convertedError = [NSError errorForFacebookError:error];
+                    [subscriber sendError:convertedError];
+                }
+            }];
 
         NSURL *URL = [NSURL URLWithString:URLString];
         NSMutableURLRequest* URLRequest = [NSMutableURLRequest requestWithURL:URL];

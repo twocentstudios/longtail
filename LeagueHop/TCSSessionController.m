@@ -46,82 +46,45 @@ NSString * const kFacebookReadPermissions = @"public_profile,user_groups";
 }
 
 - (RACSignal *)reauthenticateFacebook {
-    RACSignal *signal =
-        [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-            if ([FBSession activeSession].state != FBSessionStateCreatedTokenLoaded) {
-                [subscriber sendError:[NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"No cached Facebook token found."}]];
-            } else {
-                [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
-                                                   allowLoginUI:NO
-                                              completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
-                                                    if (error) {
-                                                        [subscriber sendError:error];
-                                                    } else {
-                                                        [subscriber sendNext:session];
-                                                        [subscriber sendCompleted];
-                                                    }
-                                                }];
-            }
-            return nil;
-        }];
-
-    return [[self class] decodeFacebookErrorsOnSignal:signal];
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        if ([FBSession activeSession].state != FBSessionStateCreatedTokenLoaded) {
+            [subscriber sendError:[NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"No cached Facebook token found."}]];
+        } else {
+            [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
+                                               allowLoginUI:NO
+                                          completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+                                                if (error) {
+                                                    NSError *convertedError = [NSError errorForFacebookError:error];
+                                                    [subscriber sendError:convertedError];
+                                                } else {
+                                                    [subscriber sendNext:session];
+                                                    [subscriber sendCompleted];
+                                                }
+                                            }];
+        }
+        return nil;
+    }];
 }
 
 - (RACSignal *)logInToFacebook {
-    RACSignal *signal =
-        [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-            if ([FBSession activeSession].state != FBSessionStateCreated && !FB_ISSESSIONSTATETERMINAL([FBSession activeSession].state)) {
-                [subscriber sendError:[NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"Facebook session state not ready for log in."}]];
-            } else {
-                [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
-                                                   allowLoginUI:YES
-                                              completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
-                                                    if (error) {
-                                                        [subscriber sendError:error];
-                                                    } else {
-                                                        [subscriber sendNext:session];
-                                                        [subscriber sendCompleted];
-                                                    }
-                                                }];
-            }
-            return nil;
-        }];
-
-    return [[self class] decodeFacebookErrorsOnSignal:signal];
-}
-
-# pragma mark Private
-
-+ (RACSignal *)decodeFacebookErrorsOnSignal:(RACSignal *)signal {
-    return [[[signal
-        materialize]
-        map:^RACEvent *(RACEvent *event) {
-            if (event.eventType == RACEventTypeError) {
-                NSError *inputError = event.error;
-                NSString *outputDescription;
-
-                if ([FBErrorUtility shouldNotifyUserForError:inputError] == YES){
-                    // Error requires people using you app to make an action outside your app to recover
-                    outputDescription = [FBErrorUtility userMessageForError:inputError];
-                } else {
-                    if ([FBErrorUtility errorCategoryForError:inputError] == FBErrorCategoryUserCancelled) {
-                        outputDescription = @"You need to login to access this part of the app";
-                    } else if ([FBErrorUtility errorCategoryForError:inputError] == FBErrorCategoryAuthenticationReopenSession){
-                        // We need to handle session closures that happen outside of the app
-                        outputDescription = @"Your current session is no longer valid. Please log in again.";
-                    } else {
-                        outputDescription = @"Something's up with Facebook. Please try again.";
-                    }
-                }
-
-                NSError *outputError = [NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: outputDescription}];
-                return [RACEvent eventWithError:outputError];
-            } else {
-                return event;
-            }
-        }]
-        dematerialize];
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        if ([FBSession activeSession].state != FBSessionStateCreated && !FB_ISSESSIONSTATETERMINAL([FBSession activeSession].state)) {
+            [subscriber sendError:[NSError errorWithDomain:@"com.twocentstudios.longtail" code:1 userInfo:@{NSLocalizedDescriptionKey: @"Facebook session state not ready for log in."}]];
+        } else {
+            [FBSession openActiveSessionWithReadPermissions:[kFacebookReadPermissions componentsSeparatedByString:@","]
+                                               allowLoginUI:YES
+                                          completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+                                                if (error) {
+                                                    NSError *convertedError = [NSError errorForFacebookError:error];
+                                                    [subscriber sendError:convertedError];
+                                                } else {
+                                                    [subscriber sendNext:session];
+                                                    [subscriber sendCompleted];
+                                                }
+                                            }];
+        }
+        return nil;
+    }];
 }
 
 @end

@@ -10,11 +10,11 @@ longtail is [currently unavailable](http://twocentstudios.com/blog/2014/07/05/my
 * ~~[Landing page]() with screenshots.~~ (nah).
 * ~~[Blog post]() walking through the source.~~ (hopefully someday).
 
-![Screenshot 1](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-01.png)
-![Screenshot 2](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-02.png)
-![Screenshot 3](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-03.png)
-![Screenshot 4](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-04.png)
-![Screenshot 5](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-05.png)
+![Screenshot 1](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-01-s.png)
+![Screenshot 2](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-02-s.png)
+![Screenshot 3](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-03-s.png)
+![Screenshot 4](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-04-s.png)
+![Screenshot 5](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-05-s.png)
 
 ## Getting started
 

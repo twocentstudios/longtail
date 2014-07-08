@@ -43,6 +43,8 @@ longtail uses the following libraries:
 * [Facebook iOS SDK](https://github.com/facebook/facebook-ios-sdk) to get the goods.
 * [Grocery List](https://github.com/jspahrsummers/GroceryList): I shamelessly lifted a lot of good code and ideas from Justin Spahr-Summers' project.
 
+([Full Acknowledgements](http://twocentstudios.com/apps/longtail/licenses.html))
+
 ## License
 
 License for source is MIT.

@@ -2,15 +2,19 @@
 
 longtail aggregates posts from your Facebook Groups and shows you what you and your friends were talking about on this day in history. I'm looking to add more services in the future.
 
-longtail is an opportunity to explore [Timehop](http://timehop/com)-style content filtering with data sources that aren't as mainstream (or in other words, the "[long tail](http://en.wikipedia.org/wiki/Long_tail)" of content sources).
+longtail is an opportunity to explore [Timehop](http://timehop.com)-style content filtering with data sources that aren't as mainstream (or in other words, the "[long tail](http://en.wikipedia.org/wiki/Long_tail)" of content sources).
 
-* [App Store TODO](https://itunes.apple.com/us/app/) (it's free).
-* [Landing page TODO](http://twocentstudios.com/apps/longtail/) with screenshots.
-* [Blog post TODO](http://twocentstudios.com/blog/) walking through the source.
+longtail is [currently unavailable](http://twocentstudios.com/blog/2014/07/05/my-review-of-the-new-facebook-login-review-process/) on the App Store due to [Facebook's changes](https://developers.facebook.com/docs/apps/review/login) to their Login Review process :(
 
-![Screenshot 1](http://twocentstudios.com/apps/longtail/img/image1.png)
-![Screenshot 2](http://twocentstudios.com/apps/longtail/img/image2.png)
-![Screenshot 3](http://twocentstudios.com/apps/longtail/img/image3.png)
+* ~~[App Store]() (it's free)~~ (not until Facebook decides [to allow it](http://twocentstudios.com/blog/2014/07/05/my-review-of-the-new-facebook-login-review-process/)).
+* ~~[Landing page]() with screenshots.~~ (nah).
+* ~~[Blog post]() walking through the source.~~ (hopefully someday).
+
+![Screenshot 1](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-01.png)
+![Screenshot 2](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-02.png)
+![Screenshot 3](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-03.png)
+![Screenshot 4](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-04.png)
+![Screenshot 5](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-05.png)
 
 ## Getting started
 
@@ -19,12 +23,12 @@ longtail is an opportunity to explore [Timehop](http://timehop/com)-style conten
 1. Open `longtail.xcworkspace`.
 1. Create a [Facebook App](https://developers.facebook.com/apps).
 1. Add your Facebook App ID to Info.plist under the empty key `FacebookAppId`.
-1. Add `fb{YOUR_APP_ID}` to the `CFBundleURLSchemes` array in Info.plist.
+1. Add `fb{YOUR_APP_ID}` (sans brackets) to the `CFBundleURLSchemes` array in Info.plist.
 1. Build!
 
 ## Structure
 
-longtail is structured in the [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) architecture.
+longtail is structured in the [MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel) architectural pattern.
 
 longtail uses the following libraries:
 
@@ -32,7 +36,7 @@ longtail uses the following libraries:
 * [ReactiveViewModel](https://github.com/ReactiveCocoa/ReactiveViewModel) as a base for all view models.
 * [Mantle](https://github.com/Mantle/Mantle) for model objects and serialization.
 * [YapDatabase](https://github.com/yaptv/YapDatabase) as storage and querying for posts.
-* [UIView+Autolayout](https://github.com/smileyborg/UIView-AutoLayout) for lighter Autolayout syntax.
+* [PureLayout](https://github.com/smileyborg/PureLayout) ~~[UIView+Autolayout](https://github.com/smileyborg/UIView-AutoLayout)~~ for lighter Autolayout syntax.
 * [TTTAttributedLabel](https://github.com/smileyborg/UIView-AutoLayout) for link detection.
 * [Facebook iOS SDK](https://github.com/facebook/facebook-ios-sdk) to get the goods.
 * [Grocery List](https://github.com/jspahrsummers/GroceryList): I shamelessly lifted a lot of good code and ideas from Justin Spahr-Summers' project.
@@ -43,7 +47,16 @@ License for source is MIT.
 
 All rights are reserved for image assets.
 
-If you'd like to improve the app or add other services, please fork and submit pull requests and we'll keep one version on the App Store for everyone to enjoy.
+Facebook [rejected my several attempts](http://twocentstudios.com/blog/2014/07/05/my-review-of-the-new-facebook-login-review-process/) at getting the `user_groups` permission approved, so even if you did attempt to get the app on the App Store, I'd appreciate it if you'd not. Thanks.
+
+## Contributing
+
+* Add your favorite content source? 
+* Help me genericize the content models? 
+* Improve the Auto Layout? 
+* Improve the log in and import flow? 
+* Make a legitimate icon? 
+* Help get the Facebook Login Review Team to approve the `user_groups` permission?
 
 ## About
 

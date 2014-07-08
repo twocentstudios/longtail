@@ -10,6 +10,8 @@ longtail is [currently unavailable](http://twocentstudios.com/blog/2014/07/05/my
 * ~~[Landing page]() with screenshots.~~ (nah).
 * ~~[Blog post]() walking through the source.~~ (hopefully someday).
 
+## Screenshots
+
 ![Screenshot 1](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-01-s.png)
 ![Screenshot 2](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-02-s.png)
 ![Screenshot 3](https://raw.githubusercontent.com/twocentstudios/longtail/master/Design/screenshots/image-03-s.png)
